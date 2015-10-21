@@ -1,0 +1,13 @@
+name: FlatMe
+main: de.sigmaroot.plugins.FlatMe
+version: 1.0
+author: Steven Meisberger
+homepage: http://www.sigmaroot.de/
+depend: [WorldEdit, WorldGuard]
+softdepend: []
+commands:
+  flatme:
+    description: -#-
+    usage: -#-
+    permission: flatme
+    permission-message: -#-

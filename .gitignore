@@ -1,0 +1,11 @@
+# Eclipse and more stuff
+/.classpath
+/.project
+/.settings
+/build
+/bin
+/dist
+/manifest.mf
+/.DS_Store
+/craftbukkit-1.8.8.jar
+/Essentials-2.x-SNAPSHOT.jar
