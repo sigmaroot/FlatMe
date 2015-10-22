@@ -1,0 +1,4 @@
+language: English
+localizationLoaded: 'Loaded localization: %1% (%2%)'
+pluginLoaded: 'The plugin has been loaded sucessfully!'
+pluginUnloaded: 'The plugin has been unloaded sucessfully!'
