@@ -2,18 +2,9 @@ package de.sigmaroot.plugins;
 
 public class Command {
 
-	private String commandString;
 	private String permission;
 	private String usage;
 	private int expectedArgs;
-
-	public String getCommandString() {
-		return commandString;
-	}
-
-	public void setCommandString(String commandString) {
-		this.commandString = commandString;
-	}
 
 	public String getPermission() {
 		return permission;
@@ -39,9 +30,8 @@ public class Command {
 		this.expectedArgs = expectedArgs;
 	}
 
-	public Command(String commandString, String permission, String usage, int expectedArgs) {
+	public Command(String permission, String usage, int expectedArgs) {
 		super();
-		this.commandString = commandString;
 		this.permission = permission;
 		this.usage = usage;
 		this.expectedArgs = expectedArgs;

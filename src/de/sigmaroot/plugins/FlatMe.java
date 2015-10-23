@@ -11,12 +11,19 @@ public class FlatMe extends JavaPlugin implements Listener {
 
 	public Configurator configurator;
 	public FileConfiguration config;
-	public CommandHandler commandhandler;
+	public CommandHandler commandHandler;
+	public final String pluginTitle = "FlatMe";
+	public final String pluginVersion = "1.0";	
 
 	@Override
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String commandLabel, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("flatme")) {
-			commandhandler.handleCommand(sender, args);
+			if (args.length == 0) {
+				sender.sendMessage(configurator.resolveLocaledString("%noCommand%", null));
+				sender.sendMessage(commandHandler.returnCorrectUsage("help"));
+			} else {
+				commandHandler.handleCommand(sender, args);
+			}
 		}
 		return true;
 	}
@@ -30,7 +37,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 		configurator.setLocalization(config.getString("language"));
 		this.getLogger().info(configurator.resolveLocaledString("%pluginLoaded%", null));
 		getServer().getPluginManager().registerEvents(this, this);
-		commandhandler = new CommandHandler(this);
+		commandHandler = new CommandHandler(this);
 	}
 
 	@Override

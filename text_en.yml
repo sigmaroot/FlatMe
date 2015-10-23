@@ -1,4 +1,14 @@
 language: English
-localizationLoaded: 'Loaded localization: %1% (%2%)'
-pluginLoaded: 'The plugin has been loaded sucessfully!'
-pluginUnloaded: 'The plugin has been unloaded sucessfully!'
+localizationLoaded: "Loaded localization: %1% (%2%)."
+pluginLoaded: "The plugin has been loaded sucessfully!"
+pluginUnloaded: "The plugin has been unloaded sucessfully!"
+pluginTitle: "&2%1% v%2%"
+pluginVersion: "&6Installed version is &2%1%"
+pageTitle: "&6==================== [ Page &2%1% &6of &2%2% &6] ===================="
+noResultsFound: "&4No results found to show."
+noCommand: "&4You haven't entered a valid vommand. Use &6/flatme help &4for a list of all available commands."
+commandNotFound: "&4The command &6/flatme %1% &4doesn't exist. Use &6/flatme help &4for a list of all available commands."
+commandError: "&4An error occured while trying to run your command &6/flatme %1% &4(Does it exist?). Use &6/flatme help &4for a list of all available commands."
+correctUsage: "&6Correct usage: &2%1%"
+cmd_help: "&2%1% &f- Displays a list of all available commands"
+cmd_version: "&2%1% &f- Displays some informations about the version"

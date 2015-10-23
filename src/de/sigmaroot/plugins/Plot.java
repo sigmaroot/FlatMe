@@ -1,11 +1,31 @@
 package de.sigmaroot.plugins;
 
+import java.util.List;
+
 public class Plot {
 
 	private int id;
 	private int placeX;
 	private int placeY;
 	private Coordinates coords;
+	private Player owner;
+	private List<Player> members;
+
+	public Player getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Player owner) {
+		this.owner = owner;
+	}
+
+	public List<Player> getMembers() {
+		return members;
+	}
+
+	public void setMembers(List<Player> members) {
+		this.members = members;
+	}
 
 	public Coordinates getCoords() {
 		return coords;

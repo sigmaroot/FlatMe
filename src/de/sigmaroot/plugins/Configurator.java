@@ -64,8 +64,8 @@ public class Configurator {
 	public void setLocalization(String localization) {
 		this.localization = localization;
 		loadLocalizationFile();
-		String args[] = { this.localization, resolveLocaledString("%language%", null) };
-		plugin.getLogger().info(resolveLocaledString("%localizationLoaded%", args));
+		String args_0[] = { this.localization, resolveLocaledString("%language%", null) };
+		plugin.getLogger().info(resolveLocaledString("%localizationLoaded%", args_0));
 	}
 
 	public Configurator(FlatMe plugin) {
