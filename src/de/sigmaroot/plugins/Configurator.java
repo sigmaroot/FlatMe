@@ -17,6 +17,19 @@ public class Configurator {
 	private File plotsFile;
 	private FileConfiguration plotsFileConfiguration;
 
+	public Configurator(FlatMe plugin, String localization) {
+		super();
+		this.plugin = plugin;
+		this.localization = localization;
+		loadLocalizationFile();
+		String args_0[] = { this.localization, resolveLocalizedString("%language%", null) };
+		plugin.getLogger().info(resolveLocalizedString("%localizationLoaded%", args_0));
+		loadPlotFile();
+		String args_1[] = { "plots.yml" };
+		plugin.getLogger().info(resolveLocalizedString("%plotsLoaded%", args_1));
+		
+	}
+
 	public StringMap getLocalizedStrings() {
 		return localizedStrings;
 	}
@@ -63,14 +76,19 @@ public class Configurator {
 
 	public void setLocalization(String localization) {
 		this.localization = localization;
-		loadLocalizationFile();
-		String args_0[] = { this.localization, resolveLocaledString("%language%", null) };
-		plugin.getLogger().info(resolveLocaledString("%localizationLoaded%", args_0));
 	}
 
-	public Configurator(FlatMe plugin) {
-		super();
-		this.plugin = plugin;
+	public String resolveLocalizedString(String input, String[] args) {
+		for (int i = 0; i < localizedStrings.size(); i++) {
+			input = input.replaceAll(localizedStrings.getVariable(i), localizedStrings.getLocalizedString(i));
+		}
+		if (args != null) {
+			for (int i = 1; i < (args.length + 1); i++) {
+				input = input.replaceAll("%" + Integer.toString(i) + "%", args[i - 1]);
+			}
+		}
+		input = ChatColor.translateAlternateColorCodes('&', input);
+		return input;
 	}
 
 	private void loadLocalizationFile() {
@@ -90,7 +108,7 @@ public class Configurator {
 		}
 	}
 
-	public void saveDefaultLocalizationConfig(String configName) {
+	private void saveDefaultLocalizationConfig(String configName) {
 		File customConfigFile = null;
 		customConfigFile = new File(plugin.getDataFolder(), configName);
 		if (!customConfigFile.exists()) {
@@ -100,27 +118,31 @@ public class Configurator {
 			plugin.saveResource(configName, false);
 		}
 	}
+	
+	private void loadPlotFile() {
+		saveDefaultPlotsConfig();
+		plotsFile = new File(plugin.getDataFolder(), "plots.yml");
+		plotsFileConfiguration = new YamlConfiguration();
+		try {
+			plotsFileConfiguration.load(plotsFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+//		Set<String> allNodes = localizationFileConfiguration.getKeys(false);
+//		String[] allNodesArray = allNodes.toArray(new String[allNodes.size()]);
+//		localizedStrings = new StringMap();
+//		for (int i = 0; i < allNodesArray.length; i++) {
+//			localizedStrings.add("%" + allNodesArray[i] + "%", localizationFileConfiguration.getString(allNodesArray[i]));
+//		}
+	}
 
-	public void saveDefaultPlotsConfig() {
+	private void saveDefaultPlotsConfig() {
 		File customConfigFile = null;
 		customConfigFile = new File(plugin.getDataFolder(), "plots.yml");
 		if (!customConfigFile.exists()) {
 			plugin.getLogger().warning("Plots file plots.yml doesn't exist. Using default plots.");
 			plugin.saveResource("plots.yml", false);
 		}
-	}
-
-	public String resolveLocaledString(String input, String[] args) {
-		for (int i = 0; i < localizedStrings.size(); i++) {
-			input = input.replaceAll(localizedStrings.getVariable(i), localizedStrings.getLocalizedString(i));
-		}
-		if (args != null) {
-			for (int i = 1; i < (args.length + 1); i++) {
-				input = input.replaceAll("%" + Integer.toString(i) + "%", args[i - 1]);
-			}
-		}
-		input = ChatColor.translateAlternateColorCodes('&', input);
-		return input;
 	}
 
 }

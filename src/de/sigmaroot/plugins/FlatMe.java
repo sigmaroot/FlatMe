@@ -19,7 +19,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String commandLabel, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("flatme")) {
 			if (args.length == 0) {
-				sender.sendMessage(configurator.resolveLocaledString("%noCommand%", null));
+				sender.sendMessage(configurator.resolveLocalizedString("%noCommand%", null));
 				sender.sendMessage(commandHandler.returnCorrectUsage("help"));
 			} else {
 				commandHandler.handleCommand(sender, args);
@@ -33,16 +33,15 @@ public class FlatMe extends JavaPlugin implements Listener {
 		saveDefaultConfig();
 		config = getConfig();
 		this.getLogger().info("Configuration and its defaults loaded.");
-		configurator = new Configurator(this);
-		configurator.setLocalization(config.getString("language"));
-		this.getLogger().info(configurator.resolveLocaledString("%pluginLoaded%", null));
+		configurator = new Configurator(this, config.getString("language"));
+		this.getLogger().info(configurator.resolveLocalizedString("%pluginLoaded%", null));
 		getServer().getPluginManager().registerEvents(this, this);
 		commandHandler = new CommandHandler(this);
 	}
 
 	@Override
 	public void onDisable() {
-		this.getLogger().info(configurator.resolveLocaledString("%pluginUnloaded%", null));
+		this.getLogger().info(configurator.resolveLocalizedString("%pluginUnloaded%", null));
 	}
 
 	@Override

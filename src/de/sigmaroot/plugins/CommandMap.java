@@ -5,15 +5,21 @@ import java.util.List;
 
 public class CommandMap {
 
-	private List<String> commandsText;
+	private List<String> commandTexts;
 	private List<Command> commands;
 
-	public List<String> getIndexes() {
-		return commandsText;
+	public CommandMap() {
+		super();
+		commandTexts = new ArrayList<String>();
+		commands = new ArrayList<Command>();
 	}
 
-	public void setIndexes(List<String> indexes) {
-		this.commandsText = indexes;
+	public List<String> getCommandTexts() {
+		return commandTexts;
+	}
+
+	public void setCommandTexts(List<String> commandTexts) {
+		this.commandTexts = commandTexts;
 	}
 
 	public List<Command> getCommands() {
@@ -24,30 +30,24 @@ public class CommandMap {
 		this.commands = commands;
 	}
 
-	public CommandMap() {
-		super();
-		commandsText = new ArrayList<String>();
-		commands = new ArrayList<Command>();
-	}
-
 	public int size() {
-		return commandsText.size();
+		return commandTexts.size();
 	}
 
 	public void add(String commandText, Command command) {
-		commandsText.add(commandText);
+		commandTexts.add(commandText);
 		commands.add(command);
 	}
 
 	public void remove(int index) {
-		commandsText.remove(index);
+		commandTexts.remove(index);
 		commands.remove(index);
 	}
 
 	public void remove(String index) {
-		for (int i = 0; i < commandsText.size(); i++) {
-			if (commandsText.get(i).equals(index)) {
-				commandsText.remove(i);
+		for (int i = 0; i < commandTexts.size(); i++) {
+			if (commandTexts.get(i).equals(index)) {
+				commandTexts.remove(i);
 				commands.remove(i);
 			}
 		}
@@ -58,8 +58,8 @@ public class CommandMap {
 	}
 
 	public Command getCommand(String index) {
-		for (int i = 0; i < commandsText.size(); i++) {
-			if (commandsText.get(i).equals(index)) {
+		for (int i = 0; i < commandTexts.size(); i++) {
+			if (commandTexts.get(i).equals(index)) {
 				return commands.get(i);
 			}
 		}
@@ -67,7 +67,7 @@ public class CommandMap {
 	}
 
 	public String getCommandText(int index) {
-		return commandsText.get(index);
+		return commandTexts.get(index);
 	}
 
 }

@@ -1,5 +1,6 @@
 package de.sigmaroot.plugins;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Plot {
@@ -10,6 +11,11 @@ public class Plot {
 	private Coordinates coords;
 	private Player owner;
 	private List<Player> members;
+
+	public Plot() {
+		super();
+		this.members = new ArrayList<Player>();
+	}
 
 	public Player getOwner() {
 		return owner;

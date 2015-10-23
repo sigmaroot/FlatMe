@@ -1,5 +1,6 @@
 package de.sigmaroot.plugins;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.earth2me.essentials.User;
@@ -10,6 +11,11 @@ public class Player {
 	private String displayName;
 	private User essentialsUser;
 	private List<Integer> plots;
+
+	public Player() {
+		super();
+		this.plots = new ArrayList<Integer>();
+	}
 
 	public String getUuid() {
 		return uuid;

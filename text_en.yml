@@ -1,5 +1,6 @@
 language: English
 localizationLoaded: "Loaded localization: %1% (%2%)."
+plotsLoaded: "Loaded plots: %1%."
 pluginLoaded: "The plugin has been loaded sucessfully!"
 pluginUnloaded: "The plugin has been unloaded sucessfully!"
 pluginTitle: "&2%1% v%2%"

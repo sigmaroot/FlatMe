@@ -6,6 +6,13 @@ public class Command {
 	private String usage;
 	private int expectedArgs;
 
+	public Command(String permission, String usage, int expectedArgs) {
+		super();
+		this.permission = permission;
+		this.usage = usage;
+		this.expectedArgs = expectedArgs;
+	}
+
 	public String getPermission() {
 		return permission;
 	}
@@ -27,13 +34,6 @@ public class Command {
 	}
 
 	public void setExpectedArgs(int expectedArgs) {
-		this.expectedArgs = expectedArgs;
-	}
-
-	public Command(String permission, String usage, int expectedArgs) {
-		super();
-		this.permission = permission;
-		this.usage = usage;
 		this.expectedArgs = expectedArgs;
 	}
 
