@@ -5,69 +5,74 @@ import java.util.List;
 
 public class StringMap {
 
-	private List<String> variables;
-	private List<String> localizedStrings;
+	private List<String> indexes;
+	private List<String> strings;
 
 	public StringMap() {
 		super();
-		variables = new ArrayList<String>();
-		localizedStrings = new ArrayList<String>();
+		indexes = new ArrayList<String>();
+		strings = new ArrayList<String>();
 	}
 
-	public List<String> getVariables() {
-		return variables;
+	public List<String> getIndexes() {
+		return indexes;
 	}
 
-	public void setVariables(List<String> variables) {
-		this.variables = variables;
+	public void setIndexes(List<String> indexes) {
+		this.indexes = indexes;
 	}
 
-	public List<String> getLocalizedStrings() {
-		return localizedStrings;
+	public List<String> getStrings() {
+		return strings;
 	}
 
-	public void setLocalizedStrings(List<String> localizedStrings) {
-		this.localizedStrings = localizedStrings;
+	public void setStrings(List<String> strings) {
+		this.strings = strings;
 	}
 
 	public int size() {
-		return variables.size();
+		return indexes.size();
 	}
 
-	public void add(String variable, String localizedString) {
-		variables.add(variable);
-		localizedStrings.add(localizedString);
+	public void add(String index, String string) {
+		indexes.add(index);
+		strings.add(string);
 	}
 
 	public void remove(int index) {
-		variables.remove(index);
-		localizedStrings.remove(index);
+		indexes.remove(index);
+		strings.remove(index);
 	}
 
 	public void remove(String index) {
-		for (int i = 0; i < variables.size(); i++) {
-			if (variables.get(i).equals(index)) {
-				variables.remove(i);
-				localizedStrings.remove(i);
+		for (int i = 0; i < indexes.size(); i++) {
+			if (indexes.get(i).equals(index)) {
+				indexes.remove(i);
+				strings.remove(i);
 			}
 		}
 	}
 
-	public String getLocalizedString(int index) {
-		return localizedStrings.get(index);
+	public void clear() {
+		indexes.clear();
+		strings.clear();
 	}
 
-	public String getLocalizedString(String index) {
-		for (int i = 0; i < variables.size(); i++) {
-			if (variables.get(i).equals(index)) {
-				return localizedStrings.get(i);
+	public String getString(int index) {
+		return strings.get(index);
+	}
+
+	public String getString(String index) {
+		for (int i = 0; i < indexes.size(); i++) {
+			if (indexes.get(i).equals(index)) {
+				return strings.get(i);
 			}
 		}
 		return null;
 	}
 
-	public String getVariable(int index) {
-		return variables.get(index);
+	public String getIndex(int index) {
+		return indexes.get(index);
 	}
 
 }

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class CommandHandler {
 
@@ -52,25 +54,64 @@ public class CommandHandler {
 		}
 		switch (firstArg) {
 		case "help":
-			int page = 1;
+			// Execute command
+			int cmdPage = 1;
 			if (args.length > 1) {
-				page = parsePageNumber(args[1]);
+				cmdPage = parsePageNumber(args[1]);
 			}
-			showAllCommands(sender, page);
+			showAllCommands(sender, cmdPage);
 			break;
 		case "version":
-			String[] args_0 = { plugin.pluginVersion };
-			sendLocalizedString(sender, "%pluginVersion%", args_0);
+			// Execute command
+			String[] args_1 = { plugin.pluginVersion };
+			sendLocalizedString(sender, "%pluginVersion%", args_1);
+			break;
+		case "makeplots":
+			// PLAYER ONLY
+			if (!(sender instanceof Player)) {
+				break;
+			}
+			Player player = (Player) sender;
+			String uuid = player.getUniqueId().toString();
+			if (plugin.flatMePlayers.getPlayer(uuid) == null) {
+				plugin.flatMePlayers.add(uuid, new FlatMePlayer(plugin, player));
+			}
+			// Execute command
+			String cmdWorld = args[1];
+			World world = Bukkit.getWorld(cmdWorld);
+			if (world == null) {
+				String[] args_0 = { cmdWorld };
+				plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%worldNotFound%", args_0);
+				break;
+			}
+			int cmdRadius;
+			try {
+				cmdRadius = Integer.parseInt(args[2]);
+			} catch (Exception e) {
+				plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString(returnCorrectUsage(firstArg), null);
+				break;
+			}
+			if (cmdRadius < 1) {
+				plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%tooSmallRadius%", null);
+				break;
+			}
+			// Region maker -> queue
+			RegionMaker rm = new RegionMaker(plugin, plugin.flatMePlayers.getPlayer(uuid), cmdRadius, plugin.config.getInt("plotSize", 50), world);
+			rm.run();
+			// Kick off player queue
+			PlayerQueue pq = plugin.flatMePlayers.getPlayer(uuid).getQueue();
+			pq.run();
 			break;
 		default:
-			String[] args_1 = { firstArg };
-			sendLocalizedString(sender, "%commandError%", args_1);
+			// Execute command
+			String[] args_0 = { firstArg };
+			sendLocalizedString(sender, "%commandError%", args_0);
 			sendLocalizedString(sender, returnCorrectUsage("help"), null);
 		}
 	}
 
 	public String returnCorrectUsage(String command) {
-		String[] args_0 = { commandList.getCommand("help").getUsage() };
+		String[] args_0 = { commandList.getCommand(command).getUsage() };
 		return plugin.configurator.resolveLocalizedString("%correctUsage%", args_0);
 	}
 
@@ -106,17 +147,18 @@ public class CommandHandler {
 		if ((max + 1) > entrys.size()) {
 			max = (entrys.size() - 1);
 		}
-		sender.sendMessage(plugin.configurator.resolveLocalizedString(title, null));
+		sendLocalizedString(sender, title, null);
 		String args_0[] = { Integer.toString(page), Integer.toString(pages) };
-		sender.sendMessage(plugin.configurator.resolveLocalizedString("%pageTitle%", args_0));
+		sendLocalizedString(sender, "%pageTitle%", args_0);
 		for (int i = min; i <= max; i++) {
-			sender.sendMessage(entrys.get(i));
+			sendLocalizedString(sender, entrys.get(i), null);
 		}
 	}
 
 	private void initializeAllCommands() {
 		commandList.add("help", new Command("flatme.player", "/flatme help [page]", 0));
 		commandList.add("version", new Command("flatme.player", "/flatme version", 0));
+		commandList.add("makeplots", new Command("flatme.admin", "/flatme makeplots <world> <radius>", 2));
 	}
 
 	private void sendLocalizedString(CommandSender sender, String input, String[] args) {

@@ -7,7 +7,7 @@ depend: []
 softdepend: []
 commands:
   flatme:
-    description: -#-
-    usage: -#-
-    permission: flatme
-    permission-message: -#-
+    description: "Usage of FlatMe Plugin Interface"
+    usage: /flatme <params>
+    permission: flatme.player
+    permission-message: "You don't have the permission to use this command."

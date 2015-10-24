@@ -12,8 +12,33 @@ public class FlatMe extends JavaPlugin implements Listener {
 	public Configurator configurator;
 	public FileConfiguration config;
 	public CommandHandler commandHandler;
+	public PlayerMap flatMePlayers;
 	public final String pluginTitle = "FlatMe";
-	public final String pluginVersion = "1.0";	
+	public final String pluginVersion = "1.0";
+
+	@Override
+	public void onEnable() {
+		// Use default config if no config exists
+		// Create reference to loaded configuration
+		saveDefaultConfig();
+		config = getConfig();
+		this.getLogger().info("Configuration and its defaults loaded.");
+		// Create configurator for alternative configurations
+		configurator = new Configurator(this, config.getString("language", "en"));
+		// Create command handler
+		commandHandler = new CommandHandler(this);
+		// Create empty player map for queues
+		flatMePlayers = new PlayerMap();
+		// Finished
+		getServer().getPluginManager().registerEvents(this, this);
+		this.getLogger().info(configurator.resolveLocalizedString("%pluginLoaded%", null));
+	}
+
+	@Override
+	public void onDisable() {
+		// Finished
+		this.getLogger().info(configurator.resolveLocalizedString("%pluginUnloaded%", null));
+	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String commandLabel, String[] args) {
@@ -26,22 +51,6 @@ public class FlatMe extends JavaPlugin implements Listener {
 			}
 		}
 		return true;
-	}
-
-	@Override
-	public void onEnable() {
-		saveDefaultConfig();
-		config = getConfig();
-		this.getLogger().info("Configuration and its defaults loaded.");
-		configurator = new Configurator(this, config.getString("language"));
-		this.getLogger().info(configurator.resolveLocalizedString("%pluginLoaded%", null));
-		getServer().getPluginManager().registerEvents(this, this);
-		commandHandler = new CommandHandler(this);
-	}
-
-	@Override
-	public void onDisable() {
-		this.getLogger().info(configurator.resolveLocalizedString("%pluginUnloaded%", null));
 	}
 
 	@Override

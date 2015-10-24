@@ -9,27 +9,27 @@ public class Plot {
 	private int placeX;
 	private int placeY;
 	private Coordinates coords;
-	private Player owner;
-	private List<Player> members;
+	private FlatMePlayer owner;
+	private List<FlatMePlayer> members;
 
 	public Plot() {
 		super();
-		this.members = new ArrayList<Player>();
+		this.members = new ArrayList<FlatMePlayer>();
 	}
 
-	public Player getOwner() {
+	public FlatMePlayer getOwner() {
 		return owner;
 	}
 
-	public void setOwner(Player owner) {
+	public void setOwner(FlatMePlayer owner) {
 		this.owner = owner;
 	}
 
-	public List<Player> getMembers() {
+	public List<FlatMePlayer> getMembers() {
 		return members;
 	}
 
-	public void setMembers(List<Player> members) {
+	public void setMembers(List<FlatMePlayer> members) {
 		this.members = members;
 	}
 

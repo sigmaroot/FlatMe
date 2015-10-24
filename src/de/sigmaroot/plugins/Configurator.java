@@ -27,7 +27,7 @@ public class Configurator {
 		loadPlotFile();
 		String args_1[] = { "plots.yml" };
 		plugin.getLogger().info(resolveLocalizedString("%plotsLoaded%", args_1));
-		
+
 	}
 
 	public StringMap getLocalizedStrings() {
@@ -80,7 +80,7 @@ public class Configurator {
 
 	public String resolveLocalizedString(String input, String[] args) {
 		for (int i = 0; i < localizedStrings.size(); i++) {
-			input = input.replaceAll(localizedStrings.getVariable(i), localizedStrings.getLocalizedString(i));
+			input = input.replaceAll(localizedStrings.getIndex(i), localizedStrings.getString(i));
 		}
 		if (args != null) {
 			for (int i = 1; i < (args.length + 1); i++) {
@@ -118,7 +118,7 @@ public class Configurator {
 			plugin.saveResource(configName, false);
 		}
 	}
-	
+
 	private void loadPlotFile() {
 		saveDefaultPlotsConfig();
 		plotsFile = new File(plugin.getDataFolder(), "plots.yml");
@@ -128,12 +128,14 @@ public class Configurator {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-//		Set<String> allNodes = localizationFileConfiguration.getKeys(false);
-//		String[] allNodesArray = allNodes.toArray(new String[allNodes.size()]);
-//		localizedStrings = new StringMap();
-//		for (int i = 0; i < allNodesArray.length; i++) {
-//			localizedStrings.add("%" + allNodesArray[i] + "%", localizationFileConfiguration.getString(allNodesArray[i]));
-//		}
+		// Set<String> allNodes = localizationFileConfiguration.getKeys(false);
+		// String[] allNodesArray = allNodes.toArray(new
+		// String[allNodes.size()]);
+		// localizedStrings = new StringMap();
+		// for (int i = 0; i < allNodesArray.length; i++) {
+		// localizedStrings.add("%" + allNodesArray[i] + "%",
+		// localizationFileConfiguration.getString(allNodesArray[i]));
+		// }
 	}
 
 	private void saveDefaultPlotsConfig() {

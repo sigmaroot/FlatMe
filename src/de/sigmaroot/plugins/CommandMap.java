@@ -53,6 +53,11 @@ public class CommandMap {
 		}
 	}
 
+	public void clear() {
+		commandTexts.clear();
+		commands.clear();
+	}
+
 	public Command getCommand(int index) {
 		return commands.get(index);
 	}
