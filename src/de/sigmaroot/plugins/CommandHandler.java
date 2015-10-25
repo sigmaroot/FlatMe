@@ -2,6 +2,7 @@ package de.sigmaroot.plugins;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -63,30 +64,23 @@ public class CommandHandler {
 			break;
 		case "version":
 			// Execute command
-			String[] args_1 = { plugin.pluginVersion };
+			String[] args_1 = { plugin.PLUGIN_VERSION };
 			sendLocalizedString(sender, "%pluginVersion%", args_1);
 			break;
-		case "makeplots":
+		case "create":
 			// PLAYER ONLY
 			if (!(sender instanceof Player)) {
 				break;
 			}
 			Player player = (Player) sender;
-			String uuid = player.getUniqueId().toString();
+			UUID uuid = player.getUniqueId();
 			if (plugin.flatMePlayers.getPlayer(uuid) == null) {
 				plugin.flatMePlayers.add(uuid, new FlatMePlayer(plugin, player));
 			}
 			// Execute command
-			String cmdWorld = args[1];
-			World world = Bukkit.getWorld(cmdWorld);
-			if (world == null) {
-				String[] args_0 = { cmdWorld };
-				plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%worldNotFound%", args_0);
-				break;
-			}
 			int cmdRadius;
 			try {
-				cmdRadius = Integer.parseInt(args[2]);
+				cmdRadius = Integer.parseInt(args[1]);
 			} catch (Exception e) {
 				plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString(returnCorrectUsage(firstArg), null);
 				break;
@@ -95,12 +89,20 @@ public class CommandHandler {
 				plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%tooSmallRadius%", null);
 				break;
 			}
+			// Needed config settings
+			String configWorld = plugin.config.getString("world", "world");
+			World world = Bukkit.getWorld(configWorld);
+			if (world == null) {
+				String[] args_0 = { configWorld };
+				plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%worldNotFound%", args_0);
+				break;
+			}
 			// Region maker -> queue
-			RegionMaker rm = new RegionMaker(plugin, plugin.flatMePlayers.getPlayer(uuid), cmdRadius, plugin.config.getInt("plotSize", 50), world);
-			rm.run();
+			FieldCreator fieldCreator = new FieldCreator(plugin, plugin.flatMePlayers.getPlayer(uuid), cmdRadius, world);
+			fieldCreator.runCreate();
 			// Kick off player queue
-			PlayerQueue pq = plugin.flatMePlayers.getPlayer(uuid).getQueue();
-			pq.run();
+			PlayerQueue playerQueue = plugin.flatMePlayers.getPlayer(uuid).getQueue();
+			playerQueue.run();
 			break;
 		default:
 			// Execute command
@@ -110,6 +112,10 @@ public class CommandHandler {
 		}
 	}
 
+	public void executeConsole(String cmd) {
+		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), cmd);
+	}
+
 	public String returnCorrectUsage(String command) {
 		String[] args_0 = { commandList.getCommand(command).getUsage() };
 		return plugin.configurator.resolveLocalizedString("%correctUsage%", args_0);
@@ -117,17 +123,16 @@ public class CommandHandler {
 
 	public void showAllCommands(CommandSender sender, int page) {
 		List<String> temp = new ArrayList<String>();
-		plugin.getLogger().info(Integer.toString(commandList.size()));
 		for (int i = 0; i < commandList.size(); i++) {
 			String[] args_0 = { commandList.getCommand(i).getUsage() };
 			temp.add(plugin.configurator.resolveLocalizedString("%cmd_" + commandList.getCommandText(i) + "%", args_0));
 		}
-		String[] args_0 = { plugin.pluginTitle, plugin.pluginVersion };
+		String[] args_0 = { plugin.PLUGIN_TITLE, plugin.PLUGIN_VERSION };
 		showTable(sender, plugin.configurator.resolveLocalizedString("%pluginTitle% &6- Plugin by Enatras", args_0), page, temp);
 	}
 
 	public void showTable(CommandSender sender, String title, int page, List<String> entrys) {
-		int show_entrys_per_page = 5;
+		int show_entrys_per_page = plugin.config.getInt("maxResultsPerPage", 5);
 		int perPage = show_entrys_per_page;
 		int pages = (int) Math.ceil(((double) entrys.size()) / ((double) perPage));
 		if (pages < 1) {
@@ -148,7 +153,7 @@ public class CommandHandler {
 			max = (entrys.size() - 1);
 		}
 		sendLocalizedString(sender, title, null);
-		String args_0[] = { Integer.toString(page), Integer.toString(pages) };
+		String args_0[] = { String.format("%02d", page), String.format("%02d", pages) };
 		sendLocalizedString(sender, "%pageTitle%", args_0);
 		for (int i = min; i <= max; i++) {
 			sendLocalizedString(sender, entrys.get(i), null);
@@ -158,7 +163,17 @@ public class CommandHandler {
 	private void initializeAllCommands() {
 		commandList.add("help", new Command("flatme.player", "/flatme help [page]", 0));
 		commandList.add("version", new Command("flatme.player", "/flatme version", 0));
-		commandList.add("makeplots", new Command("flatme.admin", "/flatme makeplots <world> <radius>", 2));
+		commandList.add("create", new Command("flatme.admin", "/flatme create <radius>", 1));
+		commandList.add("generate", new Command("flatme.admin", "/flatme create <world> <radius>", 2));
+		commandList.add("fillup", new Command("flatme.admin", "/flatme create <world> <radius>", 2));
+		commandList.add("reload", new Command("flatme.admin", "/flatme create <world> <radius>", 2));
+		commandList.add("check", new Command("flatme.admin", "/flatme create <world> <radius>", 2));
+		commandList.add("clean", new Command("flatme.admin", "/flatme create <world> <radius>", 2));
+		commandList.add("claim", new Command("flatme.admin", "/flatme create <world> <radius>", 2));
+		commandList.add("home", new Command("flatme.admin", "/flatme create <world> <radius>", 2));
+		commandList.add("add", new Command("flatme.admin", "/flatme create <world> <radius>", 2));
+		commandList.add("remove", new Command("flatme.admin", "/flatme create <world> <radius>", 2));
+		commandList.add("extend", new Command("flatme.admin", "/flatme create <world> <radius>", 2));
 	}
 
 	private void sendLocalizedString(CommandSender sender, String input, String[] args) {
@@ -173,14 +188,6 @@ public class CommandHandler {
 			return 1;
 		}
 		return value;
-	}
-
-	private void executeConsole(String cmd) {
-		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), cmd);
-	}
-
-	private static int myRandom(int low, int high) {
-		return (int) (Math.random() * (high - low) + low);
 	}
 
 }

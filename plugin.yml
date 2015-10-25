@@ -3,11 +3,11 @@ main: de.sigmaroot.plugins.FlatMe
 version: 1.0
 author: Steven Meisberger
 homepage: http://www.sigmaroot.de/
-depend: []
-softdepend: []
+depend: [Essentials]
+softdepend: [Multiverse-Core]
 commands:
   flatme:
-    description: "Usage of FlatMe Plugin Interface"
+    description: "FlatMe Plugin Interface"
     usage: /flatme <params>
     permission: flatme.player
     permission-message: "You don't have the permission to use this command."

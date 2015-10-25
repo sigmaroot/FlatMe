@@ -84,7 +84,7 @@ public class Configurator {
 		}
 		if (args != null) {
 			for (int i = 1; i < (args.length + 1); i++) {
-				input = input.replaceAll("%" + Integer.toString(i) + "%", args[i - 1]);
+				input = input.replaceAll("%" + String.format("%d", i) + "%", args[i - 1]);
 			}
 		}
 		input = ChatColor.translateAlternateColorCodes('&', input);

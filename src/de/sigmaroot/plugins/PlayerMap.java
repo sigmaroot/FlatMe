@@ -2,24 +2,25 @@ package de.sigmaroot.plugins;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class PlayerMap {
 
-	private List<String> playerUUIDs;
+	private List<UUID> uuids;
 	private List<FlatMePlayer> players;
 
 	public PlayerMap() {
 		super();
-		playerUUIDs = new ArrayList<String>();
+		uuids = new ArrayList<UUID>();
 		players = new ArrayList<FlatMePlayer>();
 	}
 
-	public List<String> getPlayerUUIDs() {
-		return playerUUIDs;
+	public List<UUID> getUuids() {
+		return uuids;
 	}
 
-	public void setPlayerUUIDs(List<String> playerUUIDs) {
-		this.playerUUIDs = playerUUIDs;
+	public void setUuids(List<UUID> uuids) {
+		this.uuids = uuids;
 	}
 
 	public List<FlatMePlayer> getPlayers() {
@@ -31,30 +32,30 @@ public class PlayerMap {
 	}
 
 	public int size() {
-		return playerUUIDs.size();
+		return uuids.size();
 	}
 
-	public void add(String playerUUID, FlatMePlayer player) {
-		playerUUIDs.add(playerUUID);
+	public void add(UUID uuid, FlatMePlayer player) {
+		uuids.add(uuid);
 		players.add(player);
 	}
 
 	public void remove(int index) {
-		playerUUIDs.remove(index);
+		uuids.remove(index);
 		players.remove(index);
 	}
 
 	public void remove(String playerUUID) {
-		for (int i = 0; i < playerUUIDs.size(); i++) {
-			if (playerUUIDs.get(i).equals(playerUUID)) {
-				playerUUIDs.remove(i);
+		for (int i = 0; i < uuids.size(); i++) {
+			if (uuids.get(i).equals(playerUUID)) {
+				uuids.remove(i);
 				players.remove(i);
 			}
 		}
 	}
 
 	public void clear() {
-		playerUUIDs.clear();
+		uuids.clear();
 		players.clear();
 	}
 
@@ -62,17 +63,17 @@ public class PlayerMap {
 		return players.get(index);
 	}
 
-	public FlatMePlayer getPlayer(String playerUUID) {
-		for (int i = 0; i < playerUUIDs.size(); i++) {
-			if (playerUUIDs.get(i).equals(playerUUID)) {
+	public FlatMePlayer getPlayer(UUID uuid) {
+		for (int i = 0; i < uuids.size(); i++) {
+			if (uuids.get(i).equals(uuid)) {
 				return players.get(i);
 			}
 		}
 		return null;
 	}
 
-	public String getPlayerUUID(int index) {
-		return playerUUIDs.get(index);
+	public UUID getUuid(int index) {
+		return uuids.get(index);
 	}
 
 }

@@ -12,7 +12,7 @@ import com.earth2me.essentials.User;
 public class FlatMePlayer {
 
 	private FlatMe plugin;
-	private String uuid;
+	private UUID uuid;
 	private String displayName;
 	private Player player;
 	private User essentialsUser;
@@ -23,17 +23,17 @@ public class FlatMePlayer {
 		super();
 		this.plugin = plugin;
 		this.player = player;
-		uuid = player.getUniqueId().toString();
+		uuid = player.getUniqueId();
 		displayName = player.getDisplayName();
 		plots = new ArrayList<Integer>();
 		queue = new PlayerQueue(plugin, uuid);
 	}
 
-	public String getUuid() {
+	public UUID getUuid() {
 		return uuid;
 	}
 
-	public void setUuid(String uuid) {
+	public void setUuid(UUID uuid) {
 		this.uuid = uuid;
 	}
 
@@ -83,8 +83,7 @@ public class FlatMePlayer {
 	}
 
 	public void checkForPlayer() {
-		UUID oldUUID = UUID.fromString(uuid);
-		Player tempPlayer = Bukkit.getServer().getPlayer(oldUUID);
+		Player tempPlayer = Bukkit.getServer().getPlayer(uuid);
 		if (tempPlayer != null) {
 			setPlayer(tempPlayer);
 		}

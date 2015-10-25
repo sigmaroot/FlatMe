@@ -9,6 +9,8 @@
 ###                                                                                                ###
 ######################################################################################################
 language: en
+world: world
 plotSize: 50
-levelHeight: 64
+levelHeight: 3
 maxBlocksPerTick: 100
+maxResultsPerPage: 5

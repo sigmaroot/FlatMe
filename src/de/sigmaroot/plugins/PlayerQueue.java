@@ -2,6 +2,7 @@ package de.sigmaroot.plugins;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,16 +13,16 @@ public class PlayerQueue {
 
 	private FlatMe plugin;
 	private List<ChangeBlockEvent> queue;
-	private String playerUUID;
+	private UUID uuid;
 	private boolean isRunning;
 	private BukkitTask runTaskTimer;
 	private int runned;
 	private double startSize;
 
-	public PlayerQueue(FlatMe plugin, String playerUUID) {
+	public PlayerQueue(FlatMe plugin, UUID uuid) {
 		super();
 		this.plugin = plugin;
-		this.playerUUID = playerUUID;
+		this.uuid = uuid;
 		queue = new ArrayList<ChangeBlockEvent>();
 		runned = 0;
 	}
@@ -34,12 +35,12 @@ public class PlayerQueue {
 		this.queue = queue;
 	}
 
-	public String getPlayerUUID() {
-		return playerUUID;
+	public UUID getUuid() {
+		return uuid;
 	}
 
-	public void setPlayerUUID(String playerUUID) {
-		this.playerUUID = playerUUID;
+	public void setUuid(UUID uuid) {
+		this.uuid = uuid;
 	}
 
 	public boolean isRunning() {
@@ -58,6 +59,22 @@ public class PlayerQueue {
 		this.runTaskTimer = runTaskTimer;
 	}
 
+	public int getRunned() {
+		return runned;
+	}
+
+	public void setRunned(int runned) {
+		this.runned = runned;
+	}
+
+	public double getStartSize() {
+		return startSize;
+	}
+
+	public void setStartSize(double startSize) {
+		this.startSize = startSize;
+	}
+
 	public void addEvent(int x, int y, int z, World world, Material material, byte data) {
 		queue.add(new ChangeBlockEvent(x, y, z, world, material, data));
 	}
@@ -67,7 +84,7 @@ public class PlayerQueue {
 	}
 
 	public void run() {
-		plugin.flatMePlayers.getPlayer(playerUUID).sendLocalizedString("%queueStarted%", null);
+		plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%queueStarted%", null);
 		isRunning = true;
 		runned = 0;
 		startSize = getQueueSize();
@@ -79,7 +96,7 @@ public class PlayerQueue {
 	}
 
 	public void stop() {
-		plugin.flatMePlayers.getPlayer(playerUUID).sendLocalizedString("%queueStopped%", null);
+		plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%queueStopped%", null);
 		isRunning = false;
 		runned = 0;
 		try {
@@ -112,7 +129,7 @@ public class PlayerQueue {
 		double actual = getQueueSize();
 		double done = startSize - actual;
 		int percentage = (int) Math.ceil(100 * done / startSize);
-		String[] args_2 = { Double.toString(actual), Double.toString(done), Double.toString(startSize), Integer.toString(percentage) };
-		plugin.flatMePlayers.getPlayer(playerUUID).sendLocalizedString("%queueSize%", args_2);
+		String[] args_2 = { String.format("%,.0f", actual), String.format("%,.0f", done), String.format("%,.0f", startSize), String.format("%d", percentage) };
+		plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%queueSize%", args_2);
 	}
 }

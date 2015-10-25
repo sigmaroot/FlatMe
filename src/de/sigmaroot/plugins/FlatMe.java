@@ -9,12 +9,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class FlatMe extends JavaPlugin implements Listener {
 
-	public Configurator configurator;
-	public FileConfiguration config;
 	public CommandHandler commandHandler;
+	public Configurator configurator;
+
 	public PlayerMap flatMePlayers;
-	public final String pluginTitle = "FlatMe";
-	public final String pluginVersion = "1.0";
+	public FileConfiguration config;
+
+	public final String PLUGIN_TITLE = "FlatMe";
+	public final String PLUGIN_VERSION = "1.0";
 
 	@Override
 	public void onEnable() {
