@@ -20,6 +20,7 @@ public class FlatMePlayer {
 	private User essentialsUser;
 	private List<Plot> plots;
 	private PlayerQueue queue;
+	private String[] securityCommand;
 
 	public FlatMePlayer(FlatMe plugin, UUID uuid) {
 		super();
@@ -31,6 +32,7 @@ public class FlatMePlayer {
 		displayName = essentialsUser.getName();
 		plots = new ArrayList<Plot>();
 		queue = new PlayerQueue(plugin, uuid, false);
+		securityCommand = null;
 	}
 
 	public UUID getUuid() {
@@ -87,6 +89,14 @@ public class FlatMePlayer {
 
 	public void setPlayer(Player player) {
 		this.player = player;
+	}
+
+	public String[] getSecurityCommand() {
+		return securityCommand;
+	}
+
+	public void setSecurityCommand(String[] securityCommand) {
+		this.securityCommand = securityCommand;
 	}
 
 	public void setQueueSilence(boolean isSilence) {

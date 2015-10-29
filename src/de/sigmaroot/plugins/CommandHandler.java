@@ -58,7 +58,25 @@ public class CommandHandler {
 			sendLocalizedString(sender, returnCorrectUsage(firstArg), null);
 			return;
 		}
+		if (!sender.hasPermission(executedCommand.getPermission())) {
+			sendLocalizedString(sender, "%noPermission%", null);
+			return;
+		}
 		switch (firstArg) {
+		case "yes":
+			// PLAYER ONLY
+			if (!(sender instanceof Player)) {
+				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
+				break;
+			}
+			Player player = (Player) sender;
+			UUID uuid = player.getUniqueId();
+			plugin.flatMePlayers.add(uuid);
+			// Run saved command
+			if (plugin.flatMePlayers.getPlayer(uuid).getSecurityCommand() != null) {
+				handleCommand(sender, plugin.flatMePlayers.getPlayer(uuid).getSecurityCommand());
+			}
+			break;
 		case "help":
 			// Execute command
 			int cmdPage_0 = 1;
@@ -81,6 +99,10 @@ public class CommandHandler {
 			Player player_2 = (Player) sender;
 			UUID uuid_2 = player_2.getUniqueId();
 			plugin.flatMePlayers.add(uuid_2);
+			// Security Check
+			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid_2), args)) {
+				break;
+			}
 			// TESTS
 			World world_2 = Bukkit.getWorld(plugin.config_world);
 			if (world_2 == null) {
@@ -113,6 +135,10 @@ public class CommandHandler {
 			Player player_4 = (Player) sender;
 			UUID uuid_4 = player_4.getUniqueId();
 			plugin.flatMePlayers.add(uuid_4);
+			// Security Check
+			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid_4), args)) {
+				break;
+			}
 			// PLOT CHECK
 			PlotCheck plotCheck_4 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_4));
 			if (!plotCheck_4.checkForCorrectWorld()) {
@@ -269,6 +295,10 @@ public class CommandHandler {
 			Player player_8 = (Player) sender;
 			UUID uuid_8 = player_8.getUniqueId();
 			plugin.flatMePlayers.add(uuid_8);
+			// Security Check
+			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid_8), args)) {
+				break;
+			}
 			// PLOT CHECK
 			PlotCheck plotCheck_8 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_8));
 			if (!plotCheck_8.checkForCorrectWorld()) {
@@ -415,6 +445,10 @@ public class CommandHandler {
 			Player player_11 = (Player) sender;
 			UUID uuid_11 = player_11.getUniqueId();
 			plugin.flatMePlayers.add(uuid_11);
+			// Security Check
+			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid_11), args)) {
+				break;
+			}
 			// PLOT CHECK
 			PlotCheck plotCheck_11 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_11));
 			if (!plotCheck_11.checkForCorrectWorld()) {
@@ -571,6 +605,10 @@ public class CommandHandler {
 			Player player_15 = (Player) sender;
 			UUID uuid_15 = player_15.getUniqueId();
 			plugin.flatMePlayers.add(uuid_15);
+			// Security Check
+			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid_15), args)) {
+				break;
+			}
 			// PLOT CHECK
 			PlotCheck plotCheck_15 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_15));
 			if (!plotCheck_15.checkForCorrectWorld()) {
@@ -674,6 +712,7 @@ public class CommandHandler {
 		commandList.add("remove", new Command("flatme.player", "/flatme remove <playername>", 1));
 		commandList.add("update", new Command("flatme.admin", "/flatme update", 0));
 		commandList.add("version", new Command("flatme.player", "/flatme version", 0));
+		commandList.add("yes", new Command("flatme.player", "/flatme yes", 0));
 	}
 
 	private void sendLocalizedString(CommandSender sender, String input, String[] args) {

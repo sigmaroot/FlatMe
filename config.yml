@@ -8,13 +8,37 @@
 ###     Date:        01.11.2015                                                                    ###
 ###                                                                                                ###
 ######################################################################################################
+
+###  Localization: text_**.yml                           ###
+###  Default: en                                         ###
 language: en
+###  Worldname for plotarea                              ###
+###  Default: world                                      ###
 world: world
+###  Radius of the plotarea (for each direction)         ###
+###  Default: 3                                          ###
 radius: 3
+###  Plotsize AxA blocks                                 ###
+###  Default: 50                                         ###
 plotSize: 50
+###  Level height of the running ways                    ###
+###  Default: 3 (FLAT WORLD)                             ###
 levelHeight: 3
+###  Blocks per tick to handle with (1 tick = 1/20 sec)  ###
+###  Be careful, this may result in lags                 ###
+###  Default: 100                                        ###
 maxBlocksPerTick: 100
+###  Results to show on one page in lists                ###
+###  Default: 5                                          ###
 maxResultsPerPage: 5
+###  Maximum of plots for one user                       ###
+###  Players with permission flatme.moreplots are        ###
+###  allowed to build more plots                         ###
+###  Default: 1                                          ###
 plotsPerUser: 1
+###  Days until a plot expires                           ###
+###  Default: 60                                         ###
 daysPerPlot: 60
+###  Costs to extend a plot                              ###
+###  Default: 1000                                       ###
 extendCost: 1000

@@ -119,6 +119,7 @@ public class Plot {
 			newMembers.addPlayer(members.getPlayer(i).getUuid());
 		}
 		newRegion.setMembers(newMembers);
+		// newRegion.setFlag(DefaultFlag.USE, StateFlag.State.ALLOW);
 		wgRm.addRegion(newRegion);
 	}
 

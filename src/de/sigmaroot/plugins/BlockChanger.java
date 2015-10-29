@@ -89,12 +89,12 @@ public class BlockChanger {
 	}
 
 	public void runRegen(int posX, int posY) {
-		fill(((posX * plugin.config_jumpInterval) + 4), 1, ((posY * plugin.config_jumpInterval) + 4), (((posX + 1) * plugin.config_jumpInterval) - 4), 2,
+		fill(((posX * plugin.config_jumpInterval) + 4), 1, ((posY * plugin.config_jumpInterval) + 4), (((posX + 1) * plugin.config_jumpInterval) - 4), (plugin.config_lvlHeight - 1),
 				(((posY + 1) * plugin.config_jumpInterval) - 4), world, Material.DIRT, (byte) 0);
-		fill(((posX * plugin.config_jumpInterval) + 4), 3, ((posY * plugin.config_jumpInterval) + 4), (((posX + 1) * plugin.config_jumpInterval) - 4), 3,
+		fill(((posX * plugin.config_jumpInterval) + 4), plugin.config_lvlHeight, ((posY * plugin.config_jumpInterval) + 4), (((posX + 1) * plugin.config_jumpInterval) - 4), plugin.config_lvlHeight,
 				(((posY + 1) * plugin.config_jumpInterval) - 4), world, Material.GRASS, (byte) 0);
-		fill(((posX * plugin.config_jumpInterval) + 4), 4, ((posY * plugin.config_jumpInterval) + 4), (((posX + 1) * plugin.config_jumpInterval) - 4), (world.getMaxHeight() - 1),
-				(((posY + 1) * plugin.config_jumpInterval) - 4), world, Material.AIR, (byte) 0);
+		fill(((posX * plugin.config_jumpInterval) + 4), (plugin.config_lvlHeight + 1), ((posY * plugin.config_jumpInterval) + 4), (((posX + 1) * plugin.config_jumpInterval) - 4),
+				(world.getMaxHeight() - 1), (((posY + 1) * plugin.config_jumpInterval) - 4), world, Material.AIR, (byte) 0);
 	}
 
 	private void createCenterPoints() {
@@ -157,10 +157,10 @@ public class BlockChanger {
 	private void createFieldBorder() {
 		int edgeNW = (-1 * plugin.config_radius * plugin.config_jumpInterval) - 3;
 		int edgeSE = (plugin.config_radius * plugin.config_jumpInterval) + 3;
-		fill(edgeNW, (plugin.config_lvlHeight + 1), edgeNW, edgeSE, (plugin.config_lvlHeight + 1), edgeNW, world, Material.STEP, (byte) 7);
-		fill(edgeSE, (plugin.config_lvlHeight + 1), edgeNW, edgeSE, (plugin.config_lvlHeight + 1), edgeSE, world, Material.STEP, (byte) 7);
-		fill(edgeSE, (plugin.config_lvlHeight + 1), edgeSE, edgeNW, (plugin.config_lvlHeight + 1), edgeSE, world, Material.STEP, (byte) 7);
-		fill(edgeNW, (plugin.config_lvlHeight + 1), edgeSE, edgeNW, (plugin.config_lvlHeight + 1), edgeNW, world, Material.STEP, (byte) 7);
+		fill(edgeNW, (plugin.config_lvlHeight + 1), edgeNW, edgeSE, (plugin.config_lvlHeight + 1), edgeNW, world, Material.QUARTZ_BLOCK, (byte) 0);
+		fill(edgeSE, (plugin.config_lvlHeight + 1), edgeNW, edgeSE, (plugin.config_lvlHeight + 1), edgeSE, world, Material.QUARTZ_BLOCK, (byte) 0);
+		fill(edgeSE, (plugin.config_lvlHeight + 1), edgeSE, edgeNW, (plugin.config_lvlHeight + 1), edgeSE, world, Material.QUARTZ_BLOCK, (byte) 0);
+		fill(edgeNW, (plugin.config_lvlHeight + 1), edgeSE, edgeNW, (plugin.config_lvlHeight + 1), edgeNW, world, Material.QUARTZ_BLOCK, (byte) 0);
 	}
 
 	private void createPlotBorder(int posX, int posY, byte id) {

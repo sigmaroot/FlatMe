@@ -95,6 +95,18 @@ public class FlatMe extends JavaPlugin implements Listener {
 		}
 		return true;
 	}
+	
+	public boolean securityCheck(FlatMePlayer player, String[] args){
+		if (player.getSecurityCommand() == null) {
+			String[] warning = { args[0] };
+			player.sendLocalizedString("%securityQuestion%", warning);
+			player.setSecurityCommand(args);
+			return false;
+		} else {
+			player.setSecurityCommand(null);
+			return true;
+		}
+	}
 
 	@Override
 	public void saveDefaultConfig() {
