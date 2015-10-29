@@ -6,11 +6,13 @@ import java.util.UUID;
 
 public class PlayerMap {
 
+	private FlatMe plugin;
 	private List<UUID> uuids;
 	private List<FlatMePlayer> players;
 
-	public PlayerMap() {
+	public PlayerMap(FlatMe plugin) {
 		super();
+		this.plugin = plugin;
 		uuids = new ArrayList<UUID>();
 		players = new ArrayList<FlatMePlayer>();
 	}
@@ -35,9 +37,12 @@ public class PlayerMap {
 		return uuids.size();
 	}
 
-	public void add(UUID uuid, FlatMePlayer player) {
-		uuids.add(uuid);
-		players.add(player);
+	public void add(UUID uuid) {
+		if (getPlayer(uuid) == null) {
+			FlatMePlayer player = new FlatMePlayer(plugin, uuid);
+			uuids.add(uuid);
+			players.add(player);
+		}
 	}
 
 	public void remove(int index) {
@@ -45,10 +50,13 @@ public class PlayerMap {
 		players.remove(index);
 	}
 
-	public void remove(String playerUUID) {
+	public void remove(UUID uuid) {
 		for (int i = 0; i < uuids.size(); i++) {
-			if (uuids.get(i).equals(playerUUID)) {
+			if (uuids.get(i).equals(uuid)) {
 				uuids.remove(i);
+				if (players.get(i).getQueue().isRunning()) {
+					players.get(i).getQueue().stop();
+				}
 				players.remove(i);
 			}
 		}
@@ -56,16 +64,19 @@ public class PlayerMap {
 
 	public void clear() {
 		uuids.clear();
+		stopAllQueues();
 		players.clear();
 	}
 
 	public FlatMePlayer getPlayer(int index) {
+		players.get(index).checkForPlayer();
 		return players.get(index);
 	}
 
 	public FlatMePlayer getPlayer(UUID uuid) {
 		for (int i = 0; i < uuids.size(); i++) {
 			if (uuids.get(i).equals(uuid)) {
+				players.get(i).checkForPlayer();
 				return players.get(i);
 			}
 		}
@@ -76,4 +87,11 @@ public class PlayerMap {
 		return uuids.get(index);
 	}
 
+	public void stopAllQueues() {
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).getQueue().isRunning()) {
+				players.get(i).getQueue().stop();
+			}
+		}
+	}
 }

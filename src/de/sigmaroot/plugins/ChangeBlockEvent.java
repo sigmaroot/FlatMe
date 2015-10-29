@@ -3,6 +3,7 @@ package de.sigmaroot.plugins;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Sign;
 
 public class ChangeBlockEvent {
 
@@ -12,8 +13,9 @@ public class ChangeBlockEvent {
 	private World world;
 	private Material material;
 	private byte data;
+	private String[] args;
 
-	public ChangeBlockEvent(int x, int y, int z, World world, Material material, byte data) {
+	public ChangeBlockEvent(int x, int y, int z, World world, Material material, byte data, String[] args) {
 		super();
 		this.x = x;
 		this.y = y;
@@ -21,6 +23,9 @@ public class ChangeBlockEvent {
 		this.world = world;
 		this.material = material;
 		this.data = data;
+		if (args != null) {
+			this.args = args;
+		}
 	}
 
 	public int getX() {
@@ -68,6 +73,13 @@ public class ChangeBlockEvent {
 		Location loc = new Location(world, x, y, z);
 		world.getBlockAt(loc).setType(material);
 		world.getBlockAt(loc).setData(data);
+		if (material == Material.WALL_SIGN) {
+			Sign thisSign = (Sign) world.getBlockAt(loc).getState();
+			thisSign.setLine(0, args[0]);
+			thisSign.setLine(1, args[1]);
+			thisSign.setLine(2, args[2]);
+			thisSign.update();
+		}
 	}
 
 }

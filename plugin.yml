@@ -3,7 +3,7 @@ main: de.sigmaroot.plugins.FlatMe
 version: 1.0
 author: Steven Meisberger
 homepage: http://www.sigmaroot.de/
-depend: [Essentials]
+depend: [Essentials, WorldGuard, WorldEdit]
 softdepend: [Multiverse-Core]
 commands:
   flatme:

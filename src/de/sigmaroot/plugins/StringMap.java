@@ -35,8 +35,10 @@ public class StringMap {
 	}
 
 	public void add(String index, String string) {
-		indexes.add(index);
-		strings.add(string);
+		if (getString(index) == null) {
+			indexes.add(index);
+			strings.add(string);
+		}
 	}
 
 	public void remove(int index) {

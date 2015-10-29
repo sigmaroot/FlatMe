@@ -10,7 +10,11 @@
 ######################################################################################################
 language: en
 world: world
+radius: 3
 plotSize: 50
 levelHeight: 3
 maxBlocksPerTick: 100
 maxResultsPerPage: 5
+plotsPerUser: 1
+daysPerPlot: 60
+extendCost: 1000

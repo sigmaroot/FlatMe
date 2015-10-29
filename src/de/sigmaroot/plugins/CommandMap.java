@@ -35,8 +35,10 @@ public class CommandMap {
 	}
 
 	public void add(String commandText, Command command) {
-		commandTexts.add(commandText);
-		commands.add(command);
+		if (getCommand(commandText) == null) {
+			commandTexts.add(commandText);
+			commands.add(command);
+		}
 	}
 
 	public void remove(int index) {

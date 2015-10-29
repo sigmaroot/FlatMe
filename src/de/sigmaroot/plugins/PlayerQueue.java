@@ -18,11 +18,13 @@ public class PlayerQueue {
 	private BukkitTask runTaskTimer;
 	private int runned;
 	private double startSize;
+	private boolean isSilence;
 
-	public PlayerQueue(FlatMe plugin, UUID uuid) {
+	public PlayerQueue(FlatMe plugin, UUID uuid, boolean isSilence) {
 		super();
 		this.plugin = plugin;
 		this.uuid = uuid;
+		this.isSilence = isSilence;
 		queue = new ArrayList<ChangeBlockEvent>();
 		runned = 0;
 	}
@@ -75,8 +77,20 @@ public class PlayerQueue {
 		this.startSize = startSize;
 	}
 
-	public void addEvent(int x, int y, int z, World world, Material material, byte data) {
-		queue.add(new ChangeBlockEvent(x, y, z, world, material, data));
+	public boolean isSilence() {
+		return isSilence;
+	}
+
+	public void setSilence(boolean isSilence) {
+		this.isSilence = isSilence;
+	}
+
+	public void addEvent(int x, int y, int z, World world, Material material, byte data, String[] args) {
+		if (args != null) {
+			queue.add(new ChangeBlockEvent(x, y, z, world, material, data, args));
+		} else {
+			queue.add(new ChangeBlockEvent(x, y, z, world, material, data, null));
+		}
 	}
 
 	public double getQueueSize() {
@@ -84,7 +98,9 @@ public class PlayerQueue {
 	}
 
 	public void run() {
-		plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%queueStarted%", null);
+		if (!isSilence) {
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%queueStarted%", null);
+		}
 		isRunning = true;
 		runned = 0;
 		startSize = getQueueSize();
@@ -96,7 +112,9 @@ public class PlayerQueue {
 	}
 
 	public void stop() {
-		plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%queueStopped%", null);
+		if (!isSilence) {
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%queueStopped%", null);
+		}
 		isRunning = false;
 		runned = 0;
 		try {
@@ -104,6 +122,7 @@ public class PlayerQueue {
 		} catch (Exception e) {
 			// Timer not started yet
 		}
+		isSilence = false;
 	}
 
 	private void runTask() {
@@ -126,10 +145,12 @@ public class PlayerQueue {
 	}
 
 	private void returnQueueStatus() {
-		double actual = getQueueSize();
-		double done = startSize - actual;
-		int percentage = (int) Math.ceil(100 * done / startSize);
-		String[] args_2 = { String.format("%,.0f", actual), String.format("%,.0f", done), String.format("%,.0f", startSize), String.format("%d", percentage) };
-		plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%queueSize%", args_2);
+		if (!isSilence) {
+			double actual = getQueueSize();
+			double done = startSize - actual;
+			int percentage = (int) Math.ceil(100 * done / startSize);
+			String[] args_2 = { String.format("%,.0f", actual), String.format("%,.0f", done), String.format("%,.0f", startSize), String.format("%d", percentage) };
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%queueSize%", args_2);
+		}
 	}
 }

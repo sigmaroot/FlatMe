@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.earth2me.essentials.User;
@@ -15,18 +16,21 @@ public class FlatMePlayer {
 	private UUID uuid;
 	private String displayName;
 	private Player player;
+	private OfflinePlayer offlinePlayer;
 	private User essentialsUser;
-	private List<Integer> plots;
+	private List<Plot> plots;
 	private PlayerQueue queue;
 
-	public FlatMePlayer(FlatMe plugin, Player player) {
+	public FlatMePlayer(FlatMe plugin, UUID uuid) {
 		super();
 		this.plugin = plugin;
-		this.player = player;
-		uuid = player.getUniqueId();
-		displayName = player.getDisplayName();
-		plots = new ArrayList<Integer>();
-		queue = new PlayerQueue(plugin, uuid);
+		this.uuid = uuid;
+		player = plugin.getServer().getPlayer(uuid);
+		offlinePlayer = plugin.getServer().getOfflinePlayer(uuid);
+		essentialsUser = plugin.essAPI.getUser(uuid);
+		displayName = essentialsUser.getName();
+		plots = new ArrayList<Plot>();
+		queue = new PlayerQueue(plugin, uuid, false);
 	}
 
 	public UUID getUuid() {
@@ -53,11 +57,11 @@ public class FlatMePlayer {
 		this.essentialsUser = essentialsUser;
 	}
 
-	public List<Integer> getPlots() {
+	public List<Plot> getPlots() {
 		return plots;
 	}
 
-	public void setPlots(List<Integer> plots) {
+	public void setPlots(List<Plot> plots) {
 		this.plots = plots;
 	}
 
@@ -73,8 +77,20 @@ public class FlatMePlayer {
 		return player;
 	}
 
+	public OfflinePlayer getOfflinePlayer() {
+		return offlinePlayer;
+	}
+
+	public void setOfflinePlayer(OfflinePlayer offlinePlayer) {
+		this.offlinePlayer = offlinePlayer;
+	}
+
 	public void setPlayer(Player player) {
 		this.player = player;
+	}
+
+	public void setQueueSilence(boolean isSilence) {
+		queue.setSilence(isSilence);
 	}
 
 	public void sendLocalizedString(String message, String args[]) {
