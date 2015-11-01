@@ -55,5 +55,5 @@ public class WorldGuardHandler {
 		}
 		return createdRegions;
 	}
-
+	
 }

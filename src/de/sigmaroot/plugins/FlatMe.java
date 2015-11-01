@@ -29,7 +29,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 	public WorldGuardPlugin wgAPI;
 
 	public final String PLUGIN_TITLE = "FlatMe";
-	public final String PLUGIN_VERSION = "1.1";
+	public final String PLUGIN_VERSION = "1.2";
 
 	public int config_plotSize;
 	public int config_lvlHeight;
@@ -95,10 +95,13 @@ public class FlatMe extends JavaPlugin implements Listener {
 		}
 		return true;
 	}
-	
-	public boolean securityCheck(FlatMePlayer player, String[] args){
+
+	public boolean securityCheck(FlatMePlayer player, String[] args) {
 		if (player.getSecurityCommand() == null) {
 			String[] warning = { args[0] };
+			for (int i = 1; i < args.length; i++) {
+				warning[0] = warning[0] + " " + args[i];
+			}
 			player.sendLocalizedString("%securityQuestion%", warning);
 			player.setSecurityCommand(args);
 			return false;

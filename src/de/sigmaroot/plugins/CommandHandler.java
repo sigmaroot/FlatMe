@@ -571,10 +571,12 @@ public class CommandHandler {
 						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoID%", args_13);
 						String[] args_13_1 = { plugin.flatMePlayers.getPlayer(i).getDisplayName() };
 						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoOwner%", args_13_1);
-						String[] args_13_2 = { plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getReadableExpireDate() };
-						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoExpire%", args_13_2);
-						String[] args_13_3 = { Boolean.toString(plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isLocked()) };
-						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoLocked%", args_13_3);
+						String[] args_13_2 = { plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getReadableMemberList() };
+						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoMembers%", args_13_2);
+						String[] args_13_3 = { plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getReadableExpireDate() };
+						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoExpire%", args_13_3);
+						String[] args_13_4 = { Boolean.toString(plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isLocked()) };
+						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoLocked%", args_13_4);
 					}
 				}
 			}

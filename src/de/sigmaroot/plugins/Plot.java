@@ -10,6 +10,7 @@ import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.util.profile.Profile;
 
 public class Plot {
 
@@ -106,17 +107,35 @@ public class Plot {
 		}
 	}
 
+	public String getReadableMemberList() {
+		if (members.size() > 0) {
+			String memberList = "";
+			for (int i = 0; i < members.size(); i++) {
+				if (memberList.equals("")) {
+					memberList = memberList + members.getPlayer(i).getDisplayName();
+				} else {
+					memberList = memberList + ", " + members.getPlayer(i).getDisplayName();
+				}
+			}
+			return memberList;
+		} else {
+			return plugin.configurator.resolveLocalizedString("%noMembers%", null);
+		}
+	}
+
 	public void createWGRegion(World world) {
 		RegionManager wgRm = plugin.wgAPI.getRegionManager(world);
 		BlockVector startBlock = new BlockVector(coords.getStartCoordX(), 0, coords.getStartCoordY());
 		BlockVector endBlock = new BlockVector(coords.getEndCoordX(), (world.getMaxHeight() - 1), coords.getEndCoordY());
 		ProtectedRegion newRegion = new ProtectedCuboidRegion("flatme_" + String.format("%d", placeX) + "_" + String.format("%d", placeY), startBlock, endBlock);
 		DefaultDomain newOwners = new DefaultDomain();
-		newOwners.addPlayer(owner.getUuid());
+		plugin.wgAPI.getProfileCache().put(new Profile(owner.getUuid(), owner.getDisplayName()));
+		newOwners.addPlayer(owner.getUuid());		
 		newRegion.setOwners(newOwners);
 		DefaultDomain newMembers = new DefaultDomain();
 		for (int i = 0; i < members.size(); i++) {
-			newMembers.addPlayer(members.getPlayer(i).getUuid());
+			plugin.wgAPI.getProfileCache().put(new Profile(members.getPlayer(i).getUuid(), members.getPlayer(i).getDisplayName()));
+			newMembers.addPlayer(members.getPlayer(i).getUuid());			
 		}
 		newRegion.setMembers(newMembers);
 		// newRegion.setFlag(DefaultFlag.USE, StateFlag.State.ALLOW);
