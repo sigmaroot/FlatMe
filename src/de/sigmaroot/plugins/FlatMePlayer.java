@@ -29,7 +29,11 @@ public class FlatMePlayer {
 		player = plugin.getServer().getPlayer(uuid);
 		offlinePlayer = plugin.getServer().getOfflinePlayer(uuid);
 		essentialsUser = plugin.essAPI.getUser(uuid);
-		displayName = essentialsUser.getName();
+		if (essentialsUser != null) {
+			displayName = essentialsUser.getName();
+		} else {
+			displayName = "?";
+		}
 		plots = new ArrayList<Plot>();
 		queue = new PlayerQueue(plugin, uuid, false);
 		securityCommand = null;

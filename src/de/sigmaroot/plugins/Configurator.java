@@ -121,7 +121,15 @@ public class Configurator {
 		String[] allNodesArray = allNodes.toArray(new String[allNodes.size()]);
 		for (int i = 0; i < allNodesArray.length; i++) {
 			String uuidString = allNodesArray[i];
-			UUID uuid = UUID.fromString(uuidString);
+			UUID uuid = null;
+			try {
+				uuid = UUID.fromString(uuidString);
+			} catch (Exception e) {
+				// e.printStackTrace();
+			}
+			if (uuid == null) {
+				continue;
+			}
 			plugin.flatMePlayers.add(uuid);
 			FlatMePlayer thisPlayer = plugin.flatMePlayers.getPlayer(uuid);
 			int plotCount = plotsFileConfiguration.getInt(uuidString + ".plotcount", 0);

@@ -97,6 +97,12 @@ public class BlockChanger {
 				(world.getMaxHeight() - 1), (((posY + 1) * plugin.config_jumpInterval) - 4), world, Material.AIR, (byte) 0);
 	}
 
+	public void runWEregen(int posX, int posY) {
+		player.getPlayer().performCommand("/pos1 " + ((posX * plugin.config_jumpInterval) + 4) + ",0," + ((posY * plugin.config_jumpInterval) + 4));
+		player.getPlayer().performCommand("/pos2 " + (((posX + 1) * plugin.config_jumpInterval) - 4) + "," + (world.getMaxHeight() - 1) + "," + (((posY + 1) * plugin.config_jumpInterval) - 4));
+		player.getPlayer().performCommand("/regen");
+	}
+
 	private void createCenterPoints() {
 		for (int i = -plugin.config_radius; i <= plugin.config_radius; i++) {
 			for (int j = -plugin.config_radius; j <= plugin.config_radius; j++) {
@@ -175,17 +181,30 @@ public class BlockChanger {
 		playerQueue.addEvent(edgeNW_X, (plugin.config_lvlHeight + 1), edgeNW_Y, world, Material.QUARTZ_BLOCK, (byte) 1, null);
 		String owner = "-";
 		String expire = "-";
+		boolean isExpired = false;
+		boolean isLocked = false;
 		for (int i = 0; i < plugin.flatMePlayers.size(); i++) {
 			for (int j = 0; j < plugin.flatMePlayers.getPlayer(i).getPlots().size(); j++) {
 				if ((plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX() == posX) && (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY() == posY)) {
 					owner = plugin.flatMePlayers.getPlayer(i).getDisplayName();
 					expire = plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getReadableExpireDate();
+					isExpired = plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isExpired();
+					isLocked = plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isLocked();
 				}
 			}
 		}
 		String plotId = "X: " + String.format("%d", posX) + " Y: " + String.format("%d", posY);
 		String showOwner = ChatColor.DARK_BLUE + owner;
-		String showExpire = ChatColor.DARK_BLUE + expire;
+		String showExpire = "";
+		if (isLocked) {
+			showExpire = ChatColor.DARK_PURPLE + expire;
+		} else {
+			if (isExpired) {
+				showExpire = ChatColor.DARK_RED + expire;
+			} else {
+				showExpire = ChatColor.DARK_BLUE + expire;
+			}
+		}
 		String[] args = { plotId, showOwner, showExpire };
 		playerQueue.addEvent(edgeNW_X, (plugin.config_lvlHeight + 1), edgeNW_Y - 1, world, Material.WALL_SIGN, (byte) 0, args);
 	}
