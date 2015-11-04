@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,7 +30,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 	public WorldGuardPlugin wgAPI;
 
 	public final String PLUGIN_TITLE = "FlatMe";
-	public final String PLUGIN_VERSION = "1.4";
+	public final String PLUGIN_VERSION = "1.5";
 
 	public int config_plotSize;
 	public int config_lvlHeight;
@@ -39,6 +40,8 @@ public class FlatMe extends JavaPlugin implements Listener {
 	public int config_daysPerPlot;
 	public int config_extendCost;
 	public String config_world;
+
+	private boolean areRegistered = false;
 
 	@Override
 	public void onEnable() {
@@ -73,7 +76,10 @@ public class FlatMe extends JavaPlugin implements Listener {
 		String args_1[] = { "plots.yml", String.format("%d", plotCount) };
 		this.getLogger().info(configurator.resolveLocalizedString("%plotsLoaded%", args_1));
 		// Finished
-		getServer().getPluginManager().registerEvents(this, this);
+		if (!areRegistered) {
+			getServer().getPluginManager().registerEvents(this, this);
+			areRegistered = true;
+		}
 		this.getLogger().info(configurator.resolveLocalizedString("%pluginLoaded%", null));
 	}
 
@@ -94,6 +100,13 @@ public class FlatMe extends JavaPlugin implements Listener {
 			}
 		}
 		return true;
+	}
+
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
+		flatMePlayers.add(player.getUniqueId());
+		flatMePlayers.getPlayer(player.getUniqueId()).checkForPlots();
 	}
 
 	public boolean securityCheck(FlatMePlayer player, String[] args) {

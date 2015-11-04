@@ -119,4 +119,27 @@ public class FlatMePlayer {
 		}
 	}
 
+	public void checkForPlots() {
+		for (int i = 0; i < plots.size(); i++) {
+			if (plots.get(i).isExpired()) {
+				final String args[] = { plots.get(i).getPlaceX() + "," + plots.get(i).getPlaceY() };
+				Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+					public void run() {
+						sendLocalizedString("%warningExpired%", args);
+					}
+				}, 100L);
+
+			} else {
+				if (plots.get(i).willExpire()) {
+					final String args[] = { plots.get(i).getPlaceX() + "," + plots.get(i).getPlaceY() };
+					Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+						public void run() {
+							sendLocalizedString("%warningWillExpire%", args);
+						}
+					}, 100L);
+				}
+			}
+		}
+	}
+
 }

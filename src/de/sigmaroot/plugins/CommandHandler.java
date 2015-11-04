@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -573,9 +574,21 @@ public class CommandHandler {
 						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoOwner%", args_13_1);
 						String[] args_13_2 = { plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getReadableMemberList() };
 						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoMembers%", args_13_2);
-						String[] args_13_3 = { plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getReadableExpireDate() };
+						String arg_13_3 = "";
+						if (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isExpired()) {
+							arg_13_3 = ChatColor.DARK_RED + plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getReadableExpireDate();
+						} else {
+							arg_13_3 = ChatColor.DARK_GREEN + plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getReadableExpireDate();
+						}
+						String[] args_13_3 = { arg_13_3 };
 						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoExpire%", args_13_3);
-						String[] args_13_4 = { Boolean.toString(plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isLocked()) };
+						String arg_13_4 = "";
+						if (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isLocked()) {
+							arg_13_4 = ChatColor.DARK_GREEN + plugin.configurator.resolveLocalizedString("%answerYes%", null);
+						} else {
+							arg_13_4 = ChatColor.DARK_RED + plugin.configurator.resolveLocalizedString("%answerNo%", null);
+						}
+						String[] args_13_4 = { arg_13_4 };
 						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoLocked%", args_13_4);
 					}
 				}
@@ -791,7 +804,6 @@ public class CommandHandler {
 			cmdPosX_19 = parsePosition(args[1]);
 			int cmdPosY_19 = 0;
 			cmdPosY_19 = parsePosition(args[2]);
-			plugin.getLogger().info(cmdPosX_19 + "," + cmdPosY_19);
 			// PLOT CHECK
 			PlotCheck plotCheck_19 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_19));
 			if (!plotCheck_19.checkForPlotInArea(cmdPosX_19, cmdPosY_19)) {
@@ -805,6 +817,18 @@ public class CommandHandler {
 			portLocation_19.setYaw(-45F);
 			player_19.teleport(portLocation_19);
 			plugin.flatMePlayers.getPlayer(uuid_19).sendLocalizedString("%teleportToPlot%", null);
+			break;
+		case "show":
+			// PLAYER ONLY
+			if (!(sender instanceof Player)) {
+				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
+				break;
+			}
+			Player player_20 = (Player) sender;
+			UUID uuid_20 = player_20.getUniqueId();
+			plugin.flatMePlayers.add(uuid_20);
+			// Execute command
+			plugin.flatMePlayers.getPlayer(uuid_20).setQueueSilence(false);
 			break;
 		default:
 			// Execute command
@@ -827,6 +851,9 @@ public class CommandHandler {
 	public void showAllCommands(CommandSender sender, int page) {
 		List<String> temp = new ArrayList<String>();
 		for (int i = 0; i < commandList.size(); i++) {
+			if (!sender.hasPermission(commandList.getCommand(i).getPermission())) {
+				continue;
+			}
 			String[] args_0 = { commandList.getCommand(i).getUsage() };
 			temp.add(plugin.configurator.resolveLocalizedString("%cmd_" + commandList.getCommandText(i) + "%", args_0));
 		}
@@ -879,6 +906,7 @@ public class CommandHandler {
 		commandList.add("regen", new Command("flatme.admin", "/flatme regen", 0));
 		commandList.add("reload", new Command("flatme.admin", "/flatme reload", 0));
 		commandList.add("remove", new Command("flatme.player", "/flatme remove <playername>", 1));
+		commandList.add("show", new Command("flatme.admin", "/flatme show", 0));
 		commandList.add("teleport", new Command("flatme.admin", "/flatme teleport <x> <y>", 2));
 		commandList.add("update", new Command("flatme.admin", "/flatme update", 0));
 		commandList.add("version", new Command("flatme.player", "/flatme version", 0));

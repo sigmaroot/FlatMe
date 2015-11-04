@@ -98,6 +98,14 @@ public class Plot {
 		}
 		return false;
 	}
+	
+	public boolean willExpire() {
+		Long now = System.currentTimeMillis() + 604800000L;
+		if (expireDate < now) {
+			return true;
+		}
+		return false;
+	}
 
 	public void toggleLocked() {
 		if (locked) {
