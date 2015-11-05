@@ -30,7 +30,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 	public WorldGuardPlugin wgAPI;
 
 	public final String PLUGIN_TITLE = "FlatMe";
-	public final String PLUGIN_VERSION = "1.5";
+	public final String PLUGIN_VERSION = "1.5.2";
 
 	public int config_plotSize;
 	public int config_lvlHeight;
@@ -110,7 +110,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 	}
 
 	public boolean securityCheck(FlatMePlayer player, String[] args) {
-		if (player.getSecurityCommand() == null) {
+		if ((player.getSecurityCommand() == null) || (!player.isAnsweredYes())) {
 			String[] warning = { args[0] };
 			for (int i = 1; i < args.length; i++) {
 				warning[0] = warning[0] + " " + args[i];

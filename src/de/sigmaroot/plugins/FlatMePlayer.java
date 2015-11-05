@@ -21,6 +21,7 @@ public class FlatMePlayer {
 	private List<Plot> plots;
 	private PlayerQueue queue;
 	private String[] securityCommand;
+	private boolean answeredYes;
 
 	public FlatMePlayer(FlatMe plugin, UUID uuid) {
 		super();
@@ -107,6 +108,14 @@ public class FlatMePlayer {
 		queue.setSilence(isSilence);
 	}
 
+	public boolean isAnsweredYes() {
+		return answeredYes;
+	}
+
+	public void setAnsweredYes(boolean answeredYes) {
+		this.answeredYes = answeredYes;
+	}
+
 	public void sendLocalizedString(String message, String args[]) {
 		checkForPlayer();
 		player.sendMessage(plugin.configurator.resolveLocalizedString(message, args));
@@ -121,22 +130,24 @@ public class FlatMePlayer {
 
 	public void checkForPlots() {
 		for (int i = 0; i < plots.size(); i++) {
-			if (plots.get(i).isExpired()) {
-				final String args[] = { plots.get(i).getPlaceX() + "," + plots.get(i).getPlaceY() };
-				Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-					public void run() {
-						sendLocalizedString("%warningExpired%", args);
-					}
-				}, 100L);
-
-			} else {
-				if (plots.get(i).willExpire()) {
+			if (!plots.get(i).isLocked()) {
+				if (plots.get(i).isExpired()) {
 					final String args[] = { plots.get(i).getPlaceX() + "," + plots.get(i).getPlaceY() };
 					Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
 						public void run() {
-							sendLocalizedString("%warningWillExpire%", args);
+							sendLocalizedString("%warningExpired%", args);
 						}
 					}, 100L);
+
+				} else {
+					if (plots.get(i).willExpire()) {
+						final String args[] = { plots.get(i).getPlaceX() + "," + plots.get(i).getPlaceY() };
+						Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+							public void run() {
+								sendLocalizedString("%warningWillExpire%", args);
+							}
+						}, 100L);
+					}
 				}
 			}
 		}

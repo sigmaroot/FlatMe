@@ -75,6 +75,7 @@ public class CommandHandler {
 			plugin.flatMePlayers.add(uuid);
 			// Run saved command
 			if (plugin.flatMePlayers.getPlayer(uuid).getSecurityCommand() != null) {
+				plugin.flatMePlayers.getPlayer(uuid).setAnsweredYes(true);
 				handleCommand(sender, plugin.flatMePlayers.getPlayer(uuid).getSecurityCommand());
 			}
 			break;
