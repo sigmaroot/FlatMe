@@ -63,16 +63,15 @@ public class CommandHandler {
 			sendLocalizedString(sender, "%noPermission%", null);
 			return;
 		}
+		if (!(sender instanceof Player)) {
+			sendLocalizedString(sender, "%commandOnlyPlayer%", null);
+			return;
+		}
+		Player player = (Player) sender;
+		UUID uuid = player.getUniqueId();
+		plugin.flatMePlayers.add(uuid);
 		switch (firstArg) {
 		case "yes":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player = (Player) sender;
-			UUID uuid = player.getUniqueId();
-			plugin.flatMePlayers.add(uuid);
 			// Run saved command
 			if (plugin.flatMePlayers.getPlayer(uuid).getSecurityCommand() != null) {
 				plugin.flatMePlayers.getPlayer(uuid).setAnsweredYes(true);
@@ -94,33 +93,25 @@ public class CommandHandler {
 			sendLocalizedString(sender, "%pluginVersion%", args_1);
 			break;
 		case "create":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_2 = (Player) sender;
-			UUID uuid_2 = player_2.getUniqueId();
-			plugin.flatMePlayers.add(uuid_2);
 			// Security Check
-			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid_2), args)) {
+			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid), args)) {
 				break;
 			}
 			// TESTS
 			World world_2 = Bukkit.getWorld(plugin.config_world);
 			if (world_2 == null) {
 				String[] args_2 = { plugin.config_world };
-				plugin.flatMePlayers.getPlayer(uuid_2).sendLocalizedString("%worldNotFound%", args_2);
+				plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%worldNotFound%", args_2);
 				break;
 			}
 			if (plugin.config_radius < 1) {
-				plugin.flatMePlayers.getPlayer(uuid_2).sendLocalizedString("%tooSmallRadius%", null);
+				plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%tooSmallRadius%", null);
 				break;
 			}
 			// Execute command
-			BlockChanger blockChanger_2 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid_2), world_2);
+			BlockChanger blockChanger_2 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), world_2);
 			blockChanger_2.runCreate();
-			PlayerQueue playerQueue_2 = plugin.flatMePlayers.getPlayer(uuid_2).getQueue();
+			PlayerQueue playerQueue_2 = plugin.flatMePlayers.getPlayer(uuid).getQueue();
 			playerQueue_2.run();
 			break;
 		case "reload":
@@ -130,20 +121,12 @@ public class CommandHandler {
 			sendLocalizedString(sender, "%reloadedSuccessfully%", null);
 			break;
 		case "update":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_4 = (Player) sender;
-			UUID uuid_4 = player_4.getUniqueId();
-			plugin.flatMePlayers.add(uuid_4);
 			// Security Check
-			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid_4), args)) {
+			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid), args)) {
 				break;
 			}
 			// PLOT CHECK
-			PlotCheck plotCheck_4 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_4));
+			PlotCheck plotCheck_4 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
 			if (!plotCheck_4.checkForCorrectWorld()) {
 				break;
 			}
@@ -151,12 +134,12 @@ public class CommandHandler {
 			sendLocalizedString(sender, "%updatingPlots%", null);
 			int removedRegions = plugin.worldGuardHandler.removeAllRegions(plotCheck_4.getWorld());
 			String[] args_4 = { String.format("%d", removedRegions) };
-			plugin.flatMePlayers.getPlayer(uuid_4).sendLocalizedString("%removedRegions%", args_4);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%removedRegions%", args_4);
 			int createdRegions = plugin.worldGuardHandler.createAllRegions(plotCheck_4.getWorld());
 			String[] args_4_1 = { String.format("%d", createdRegions) };
-			plugin.flatMePlayers.getPlayer(uuid_4).sendLocalizedString("%createdRegions%", args_4_1);
-			plugin.flatMePlayers.getPlayer(uuid_4).sendLocalizedString("%commandMayTakeAWhile%", null);
-			BlockChanger blockChanger_4 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid_4), plotCheck_4.getWorld());
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%createdRegions%", args_4_1);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandMayTakeAWhile%", null);
+			BlockChanger blockChanger_4 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_4.getWorld());
 			for (int i = -plugin.config_radius; i < plugin.config_radius; i++) {
 				for (int j = -plugin.config_radius; j < plugin.config_radius; j++) {
 					PlotCheck plotCheck_4_1 = new PlotCheck(plugin, null);
@@ -176,22 +159,14 @@ public class CommandHandler {
 					blockChanger_4.runPlot(i, j, isUsed, isExpired, isLocked);
 				}
 			}
-			plugin.flatMePlayers.getPlayer(uuid_4).sendLocalizedString("%plotsUpdated%", null);
-			plugin.flatMePlayers.getPlayer(uuid_4).sendLocalizedString("%commandHasBeenQueued%", null);
-			PlayerQueue playerQueue_4 = plugin.flatMePlayers.getPlayer(uuid_4).getQueue();
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotsUpdated%", null);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandHasBeenQueued%", null);
+			PlayerQueue playerQueue_4 = plugin.flatMePlayers.getPlayer(uuid).getQueue();
 			playerQueue_4.run();
 			break;
 		case "claim":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_5 = (Player) sender;
-			UUID uuid_5 = player_5.getUniqueId();
-			plugin.flatMePlayers.add(uuid_5);
 			// PLOT CHECK
-			PlotCheck plotCheck_5 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_5));
+			PlotCheck plotCheck_5 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
 			if (!plotCheck_5.checkForCorrectWorld()) {
 				break;
 			}
@@ -202,37 +177,29 @@ public class CommandHandler {
 				break;
 			}
 			// TESTS
-			if (plugin.flatMePlayers.getPlayer(uuid_5).getPlots().size() >= plugin.config_maxPlots) {
-				if (!player_5.hasPermission("flatme.moreplots")) {
-					plugin.flatMePlayers.getPlayer(uuid_5).sendLocalizedString("%tooManyPlots%", null);
+			if (plugin.flatMePlayers.getPlayer(uuid).getPlots().size() >= plugin.config_maxPlots) {
+				if (!player.hasPermission("flatme.moreplots")) {
+					plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%tooManyPlots%", null);
 					break;
 				}
 			}
 			// Execute command
 			PlayerMap emptyMembers_5 = new PlayerMap(plugin);
 			Long newExpire_5 = System.currentTimeMillis() + (plugin.config_daysPerPlot * 86400000L);
-			Plot tempPlot_5 = new Plot(plugin, plotCheck_5.getPosX(), plotCheck_5.getPosY(), plugin.flatMePlayers.getPlayer(uuid_5), emptyMembers_5, newExpire_5, false);
+			Plot tempPlot_5 = new Plot(plugin, plotCheck_5.getPosX(), plotCheck_5.getPosY(), plugin.flatMePlayers.getPlayer(uuid), emptyMembers_5, newExpire_5, false);
 			tempPlot_5.createWGRegion(plotCheck_5.getWorld());
-			plugin.flatMePlayers.getPlayer(uuid_5).getPlots().add(tempPlot_5);
+			plugin.flatMePlayers.getPlayer(uuid).getPlots().add(tempPlot_5);
 			plugin.configurator.saveAllPlots();
-			BlockChanger blockChanger_5 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid_5), plotCheck_5.getWorld());
+			BlockChanger blockChanger_5 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_5.getWorld());
 			blockChanger_5.runPlot(plotCheck_5.getPosX(), plotCheck_5.getPosY(), true, false, false);
-			plugin.flatMePlayers.getPlayer(uuid_5).setQueueSilence(true);
-			PlayerQueue playerQueue_5 = plugin.flatMePlayers.getPlayer(uuid_5).getQueue();
+			plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
+			PlayerQueue playerQueue_5 = plugin.flatMePlayers.getPlayer(uuid).getQueue();
 			playerQueue_5.run();
-			plugin.flatMePlayers.getPlayer(uuid_5).sendLocalizedString("%plotClaimed%", null);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotClaimed%", null);
 			break;
 		case "autoclaim":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_6 = (Player) sender;
-			UUID uuid_6 = player_6.getUniqueId();
-			plugin.flatMePlayers.add(uuid_6);
 			// PLOT CHECK
-			PlotCheck plotCheck_6 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_6));
+			PlotCheck plotCheck_6 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
 			if (!plotCheck_6.checkForCorrectWorld()) {
 				break;
 			}
@@ -240,36 +207,28 @@ public class CommandHandler {
 				break;
 			}
 			// TESTS
-			if (plugin.flatMePlayers.getPlayer(uuid_6).getPlots().size() >= plugin.config_maxPlots) {
-				if (!player_6.hasPermission("flatme.moreplots")) {
-					plugin.flatMePlayers.getPlayer(uuid_6).sendLocalizedString("%tooManyPlots%", null);
+			if (plugin.flatMePlayers.getPlayer(uuid).getPlots().size() >= plugin.config_maxPlots) {
+				if (!player.hasPermission("flatme.moreplots")) {
+					plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%tooManyPlots%", null);
 					break;
 				}
 			}
 			// Execute command
 			PlayerMap emptyMembers_6 = new PlayerMap(plugin);
 			Long newExpire_6 = System.currentTimeMillis() + (plugin.config_daysPerPlot * 86400000L);
-			Plot tempPlot_6 = new Plot(plugin, plotCheck_6.getPosX(), plotCheck_6.getPosY(), plugin.flatMePlayers.getPlayer(uuid_6), emptyMembers_6, newExpire_6, false);
+			Plot tempPlot_6 = new Plot(plugin, plotCheck_6.getPosX(), plotCheck_6.getPosY(), plugin.flatMePlayers.getPlayer(uuid), emptyMembers_6, newExpire_6, false);
 			tempPlot_6.createWGRegion(plotCheck_6.getWorld());
-			plugin.flatMePlayers.getPlayer(uuid_6).getPlots().add(tempPlot_6);
+			plugin.flatMePlayers.getPlayer(uuid).getPlots().add(tempPlot_6);
 			plugin.configurator.saveAllPlots();
-			BlockChanger blockChanger_6 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid_6), plotCheck_6.getWorld());
+			BlockChanger blockChanger_6 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_6.getWorld());
 			blockChanger_6.runPlot(plotCheck_6.getPosX(), plotCheck_6.getPosY(), true, false, false);
-			plugin.flatMePlayers.getPlayer(uuid_6).setQueueSilence(true);
-			PlayerQueue playerQueue_6 = plugin.flatMePlayers.getPlayer(uuid_6).getQueue();
+			plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
+			PlayerQueue playerQueue_6 = plugin.flatMePlayers.getPlayer(uuid).getQueue();
 			playerQueue_6.run();
 			String[] args_6 = { String.format("%d", plotCheck_6.getPosX()), String.format("%d", plotCheck_6.getPosY()) };
-			plugin.flatMePlayers.getPlayer(uuid_6).sendLocalizedString("%plotAutoClaimed%", args_6);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotAutoClaimed%", args_6);
 			break;
 		case "home":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_7 = (Player) sender;
-			UUID uuid_7 = player_7.getUniqueId();
-			plugin.flatMePlayers.add(uuid_7);
 			// TESTS
 			World world_7 = Bukkit.getWorld(plugin.config_world);
 			if (world_7 == null) {
@@ -277,33 +236,25 @@ public class CommandHandler {
 				sendLocalizedString(sender, "%worldNotFound%", args_7);
 				break;
 			}
-			if (plugin.flatMePlayers.getPlayer(uuid_7).getPlots().size() == 0) {
-				plugin.flatMePlayers.getPlayer(uuid_7).sendLocalizedString("%noPlotClaimed%", null);
+			if (plugin.flatMePlayers.getPlayer(uuid).getPlots().size() == 0) {
+				plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%noPlotClaimed%", null);
 				break;
 			}
 			// Execute command
-			int portX_7 = plugin.flatMePlayers.getPlayer(uuid_7).getPlots().get(0).getPlaceX() * plugin.config_jumpInterval;
-			int portY_7 = plugin.flatMePlayers.getPlayer(uuid_7).getPlots().get(0).getPlaceY() * plugin.config_jumpInterval;
+			int portX_7 = plugin.flatMePlayers.getPlayer(uuid).getPlots().get(0).getPlaceX() * plugin.config_jumpInterval;
+			int portY_7 = plugin.flatMePlayers.getPlayer(uuid).getPlots().get(0).getPlaceY() * plugin.config_jumpInterval;
 			Location portLocation_7 = new Location(world_7, portX_7, (plugin.config_lvlHeight + 1), portY_7);
 			portLocation_7.setYaw(-45F);
-			player_7.teleport(portLocation_7);
-			plugin.flatMePlayers.getPlayer(uuid_7).sendLocalizedString("%teleportToFirstPlot%", null);
+			player.teleport(portLocation_7);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%teleportToFirstPlot%", null);
 			break;
 		case "delete":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_8 = (Player) sender;
-			UUID uuid_8 = player_8.getUniqueId();
-			plugin.flatMePlayers.add(uuid_8);
 			// Security Check
-			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid_8), args)) {
+			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid), args)) {
 				break;
 			}
 			// PLOT CHECK
-			PlotCheck plotCheck_8 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_8));
+			PlotCheck plotCheck_8 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
 			if (!plotCheck_8.checkForCorrectWorld()) {
 				break;
 			}
@@ -321,27 +272,19 @@ public class CommandHandler {
 						plugin.flatMePlayers.getPlayer(i).getPlots().get(j).deleteWGRegion(plotCheck_8.getWorld());
 						plugin.flatMePlayers.getPlayer(i).getPlots().remove(j);
 						plugin.configurator.saveAllPlots();
-						BlockChanger blockChanger_8 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid_8), plotCheck_8.getWorld());
+						BlockChanger blockChanger_8 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_8.getWorld());
 						blockChanger_8.runPlot(plotCheck_8.getPosX(), plotCheck_8.getPosY(), false, false, false);
-						plugin.flatMePlayers.getPlayer(uuid_8).setQueueSilence(true);
-						PlayerQueue playerQueue_8 = plugin.flatMePlayers.getPlayer(uuid_8).getQueue();
+						plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
+						PlayerQueue playerQueue_8 = plugin.flatMePlayers.getPlayer(uuid).getQueue();
 						playerQueue_8.run();
 					}
 				}
 			}
-			plugin.flatMePlayers.getPlayer(uuid_8).sendLocalizedString("%plotDeleted%", null);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotDeleted%", null);
 			break;
 		case "add":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_9 = (Player) sender;
-			UUID uuid_9 = player_9.getUniqueId();
-			plugin.flatMePlayers.add(uuid_9);
 			// PLOT CHECK
-			PlotCheck plotCheck_9 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_9));
+			PlotCheck plotCheck_9 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
 			if (!plotCheck_9.checkForCorrectWorld()) {
 				break;
 			}
@@ -358,7 +301,7 @@ public class CommandHandler {
 				User essentialsUser = plugin.essAPI.getOfflineUser(args[1]);
 				if (essentialsUser == null) {
 					String[] args_9 = { args[1] };
-					plugin.flatMePlayers.getPlayer(uuid_9).sendLocalizedString("%playerNotFound%", args_9);
+					plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%playerNotFound%", args_9);
 					break;
 				} else {
 					uuid_9_1 = essentialsUser.getConfigUUID();
@@ -368,34 +311,26 @@ public class CommandHandler {
 			}
 			// Execute command
 			plugin.flatMePlayers.add(uuid_9_1);
-			for (int i = 0; i < plugin.flatMePlayers.getPlayer(uuid_9).getPlots().size(); i++) {
-				if ((plugin.flatMePlayers.getPlayer(uuid_9).getPlots().get(i).getPlaceX() == plotCheck_9.getPosX())
-						&& (plugin.flatMePlayers.getPlayer(uuid_9).getPlots().get(i).getPlaceY() == plotCheck_9.getPosY())) {
-					if (plugin.flatMePlayers.getPlayer(uuid_9).getPlots().get(i).getMembers().getPlayer(uuid_9_1) != null) {
+			for (int i = 0; i < plugin.flatMePlayers.getPlayer(uuid).getPlots().size(); i++) {
+				if ((plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getPlaceX() == plotCheck_9.getPosX())
+						&& (plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getPlaceY() == plotCheck_9.getPosY())) {
+					if (plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getMembers().getPlayer(uuid_9_1) != null) {
 						String[] args_9 = { args[1] };
-						plugin.flatMePlayers.getPlayer(uuid_9).sendLocalizedString("%playerAlreadyMember%", args_9);
+						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%playerAlreadyMember%", args_9);
 					} else {
-						plugin.flatMePlayers.getPlayer(uuid_9).getPlots().get(i).getMembers().add(uuid_9_1);
+						plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getMembers().add(uuid_9_1);
 						plugin.configurator.saveAllPlots();
-						plugin.flatMePlayers.getPlayer(uuid_9).getPlots().get(i).deleteWGRegion(plotCheck_9.getWorld());
-						plugin.flatMePlayers.getPlayer(uuid_9).getPlots().get(i).createWGRegion(plotCheck_9.getWorld());
+						plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).deleteWGRegion(plotCheck_9.getWorld());
+						plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).createWGRegion(plotCheck_9.getWorld());
 						String[] args_9 = { args[1] };
-						plugin.flatMePlayers.getPlayer(uuid_9).sendLocalizedString("%playerAdded%", args_9);
+						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%playerAdded%", args_9);
 					}
 				}
 			}
 			break;
 		case "remove":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_10 = (Player) sender;
-			UUID uuid_10 = player_10.getUniqueId();
-			plugin.flatMePlayers.add(uuid_10);
 			// PLOT CHECK
-			PlotCheck plotCheck_10 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_10));
+			PlotCheck plotCheck_10 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
 			if (!plotCheck_10.checkForCorrectWorld()) {
 				break;
 			}
@@ -412,7 +347,7 @@ public class CommandHandler {
 				User essentialsUser = plugin.essAPI.getOfflineUser(args[1]);
 				if (essentialsUser == null) {
 					String[] args_9 = { args[1] };
-					plugin.flatMePlayers.getPlayer(uuid_10).sendLocalizedString("%playerNotFound%", args_9);
+					plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%playerNotFound%", args_9);
 					break;
 				} else {
 					uuid_10_1 = essentialsUser.getConfigUUID();
@@ -422,38 +357,30 @@ public class CommandHandler {
 			}
 			// Execute command
 			plugin.flatMePlayers.add(uuid_10_1);
-			for (int i = 0; i < plugin.flatMePlayers.getPlayer(uuid_10).getPlots().size(); i++) {
-				if ((plugin.flatMePlayers.getPlayer(uuid_10).getPlots().get(i).getPlaceX() == plotCheck_10.getPosX())
-						&& (plugin.flatMePlayers.getPlayer(uuid_10).getPlots().get(i).getPlaceY() == plotCheck_10.getPosY())) {
-					if (plugin.flatMePlayers.getPlayer(uuid_10).getPlots().get(i).getMembers().getPlayer(uuid_10_1) == null) {
+			for (int i = 0; i < plugin.flatMePlayers.getPlayer(uuid).getPlots().size(); i++) {
+				if ((plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getPlaceX() == plotCheck_10.getPosX())
+						&& (plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getPlaceY() == plotCheck_10.getPosY())) {
+					if (plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getMembers().getPlayer(uuid_10_1) == null) {
 						String[] args_10 = { args[1] };
-						plugin.flatMePlayers.getPlayer(uuid_10).sendLocalizedString("%playerNotAMember%", args_10);
+						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%playerNotAMember%", args_10);
 					} else {
-						plugin.flatMePlayers.getPlayer(uuid_10).getPlots().get(i).getMembers().remove(uuid_10_1);
+						plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getMembers().remove(uuid_10_1);
 						plugin.configurator.saveAllPlots();
-						plugin.flatMePlayers.getPlayer(uuid_10).getPlots().get(i).deleteWGRegion(plotCheck_10.getWorld());
-						plugin.flatMePlayers.getPlayer(uuid_10).getPlots().get(i).createWGRegion(plotCheck_10.getWorld());
+						plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).deleteWGRegion(plotCheck_10.getWorld());
+						plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).createWGRegion(plotCheck_10.getWorld());
 						String[] args_10 = { args[1] };
-						plugin.flatMePlayers.getPlayer(uuid_10).sendLocalizedString("%playerRemoved%", args_10);
+						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%playerRemoved%", args_10);
 					}
 				}
 			}
 			break;
 		case "extend":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_11 = (Player) sender;
-			UUID uuid_11 = player_11.getUniqueId();
-			plugin.flatMePlayers.add(uuid_11);
 			// Security Check
-			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid_11), args)) {
+			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid), args)) {
 				break;
 			}
 			// PLOT CHECK
-			PlotCheck plotCheck_11 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_11));
+			PlotCheck plotCheck_11 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
 			if (!plotCheck_11.checkForCorrectWorld()) {
 				break;
 			}
@@ -467,49 +394,41 @@ public class CommandHandler {
 			Double costs = Double.parseDouble(Integer.toString(plugin.config_extendCost));
 			Double balance = 0D;
 			try {
-				plugin.getLogger().info(plugin.flatMePlayers.getPlayer(uuid_11).getDisplayName());
-				balance = Economy.getMoney(plugin.flatMePlayers.getPlayer(uuid_11).getDisplayName());
+				plugin.getLogger().info(plugin.flatMePlayers.getPlayer(uuid).getDisplayName());
+				balance = Economy.getMoney(plugin.flatMePlayers.getPlayer(uuid).getDisplayName());
 			} catch (Exception e0) {
 				e0.printStackTrace();
 			}
 			if (balance < costs) {
-				plugin.flatMePlayers.getPlayer(uuid_11).sendLocalizedString("%notEnoughMoney%", null);
+				plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%notEnoughMoney%", null);
 				break;
 			}
 			// Execute command
 			try {
-				Economy.subtract(plugin.flatMePlayers.getPlayer(uuid_11).getDisplayName(), costs);
+				Economy.subtract(plugin.flatMePlayers.getPlayer(uuid).getDisplayName(), costs);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 			Long newExpire_11 = System.currentTimeMillis() + (plugin.config_daysPerPlot * 86400000L);
-			for (int i = 0; i < plugin.flatMePlayers.getPlayer(uuid_11).getPlots().size(); i++) {
-				if ((plugin.flatMePlayers.getPlayer(uuid_11).getPlots().get(i).getPlaceX() == plotCheck_11.getPosX())
-						&& (plugin.flatMePlayers.getPlayer(uuid_11).getPlots().get(i).getPlaceY() == plotCheck_11.getPosY())) {
-					plugin.flatMePlayers.getPlayer(uuid_11).getPlots().get(i).setExpireDate(newExpire_11);
+			for (int i = 0; i < plugin.flatMePlayers.getPlayer(uuid).getPlots().size(); i++) {
+				if ((plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getPlaceX() == plotCheck_11.getPosX())
+						&& (plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getPlaceY() == plotCheck_11.getPosY())) {
+					plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).setExpireDate(newExpire_11);
 					plugin.configurator.saveAllPlots();
-					BlockChanger blockChanger_11 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid_11), plotCheck_11.getWorld());
-					blockChanger_11.runPlot(plotCheck_11.getPosX(), plotCheck_11.getPosY(), true, plugin.flatMePlayers.getPlayer(uuid_11).getPlots().get(i).isExpired(), plugin.flatMePlayers
-							.getPlayer(uuid_11).getPlots().get(i).isLocked());
-					plugin.flatMePlayers.getPlayer(uuid_11).setQueueSilence(true);
-					PlayerQueue playerQueue_11 = plugin.flatMePlayers.getPlayer(uuid_11).getQueue();
+					BlockChanger blockChanger_11 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_11.getWorld());
+					blockChanger_11.runPlot(plotCheck_11.getPosX(), plotCheck_11.getPosY(), true, plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).isExpired(), plugin.flatMePlayers
+							.getPlayer(uuid).getPlots().get(i).isLocked());
+					plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
+					PlayerQueue playerQueue_11 = plugin.flatMePlayers.getPlayer(uuid).getQueue();
 					playerQueue_11.run();
-					String[] args_11 = { plugin.flatMePlayers.getPlayer(uuid_11).getPlots().get(i).getReadableExpireDate() };
-					plugin.flatMePlayers.getPlayer(uuid_11).sendLocalizedString("%plotExtended%", args_11);
+					String[] args_11 = { plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getReadableExpireDate() };
+					plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotExtended%", args_11);
 				}
 			}
 			break;
 		case "lock":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_12 = (Player) sender;
-			UUID uuid_12 = player_12.getUniqueId();
-			plugin.flatMePlayers.add(uuid_12);
 			// PLOT CHECK
-			PlotCheck plotCheck_12 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_12));
+			PlotCheck plotCheck_12 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
 			if (!plotCheck_12.checkForCorrectWorld()) {
 				break;
 			}
@@ -528,32 +447,24 @@ public class CommandHandler {
 						plugin.flatMePlayers.getPlayer(i).getPlots().get(j).toggleLocked();
 						plugin.configurator.saveAllPlots();
 						nowLocked = plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isLocked();
-						BlockChanger blockChanger_12 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid_12), plotCheck_12.getWorld());
+						BlockChanger blockChanger_12 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_12.getWorld());
 						blockChanger_12.runPlot(plotCheck_12.getPosX(), plotCheck_12.getPosY(), true, plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isExpired(), plugin.flatMePlayers
 								.getPlayer(i).getPlots().get(j).isLocked());
-						plugin.flatMePlayers.getPlayer(uuid_12).setQueueSilence(true);
-						PlayerQueue playerQueue_12 = plugin.flatMePlayers.getPlayer(uuid_12).getQueue();
+						plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
+						PlayerQueue playerQueue_12 = plugin.flatMePlayers.getPlayer(uuid).getQueue();
 						playerQueue_12.run();
 					}
 				}
 			}
 			if (nowLocked) {
-				plugin.flatMePlayers.getPlayer(uuid_12).sendLocalizedString("%plotLockedTrue%", null);
+				plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotLockedTrue%", null);
 			} else {
-				plugin.flatMePlayers.getPlayer(uuid_12).sendLocalizedString("%plotLockedFalse%", null);
+				plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotLockedFalse%", null);
 			}
 			break;
 		case "info":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_13 = (Player) sender;
-			UUID uuid_13 = player_13.getUniqueId();
-			plugin.flatMePlayers.add(uuid_13);
 			// PLOT CHECK
-			PlotCheck plotCheck_13 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_13));
+			PlotCheck plotCheck_13 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
 			if (!plotCheck_13.checkForCorrectWorld()) {
 				break;
 			}
@@ -568,13 +479,13 @@ public class CommandHandler {
 				for (int j = 0; j < plugin.flatMePlayers.getPlayer(i).getPlots().size(); j++) {
 					if ((plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX() == plotCheck_13.getPosX())
 							&& (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY() == plotCheck_13.getPosY())) {
-						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoHeader%", null);
+						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%infoHeader%", null);
 						String[] args_13 = { String.format("%d", plotCheck_13.getPosX()), String.format("%d", plotCheck_13.getPosY()) };
-						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoID%", args_13);
+						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%infoID%", args_13);
 						String[] args_13_1 = { plugin.flatMePlayers.getPlayer(i).getDisplayName() };
-						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoOwner%", args_13_1);
+						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%infoOwner%", args_13_1);
 						String[] args_13_2 = { plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getReadableMemberList() };
-						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoMembers%", args_13_2);
+						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%infoMembers%", args_13_2);
 						String arg_13_3 = "";
 						if (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isExpired()) {
 							arg_13_3 = ChatColor.DARK_RED + plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getReadableExpireDate();
@@ -582,7 +493,7 @@ public class CommandHandler {
 							arg_13_3 = ChatColor.DARK_GREEN + plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getReadableExpireDate();
 						}
 						String[] args_13_3 = { arg_13_3 };
-						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoExpire%", args_13_3);
+						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%infoExpire%", args_13_3);
 						String arg_13_4 = "";
 						if (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isLocked()) {
 							arg_13_4 = ChatColor.DARK_GREEN + plugin.configurator.resolveLocalizedString("%answerYes%", null);
@@ -590,7 +501,7 @@ public class CommandHandler {
 							arg_13_4 = ChatColor.DARK_RED + plugin.configurator.resolveLocalizedString("%answerNo%", null);
 						}
 						String[] args_13_4 = { arg_13_4 };
-						plugin.flatMePlayers.getPlayer(uuid_13).sendLocalizedString("%infoLocked%", args_13_4);
+						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%infoLocked%", args_13_4);
 					}
 				}
 			}
@@ -614,20 +525,12 @@ public class CommandHandler {
 			showTable(sender, plugin.configurator.resolveLocalizedString("%expiredPlots%", null), cmdPage_14, expiredPlots);
 			break;
 		case "clean":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_15 = (Player) sender;
-			UUID uuid_15 = player_15.getUniqueId();
-			plugin.flatMePlayers.add(uuid_15);
 			// Security Check
-			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid_15), args)) {
+			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid), args)) {
 				break;
 			}
 			// PLOT CHECK
-			PlotCheck plotCheck_15 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_15));
+			PlotCheck plotCheck_15 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
 			if (!plotCheck_15.checkForCorrectWorld()) {
 				break;
 			}
@@ -641,9 +544,9 @@ public class CommandHandler {
 				break;
 			}
 			// Execute command
-			plugin.flatMePlayers.getPlayer(uuid_15).sendLocalizedString("%commandMayTakeAWhile%", null);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandMayTakeAWhile%", null);
 			int toDo = 0;
-			BlockChanger blockChanger_15 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid_15), plotCheck_15.getWorld());
+			BlockChanger blockChanger_15 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_15.getWorld());
 			for (int i = 0; i < plugin.flatMePlayers.size(); i++) {
 				if (toDo >= cmdCount_15) {
 					break;
@@ -665,26 +568,18 @@ public class CommandHandler {
 			}
 			plugin.configurator.saveAllPlots();
 			String[] args_15 = { String.format("%d", toDo) };
-			plugin.flatMePlayers.getPlayer(uuid_15).sendLocalizedString("%plotsCleaned%", args_15);
-			plugin.flatMePlayers.getPlayer(uuid_15).sendLocalizedString("%commandHasBeenQueued%", null);
-			PlayerQueue playerQueue_15 = plugin.flatMePlayers.getPlayer(uuid_15).getQueue();
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotsCleaned%", args_15);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandHasBeenQueued%", null);
+			PlayerQueue playerQueue_15 = plugin.flatMePlayers.getPlayer(uuid).getQueue();
 			playerQueue_15.run();
 			break;
 		case "regen":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_16 = (Player) sender;
-			UUID uuid_16 = player_16.getUniqueId();
-			plugin.flatMePlayers.add(uuid_16);
 			// Security Check
-			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid_16), args)) {
+			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid), args)) {
 				break;
 			}
 			// PLOT CHECK
-			PlotCheck plotCheck_16 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_16));
+			PlotCheck plotCheck_16 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
 			if (!plotCheck_16.checkForCorrectWorld()) {
 				break;
 			}
@@ -692,29 +587,21 @@ public class CommandHandler {
 				break;
 			}
 			// Execute command
-			plugin.flatMePlayers.getPlayer(uuid_16).sendLocalizedString("%commandMayTakeAWhile%", null);
-			BlockChanger blockChanger_16 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid_16), plotCheck_16.getWorld());
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandMayTakeAWhile%", null);
+			BlockChanger blockChanger_16 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_16.getWorld());
 			blockChanger_16.runRegen(plotCheck_16.getPosX(), plotCheck_16.getPosY());
-			plugin.flatMePlayers.getPlayer(uuid_16).sendLocalizedString("%plotRegenerated%", null);
-			plugin.flatMePlayers.getPlayer(uuid_16).sendLocalizedString("%commandHasBeenQueued%", null);
-			PlayerQueue playerQueue_16 = plugin.flatMePlayers.getPlayer(uuid_16).getQueue();
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotRegenerated%", null);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandHasBeenQueued%", null);
+			PlayerQueue playerQueue_16 = plugin.flatMePlayers.getPlayer(uuid).getQueue();
 			playerQueue_16.run();
 			break;
 		case "weregen":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_17 = (Player) sender;
-			UUID uuid_17 = player_17.getUniqueId();
-			plugin.flatMePlayers.add(uuid_17);
 			// Security Check
-			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid_17), args)) {
+			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid), args)) {
 				break;
 			}
 			// PLOT CHECK
-			PlotCheck plotCheck_17 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_17));
+			PlotCheck plotCheck_17 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
 			if (!plotCheck_17.checkForCorrectWorld()) {
 				break;
 			}
@@ -722,27 +609,19 @@ public class CommandHandler {
 				break;
 			}
 			// Execute command
-			plugin.flatMePlayers.getPlayer(uuid_17).sendLocalizedString("%commandMayTakeAWhile%", null);
-			BlockChanger blockChanger_17 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid_17), plotCheck_17.getWorld());
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandMayTakeAWhile%", null);
+			BlockChanger blockChanger_17 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_17.getWorld());
 			blockChanger_17.runWEregen(plotCheck_17.getPosX(), plotCheck_17.getPosY());
-			plugin.flatMePlayers.getPlayer(uuid_17).sendLocalizedString("%plotRegenerated%", null);
-			plugin.flatMePlayers.getPlayer(uuid_17).sendLocalizedString("%commandHasBeenQueued%", null);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotRegenerated%", null);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandHasBeenQueued%", null);
 			break;
 		case "weclean":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_18 = (Player) sender;
-			UUID uuid_18 = player_18.getUniqueId();
-			plugin.flatMePlayers.add(uuid_18);
 			// Security Check
-			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid_18), args)) {
+			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid), args)) {
 				break;
 			}
 			// PLOT CHECK
-			PlotCheck plotCheck_18 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_18));
+			PlotCheck plotCheck_18 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
 			if (!plotCheck_18.checkForCorrectWorld()) {
 				break;
 			}
@@ -756,9 +635,9 @@ public class CommandHandler {
 				break;
 			}
 			// Execute command
-			plugin.flatMePlayers.getPlayer(uuid_18).sendLocalizedString("%commandMayTakeAWhile%", null);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandMayTakeAWhile%", null);
 			int toDo_18 = 0;
-			BlockChanger blockChanger_18 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid_18), plotCheck_18.getWorld());
+			BlockChanger blockChanger_18 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_18.getWorld());
 			for (int i = 0; i < plugin.flatMePlayers.size(); i++) {
 				if (toDo_18 >= cmdCount_18) {
 					break;
@@ -780,20 +659,12 @@ public class CommandHandler {
 			}
 			plugin.configurator.saveAllPlots();
 			String[] args_18 = { String.format("%d", toDo_18) };
-			plugin.flatMePlayers.getPlayer(uuid_18).sendLocalizedString("%plotsCleaned%", args_18);
-			plugin.flatMePlayers.getPlayer(uuid_18).sendLocalizedString("%commandHasBeenQueued%", null);
-			PlayerQueue playerQueue_18 = plugin.flatMePlayers.getPlayer(uuid_18).getQueue();
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotsCleaned%", args_18);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandHasBeenQueued%", null);
+			PlayerQueue playerQueue_18 = plugin.flatMePlayers.getPlayer(uuid).getQueue();
 			playerQueue_18.run();
 			break;
 		case "teleport":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
-				break;
-			}
-			Player player_19 = (Player) sender;
-			UUID uuid_19 = player_19.getUniqueId();
-			plugin.flatMePlayers.add(uuid_19);
 			// TESTS
 			World world_19 = Bukkit.getWorld(plugin.config_world);
 			if (world_19 == null) {
@@ -806,9 +677,9 @@ public class CommandHandler {
 			int cmdPosY_19 = 0;
 			cmdPosY_19 = parsePosition(args[2]);
 			// PLOT CHECK
-			PlotCheck plotCheck_19 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid_19));
+			PlotCheck plotCheck_19 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
 			if (!plotCheck_19.checkForPlotInArea(cmdPosX_19, cmdPosY_19)) {
-				plugin.flatMePlayers.getPlayer(uuid_19).sendLocalizedString("%wouldBeOutOfArea%", null);
+				plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%wouldBeOutOfArea%", null);
 				break;
 			}
 			// Execute command
@@ -816,20 +687,37 @@ public class CommandHandler {
 			int portY_19 = cmdPosY_19 * plugin.config_jumpInterval;
 			Location portLocation_19 = new Location(world_19, portX_19, (plugin.config_lvlHeight + 1), portY_19);
 			portLocation_19.setYaw(-45F);
-			player_19.teleport(portLocation_19);
-			plugin.flatMePlayers.getPlayer(uuid_19).sendLocalizedString("%teleportToPlot%", null);
+			player.teleport(portLocation_19);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%teleportToPlot%", null);
 			break;
 		case "show":
-			// PLAYER ONLY
-			if (!(sender instanceof Player)) {
-				sendLocalizedString(sender, "%commandOnlyPlayer%", null);
+			// Execute command
+			plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(false);
+			break;
+		case "repair":
+			// TESTS
+			World world_21 = Bukkit.getWorld(plugin.config_world);
+			if (world_21 == null) {
+				String[] args_21 = { plugin.config_world };
+				sendLocalizedString(sender, "%worldNotFound%", args_21);
 				break;
 			}
-			Player player_20 = (Player) sender;
-			UUID uuid_20 = player_20.getUniqueId();
-			plugin.flatMePlayers.add(uuid_20);
+			int cmdPosX_21 = 0;
+			cmdPosX_21 = parsePosition(args[1]);
+			int cmdPosY_21 = 0;
+			cmdPosY_21 = parsePosition(args[2]);
+			// PLOT CHECK
+			PlotCheck plotCheck_21 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
+			if (!plotCheck_21.checkForPlotInArea(cmdPosX_21, cmdPosY_21)) {
+				plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%wouldBeOutOfArea%", null);
+				break;
+			}
 			// Execute command
-			plugin.flatMePlayers.getPlayer(uuid_20).setQueueSilence(false);
+			BlockChanger blockChanger_21 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_21.getWorld());
+			blockChanger_21.runRepair(cmdPosX_21, cmdPosY_21);
+			PlayerQueue playerQueue_21 = plugin.flatMePlayers.getPlayer(uuid).getQueue();
+			playerQueue_21.run();
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%pathRepaired%", null);
 			break;
 		default:
 			// Execute command
@@ -907,6 +795,7 @@ public class CommandHandler {
 		commandList.add("regen", new Command("flatme.admin", "/flatme regen", 0));
 		commandList.add("reload", new Command("flatme.admin", "/flatme reload", 0));
 		commandList.add("remove", new Command("flatme.player", "/flatme remove <playername>", 1));
+		commandList.add("repair", new Command("flatme.admin", "/flatme repair <x> <y>", 2));
 		commandList.add("show", new Command("flatme.admin", "/flatme show", 0));
 		commandList.add("teleport", new Command("flatme.admin", "/flatme teleport <x> <y>", 2));
 		commandList.add("update", new Command("flatme.admin", "/flatme update", 0));
