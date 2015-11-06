@@ -38,6 +38,7 @@ public class FlatMePlayer {
 		plots = new ArrayList<Plot>();
 		queue = new PlayerQueue(plugin, uuid, false);
 		securityCommand = null;
+		answeredYes = false;
 	}
 
 	public UUID getUuid() {
