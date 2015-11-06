@@ -65,6 +65,7 @@ public class Plot {
 
 	public void setPlaceX(int placeX) {
 		this.placeX = placeX;
+		coords = calculateCoords();
 	}
 
 	public int getPlaceY() {
@@ -73,6 +74,7 @@ public class Plot {
 
 	public void setPlaceY(int placeY) {
 		this.placeY = placeY;
+		coords = calculateCoords();
 	}
 
 	public Long getExpireDate() {
@@ -98,7 +100,7 @@ public class Plot {
 		}
 		return false;
 	}
-	
+
 	public boolean willExpire() {
 		Long now = System.currentTimeMillis() + 604800000L;
 		if (expireDate < now) {
@@ -138,12 +140,12 @@ public class Plot {
 		ProtectedRegion newRegion = new ProtectedCuboidRegion("flatme_" + String.format("%d", placeX) + "_" + String.format("%d", placeY), startBlock, endBlock);
 		DefaultDomain newOwners = new DefaultDomain();
 		plugin.wgAPI.getProfileCache().put(new Profile(owner.getUuid(), owner.getDisplayName()));
-		newOwners.addPlayer(owner.getUuid());		
+		newOwners.addPlayer(owner.getUuid());
 		newRegion.setOwners(newOwners);
 		DefaultDomain newMembers = new DefaultDomain();
 		for (int i = 0; i < members.size(); i++) {
 			plugin.wgAPI.getProfileCache().put(new Profile(members.getPlayer(i).getUuid(), members.getPlayer(i).getDisplayName()));
-			newMembers.addPlayer(members.getPlayer(i).getUuid());			
+			newMembers.addPlayer(members.getPlayer(i).getUuid());
 		}
 		newRegion.setMembers(newMembers);
 		// newRegion.setFlag(DefaultFlag.USE, StateFlag.State.ALLOW);

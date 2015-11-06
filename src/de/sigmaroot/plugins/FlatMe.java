@@ -30,7 +30,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 	public WorldGuardPlugin wgAPI;
 
 	public final String PLUGIN_TITLE = "FlatMe";
-	public final String PLUGIN_VERSION = "1.6.2";
+	public final String PLUGIN_VERSION = "1.7";
 
 	public int config_plotSize;
 	public int config_lvlHeight;
@@ -85,6 +85,8 @@ public class FlatMe extends JavaPlugin implements Listener {
 
 	@Override
 	public void onDisable() {
+		configurator.saveAllPlots();
+		configurator.backupPlotFile();
 		// Finished
 		this.getLogger().info(configurator.resolveLocalizedString("%pluginUnloaded%", null));
 	}
@@ -223,7 +225,15 @@ public class FlatMe extends JavaPlugin implements Listener {
 		// HOOKL: WorldGuard
 		wgAPI = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
 		this.getLogger().info(configurator.resolveLocalizedString("%hookedIntoWorldGuard%", null));
-		worldGuardHandler = new WorldGuardHandler(this, wgAPI);
+		if (worldGuardHandler == null) {
+			worldGuardHandler = new WorldGuardHandler(this, wgAPI);
+			this.getLogger().info("Auto-update triggered to run in 60 seconds.");
+			Bukkit.getServer().getScheduler().runTaskLater(this, new Runnable() {
+				public void run() {
+					Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "flatme update");
+				}
+			}, 1200L);
+		}
 	}
 
 }

@@ -1,7 +1,9 @@
 package de.sigmaroot.plugins;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -195,6 +197,24 @@ public class Configurator {
 			plotsFileConfiguration.save(plotsFile);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	public void backupPlotFile() {
+		File customConfigFile = null;
+		customConfigFile = new File(plugin.getDataFolder(), "plots.yml");
+		if (customConfigFile.exists()) {
+			FileConfiguration customFileConfiguration = new YamlConfiguration();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yy_HH_mm_ss");
+			Date resultdate = new Date(System.currentTimeMillis());
+			String timestamp = sdf.format(resultdate);
+			try {
+				customFileConfiguration.load(customConfigFile);
+				customFileConfiguration.save(new File(plugin.getDataFolder(), "backups/plots_" + timestamp + ".yml"));
+				plugin.getLogger().info(resolveLocalizedString("%plotsBackuped%", null));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

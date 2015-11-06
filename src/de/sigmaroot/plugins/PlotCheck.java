@@ -19,6 +19,9 @@ public class PlotCheck {
 		if (player != null) {
 			posX = plugin.getStanding(player.getPlayer()).getStartCoordX();
 			posY = plugin.getStanding(player.getPlayer()).getStartCoordY();
+		} else {
+			posX = 0;
+			posY = 0;
 		}
 		world = Bukkit.getWorld(plugin.config_world);
 	}
@@ -65,6 +68,13 @@ public class PlotCheck {
 		if (loc.getWorld() != world) {
 			String[] args = { plugin.config_world };
 			player.sendLocalizedString("%wrongWorld%", args);
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean simpleCheckForCorrectWorld() {
+		if (world == null) {
 			return false;
 		}
 		return true;
