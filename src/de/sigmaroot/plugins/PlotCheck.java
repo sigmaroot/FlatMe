@@ -72,7 +72,7 @@ public class PlotCheck {
 		}
 		return true;
 	}
-	
+
 	public boolean simpleCheckForCorrectWorld() {
 		if (world == null) {
 			return false;
@@ -165,6 +165,9 @@ public class PlotCheck {
 	}
 
 	public boolean checkForRightOwner() {
+		if (player.getPlayer().hasPermission("flatme.admin")) {
+			return true;
+		}
 		for (int i = 0; i < player.getPlots().size(); i++) {
 			if ((player.getPlots().get(i).getPlaceX() == posX) && (player.getPlots().get(i).getPlaceY() == posY)) {
 				return true;

@@ -856,6 +856,38 @@ public class CommandHandler {
 			}
 			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotMoved%", null);
 			break;
+		case "updateplot":
+			// PLOT CHECK
+			PlotCheck plotCheck_23 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
+			if (!plotCheck_23.checkForCorrectWorld()) {
+				break;
+			}
+			if (!plotCheck_23.checkForPlotInArea()) {
+				break;
+			}
+			if (!plotCheck_23.checkForNotFreePlot()) {
+				break;
+			}
+			if (!plotCheck_23.checkForRightOwner()) {
+				break;
+			}
+			// Execute command
+			for (int i = 0; i < plugin.flatMePlayers.size(); i++) {
+				for (int j = 0; j < plugin.flatMePlayers.getPlayer(i).getPlots().size(); j++) {
+					if ((plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX() == plotCheck_23.getPosX())
+							&& (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY() == plotCheck_23.getPosY())) {
+						plugin.flatMePlayers.getPlayer(i).getPlots().get(j).deleteWGRegion(plotCheck_23.getWorld());
+						plugin.flatMePlayers.getPlayer(i).getPlots().get(j).createWGRegion(plotCheck_23.getWorld());
+						BlockChanger blockChanger_23 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_23.getWorld());
+						blockChanger_23.runPlot(plotCheck_23.getPosX(), plotCheck_23.getPosY(), true, plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isExpired(), plugin.flatMePlayers
+								.getPlayer(i).getPlots().get(j).isLocked());
+						plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
+						blockChanger_23.getPlayerQueue().run();
+					}
+				}
+			}
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotUpdated%", null);
+			break;
 		default:
 			// Execute command
 			String[] args_x = { firstArg };
@@ -936,6 +968,7 @@ public class CommandHandler {
 		commandList.add("repair", new Command("flatme.admin", "/flatme repair <x> <y>", 2));
 		commandList.add("show", new Command("flatme.admin", "/flatme show", 0));
 		commandList.add("teleport", new Command("flatme.admin", "/flatme teleport <x> <y>", 2));
+		commandList.add("updateplot", new Command("flatme.player", "/flatme updateplot", 0));
 		commandList.add("update", new Command("flatme.admin", "/flatme update", 0));
 		commandList.add("version", new Command("flatme.player", "/flatme version", 0));
 		commandList.add("weclean", new Command("flatme.admin", "/flatme weclean <count>", 1));
