@@ -42,3 +42,6 @@ daysPerPlot: 60
 ###  Costs to extend a plot                              ###
 ###  Default: 1000                                       ###
 extendCost: 1000
+###  Auto-update all plots 60 secs after server start    ###
+###  Default: true                                       ###
+autoUpdate: true

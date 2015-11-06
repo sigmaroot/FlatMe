@@ -30,7 +30,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 	public WorldGuardPlugin wgAPI;
 
 	public final String PLUGIN_TITLE = "FlatMe";
-	public final String PLUGIN_VERSION = "1.7.1";
+	public final String PLUGIN_VERSION = "1.7.2";
 
 	public int config_plotSize;
 	public int config_lvlHeight;
@@ -40,6 +40,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 	public int config_daysPerPlot;
 	public int config_extendCost;
 	public String config_world;
+	public boolean config_autoupdate;
 
 	private boolean areRegistered = false;
 
@@ -146,6 +147,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 		config_maxPlots = config.getInt("plotsPerUser", 1);
 		config_extendCost = config.getInt("extendCost", 1000);
 		config_daysPerPlot = config.getInt("daysPerPlot", 60);
+		config_autoupdate = config.getBoolean("autoUpdate", true);
 	}
 
 	public void reloadConfiguration() {
@@ -227,12 +229,14 @@ public class FlatMe extends JavaPlugin implements Listener {
 		this.getLogger().info(configurator.resolveLocalizedString("%hookedIntoWorldGuard%", null));
 		if (worldGuardHandler == null) {
 			worldGuardHandler = new WorldGuardHandler(this, wgAPI);
-			this.getLogger().info("Auto-update triggered to run in 60 seconds.");
-			Bukkit.getServer().getScheduler().runTaskLater(this, new Runnable() {
-				public void run() {
-					Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "flatme update");
-				}
-			}, 1200L);
+			if (config_autoupdate) {
+				this.getLogger().info("Auto-update triggered to run in 60 seconds.");
+				Bukkit.getServer().getScheduler().runTaskLater(this, new Runnable() {
+					public void run() {
+						Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "flatme update");
+					}
+				}, 1200L);
+			}
 		}
 	}
 
