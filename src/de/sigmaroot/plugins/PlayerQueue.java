@@ -129,6 +129,7 @@ public class PlayerQueue {
 		if (isRunning) {
 			for (int i = 0; i < plugin.config.getInt("maxBlocksPerTick", 100); i++) {
 				if (getQueueSize() == 0) {
+					plugin.getServer().getWorld(plugin.config_world).save();
 					returnQueueStatus();
 					stop();
 					return;
