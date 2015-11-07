@@ -896,6 +896,17 @@ public class CommandHandler {
 			blockChanger_23.getPlayerQueue().run();
 			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotUpdated%", null);
 			break;
+		case "tool":
+			// Execute command
+			Bukkit.getServer()
+					.dispatchCommand(
+							Bukkit.getServer().getConsoleSender(),
+							"give "
+									+ plugin.flatMePlayers.getPlayer(uuid).getDisplayName()
+									+ " written_book 1 0 {pages:[\"[\\\"\\\",{text:\\\"== FlatMe Tool Book ==\\\",color:gold},{text:\\\"\\n\\n\\\",color:reset},{text:Informations,color:dark_blue,clickEvent:{action:run_command,value:\\\"/flatme info\\\"}},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Delete this plot\\\",color:dark_red,clickEvent:{action:run_command,value:\\\"/flatme delete\\\"}},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Regen with Flatme\\\",color:dark_aqua,clickEvent:{action:run_command,value:\\\"/flatme regen\\\"}},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Regen with WorldEdit\\\",color:dark_aqua,clickEvent:{action:run_command,value:\\\"/flatme weregen\\\"}},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Apply task (YES!)\\\",color:dark_green,clickEvent:{action:run_command,value:\\\"/flatme yes\\\"}}]\",\"[\\\"\\\",{text:\\\"== FlatMe Tool Book ==\\\",color:gold},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Extend this plot\\\",color:dark_purple,clickEvent:{action:run_command,value:\\\"/flatme extend\\\"}},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Lock / Unlock\\\",color:dark_purple,clickEvent:{action:run_command,value:\\\"/flatme lock\\\"}},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Update this plot\\\",color:dark_purple,clickEvent:{action:run_command,value:\\\"/flatme updateplot\\\"}},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Apply task (YES!)\\\",color:dark_green,clickEvent:{action:run_command,value:\\\"/flatme yes\\\"}},{text:\\\"\\n \\\",color:reset}]\",\"[\\\"\\\",{text:\\\"== FlatMe Tool Book ==\\\",color:gold},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Claim this plot\\\",color:dark_purple,clickEvent:{action:run_command,value:\\\"/flatme claim\\\"}},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Autoclaim a plot\\\",color:dark_purple,clickEvent:{action:run_command,value:\\\"/flatme autoclaim\\\"}},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Teleport to first plot\\\",color:dark_purple,clickEvent:{action:run_command,value:\\\"/flatme home\\\"}},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Apply task (YES!)\\\",color:dark_green,clickEvent:{action:run_command,value:\\\"/flatme yes\\\"}}]\",\"[\\\"\\\",{text:\\\"== FlatMe Tool Book ==\\\",color:gold},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Create plotarea\\\",color:dark_purple,clickEvent:{action:run_command,value:\\\"/flatme create\\\"}},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Update all plots\\\",color:dark_purple,clickEvent:{action:run_command,value:\\\"/flatme update\\\"}},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Show current queue\\\",color:dark_purple,clickEvent:{action:run_command,value:\\\"/flatme show\\\"}},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Reload configuration\\\",color:dark_purple,clickEvent:{action:run_command,value:\\\"/flatme reload\\\"}},{text:\\\"\\n\\n\\\",color:reset},{text:\\\"Apply task (YES!)\\\",color:dark_green,clickEvent:{action:run_command,value:\\\"/flatme yes\\\"}}]\"],title:\""
+									+ ChatColor.GOLD + "FlatMe Tool Book" + ChatColor.RESET + "\",author:FlatMe}");
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%receivedTool%", null);
+			break;
 		default:
 			// Execute command
 			String[] args_x = { firstArg };
@@ -976,6 +987,7 @@ public class CommandHandler {
 		commandList.add("repair", new Command("flatme.admin", "/flatme repair <x> <y>", 2));
 		commandList.add("show", new Command("flatme.admin", "/flatme show", 0));
 		commandList.add("teleport", new Command("flatme.admin", "/flatme teleport <x> <y>", 2));
+		commandList.add("tool", new Command("flatme.admin", "/flatme tool", 0));
 		commandList.add("updateplot", new Command("flatme.player", "/flatme updateplot", 0));
 		commandList.add("update", new Command("flatme.admin", "/flatme update", 0));
 		commandList.add("version", new Command("flatme.player", "/flatme version", 0));
