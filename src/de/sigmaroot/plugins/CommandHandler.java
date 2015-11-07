@@ -399,19 +399,21 @@ public class CommandHandler {
 			}
 			// Execute command
 			plugin.flatMePlayers.add(uuid_9_1);
-			for (int i = 0; i < plugin.flatMePlayers.getPlayer(uuid).getPlots().size(); i++) {
-				if ((plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getPlaceX() == plotCheck_9.getPosX())
-						&& (plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getPlaceY() == plotCheck_9.getPosY())) {
-					if (plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getMembers().getPlayer(uuid_9_1) != null) {
-						String[] args_9 = { args[1] };
-						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%playerAlreadyMember%", args_9);
-					} else {
-						plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getMembers().add(uuid_9_1);
-						plugin.configurator.saveAllPlots();
-						plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).deleteWGRegion(plotCheck_9.getWorld());
-						plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).createWGRegion(plotCheck_9.getWorld());
-						String[] args_9 = { args[1] };
-						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%playerAdded%", args_9);
+			for (int i = 0; i < plugin.flatMePlayers.size(); i++) {
+				for (int j = 0; j < plugin.flatMePlayers.getPlayer(i).getPlots().size(); j++) {
+					if ((plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX() == plotCheck_9.getPosX())
+							&& (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY() == plotCheck_9.getPosY())) {
+						if (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getMembers().getPlayer(uuid_9_1) != null) {
+							String[] args_9 = { args[1] };
+							plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%playerAlreadyMember%", args_9);
+						} else {
+							plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getMembers().add(uuid_9_1);
+							plugin.configurator.saveAllPlots();
+							plugin.flatMePlayers.getPlayer(i).getPlots().get(j).deleteWGRegion(plotCheck_9.getWorld());
+							plugin.flatMePlayers.getPlayer(i).getPlots().get(j).createWGRegion(plotCheck_9.getWorld());
+							String[] args_9 = { args[1] };
+							plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%playerAdded%", args_9);
+						}
 					}
 				}
 			}
@@ -445,19 +447,21 @@ public class CommandHandler {
 			}
 			// Execute command
 			plugin.flatMePlayers.add(uuid_10_1);
-			for (int i = 0; i < plugin.flatMePlayers.getPlayer(uuid).getPlots().size(); i++) {
-				if ((plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getPlaceX() == plotCheck_10.getPosX())
-						&& (plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getPlaceY() == plotCheck_10.getPosY())) {
-					if (plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getMembers().getPlayer(uuid_10_1) == null) {
-						String[] args_10 = { args[1] };
-						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%playerNotAMember%", args_10);
-					} else {
-						plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getMembers().remove(uuid_10_1);
-						plugin.configurator.saveAllPlots();
-						plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).deleteWGRegion(plotCheck_10.getWorld());
-						plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).createWGRegion(plotCheck_10.getWorld());
-						String[] args_10 = { args[1] };
-						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%playerRemoved%", args_10);
+			for (int i = 0; i < plugin.flatMePlayers.size(); i++) {
+				for (int j = 0; j < plugin.flatMePlayers.getPlayer(i).getPlots().size(); j++) {
+					if ((plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX() == plotCheck_10.getPosX())
+							&& (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY() == plotCheck_10.getPosY())) {
+						if (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getMembers().getPlayer(uuid_10_1) == null) {
+							String[] args_10 = { args[1] };
+							plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%playerNotAMember%", args_10);
+						} else {
+							plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getMembers().remove(uuid_10_1);
+							plugin.configurator.saveAllPlots();
+							plugin.flatMePlayers.getPlayer(i).getPlots().get(j).deleteWGRegion(plotCheck_10.getWorld());
+							plugin.flatMePlayers.getPlayer(i).getPlots().get(j).createWGRegion(plotCheck_10.getWorld());
+							String[] args_10 = { args[1] };
+							plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%playerRemoved%", args_10);
+						}
 					}
 				}
 			}
@@ -482,7 +486,6 @@ public class CommandHandler {
 			Double costs = Double.parseDouble(Integer.toString(plugin.config_extendCost));
 			Double balance = 0D;
 			try {
-				plugin.getLogger().info(plugin.flatMePlayers.getPlayer(uuid).getDisplayName());
 				balance = Economy.getMoney(plugin.flatMePlayers.getPlayer(uuid).getDisplayName());
 			} catch (Exception e0) {
 				e0.printStackTrace();
@@ -498,18 +501,20 @@ public class CommandHandler {
 				e1.printStackTrace();
 			}
 			Long newExpire_11 = System.currentTimeMillis() + (plugin.config_daysPerPlot * 86400000L);
-			for (int i = 0; i < plugin.flatMePlayers.getPlayer(uuid).getPlots().size(); i++) {
-				if ((plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getPlaceX() == plotCheck_11.getPosX())
-						&& (plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getPlaceY() == plotCheck_11.getPosY())) {
-					plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).setExpireDate(newExpire_11);
-					plugin.configurator.saveAllPlots();
-					BlockChanger blockChanger_11 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_11.getWorld());
-					blockChanger_11.runPlot(plotCheck_11.getPosX(), plotCheck_11.getPosY(), true, plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).isExpired(),
-							plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).isLocked());
-					plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
-					blockChanger_11.getPlayerQueue().run();
-					String[] args_11 = { plugin.flatMePlayers.getPlayer(uuid).getPlots().get(i).getReadableExpireDate() };
-					plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotExtended%", args_11);
+			for (int i = 0; i < plugin.flatMePlayers.size(); i++) {
+				for (int j = 0; j < plugin.flatMePlayers.getPlayer(i).getPlots().size(); j++) {
+					if ((plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX() == plotCheck_11.getPosX())
+							&& (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY() == plotCheck_11.getPosY())) {
+						plugin.flatMePlayers.getPlayer(i).getPlots().get(j).setExpireDate(newExpire_11);
+						plugin.configurator.saveAllPlots();
+						BlockChanger blockChanger_11 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_11.getWorld());
+						blockChanger_11.runPlot(plotCheck_11.getPosX(), plotCheck_11.getPosY(), true, plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isExpired(), plugin.flatMePlayers
+								.getPlayer(i).getPlots().get(j).isLocked());
+						plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
+						blockChanger_11.getPlayerQueue().run();
+						String[] args_11 = { plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getReadableExpireDate() };
+						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotExtended%", args_11);
+					}
 				}
 			}
 			break;
@@ -681,26 +686,6 @@ public class CommandHandler {
 			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandHasBeenQueued%", null);
 			blockChanger_16.getPlayerQueue().run();
 			break;
-		case "weregen":
-			// Security Check
-			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid), args)) {
-				break;
-			}
-			// PLOT CHECK
-			PlotCheck plotCheck_17 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
-			if (!plotCheck_17.checkForCorrectWorld()) {
-				break;
-			}
-			if (!plotCheck_17.checkForPlotInArea()) {
-				break;
-			}
-			// Execute command
-			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandMayTakeAWhile%", null);
-			BlockChanger blockChanger_17 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_17.getWorld());
-			blockChanger_17.runWEregen(plotCheck_17.getPosX(), plotCheck_17.getPosY());
-			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotRegenerated%", null);
-			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandHasBeenQueued%", null);
-			break;
 		case "weclean":
 			// Security Check
 			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid), args)) {
@@ -750,6 +735,26 @@ public class CommandHandler {
 			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotsCleaned%", args_18);
 			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandHasBeenQueued%", null);
 			blockChanger_18.getPlayerQueue().run();
+			break;
+		case "weregen":
+			// Security Check
+			if (!plugin.securityCheck(plugin.flatMePlayers.getPlayer(uuid), args)) {
+				break;
+			}
+			// PLOT CHECK
+			PlotCheck plotCheck_17 = new PlotCheck(plugin, plugin.flatMePlayers.getPlayer(uuid));
+			if (!plotCheck_17.checkForCorrectWorld()) {
+				break;
+			}
+			if (!plotCheck_17.checkForPlotInArea()) {
+				break;
+			}
+			// Execute command
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandMayTakeAWhile%", null);
+			BlockChanger blockChanger_17 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_17.getWorld());
+			blockChanger_17.runWEregen(plotCheck_17.getPosX(), plotCheck_17.getPosY());
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotRegenerated%", null);
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%commandHasBeenQueued%", null);
 			break;
 		case "teleport":
 			// TESTS
@@ -865,27 +870,30 @@ public class CommandHandler {
 			if (!plotCheck_23.checkForPlotInArea()) {
 				break;
 			}
-			if (!plotCheck_23.checkForNotFreePlot()) {
-				break;
-			}
 			if (!plotCheck_23.checkForRightOwner()) {
 				break;
 			}
 			// Execute command
+			BlockChanger blockChanger_23 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_23.getWorld());
+			boolean foundAOwnedPlot = false;
 			for (int i = 0; i < plugin.flatMePlayers.size(); i++) {
 				for (int j = 0; j < plugin.flatMePlayers.getPlayer(i).getPlots().size(); j++) {
 					if ((plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX() == plotCheck_23.getPosX())
 							&& (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY() == plotCheck_23.getPosY())) {
 						plugin.flatMePlayers.getPlayer(i).getPlots().get(j).deleteWGRegion(plotCheck_23.getWorld());
 						plugin.flatMePlayers.getPlayer(i).getPlots().get(j).createWGRegion(plotCheck_23.getWorld());
-						BlockChanger blockChanger_23 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_23.getWorld());
+						foundAOwnedPlot = true;
 						blockChanger_23.runPlot(plotCheck_23.getPosX(), plotCheck_23.getPosY(), true, plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isExpired(), plugin.flatMePlayers
 								.getPlayer(i).getPlots().get(j).isLocked());
-						plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
-						blockChanger_23.getPlayerQueue().run();
+
 					}
 				}
 			}
+			if (!foundAOwnedPlot) {
+				blockChanger_23.runPlot(plotCheck_23.getPosX(), plotCheck_23.getPosY(), false, false, false);
+			}
+			plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
+			blockChanger_23.getPlayerQueue().run();
 			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotUpdated%", null);
 			break;
 		default:
