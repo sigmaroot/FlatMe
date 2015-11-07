@@ -74,6 +74,7 @@ public class BlockChanger {
 	}
 
 	public void runPlot(int posX, int posY, boolean used, boolean expired, boolean locked) {
+		playerQueue.stop();
 		if (!used) {
 			createPlotBorder(posX, posY, (byte) 7);
 		} else {
@@ -94,6 +95,7 @@ public class BlockChanger {
 	}
 
 	public void runRegen(int posX, int posY) {
+		playerQueue.stop();
 		fill(((posX * plugin.config_jumpInterval) + 4), 1, ((posY * plugin.config_jumpInterval) + 4), (((posX + 1) * plugin.config_jumpInterval) - 4), (plugin.config_lvlHeight - 1),
 				(((posY + 1) * plugin.config_jumpInterval) - 4), world, Material.DIRT, (byte) 0);
 		fill(((posX * plugin.config_jumpInterval) + 4), plugin.config_lvlHeight, ((posY * plugin.config_jumpInterval) + 4), (((posX + 1) * plugin.config_jumpInterval) - 4), plugin.config_lvlHeight,
@@ -121,6 +123,7 @@ public class BlockChanger {
 	}
 
 	private void createCenterPoints() {
+		playerQueue.stop();
 		for (int i = -plugin.config_radius; i <= plugin.config_radius; i++) {
 			for (int j = -plugin.config_radius; j <= plugin.config_radius; j++) {
 				int x = j * plugin.config_jumpInterval;
@@ -149,6 +152,7 @@ public class BlockChanger {
 	}
 
 	private void createCenterPoints(int posX, int posY) {
+		playerQueue.stop();
 		int x = posX * plugin.config_jumpInterval;
 		int y = posY * plugin.config_jumpInterval;
 		fill((x - 3), (plugin.config_lvlHeight + 1), (y - 3), (x + 3), (plugin.config_lvlHeight + 1), (y + 3), world, Material.AIR, (byte) 0);
@@ -173,6 +177,7 @@ public class BlockChanger {
 	}
 
 	private void createWays() {
+		playerQueue.stop();
 		for (int i = -plugin.config_radius; i <= plugin.config_radius; i++) {
 			for (int j = -plugin.config_radius; j <= plugin.config_radius; j++) {
 				if (i < plugin.config_radius) {
@@ -202,6 +207,7 @@ public class BlockChanger {
 	}
 
 	private void createWays(int posX, int posY) {
+		playerQueue.stop();
 		if (posY < plugin.config_radius) {
 			int x = posX * plugin.config_jumpInterval;
 			int y = posY * plugin.config_jumpInterval;
@@ -227,6 +233,7 @@ public class BlockChanger {
 	}
 
 	private void createFieldBorder() {
+		playerQueue.stop();
 		int edgeNW = (-1 * plugin.config_radius * plugin.config_jumpInterval) - 3;
 		int edgeSE = (plugin.config_radius * plugin.config_jumpInterval) + 3;
 		fill(edgeNW, (plugin.config_lvlHeight + 1), edgeNW, edgeSE, (plugin.config_lvlHeight + 1), edgeNW, world, Material.QUARTZ_BLOCK, (byte) 0);
@@ -236,6 +243,7 @@ public class BlockChanger {
 	}
 
 	private void createPlotBorder(int posX, int posY, byte id) {
+		playerQueue.stop();
 		int edgeNW_X = (posX * plugin.config_jumpInterval) + 3;
 		int edgeNW_Y = (posY * plugin.config_jumpInterval) + 3;
 		int edgeSE_X = ((posX + 1) * plugin.config_jumpInterval) - 3;
@@ -276,6 +284,7 @@ public class BlockChanger {
 	}
 
 	private void fill(int x1, int y1, int z1, int x2, int y2, int z2, World world, Material material, byte data) {
+		playerQueue.stop();
 		int iteratorX = 1;
 		if (x2 < x1) {
 			iteratorX = -1;

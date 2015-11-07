@@ -112,7 +112,7 @@ public class PlayerQueue {
 	}
 
 	public void stop() {
-		if (!isSilence) {
+		if ((!isSilence) && (isRunning)) {
 			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%queueStopped%", null);
 		}
 		isRunning = false;

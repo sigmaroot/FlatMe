@@ -30,7 +30,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 	public WorldGuardPlugin wgAPI;
 
 	public final String PLUGIN_TITLE = "FlatMe";
-	public final String PLUGIN_VERSION = "1.7.4";
+	public final String PLUGIN_VERSION = "1.7.5";
 
 	public int config_plotSize;
 	public int config_lvlHeight;
@@ -109,6 +109,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		flatMePlayers.add(player.getUniqueId());
+		flatMePlayers.getPlayer(player.getUniqueId()).checkForPlayer();
 		flatMePlayers.getPlayer(player.getUniqueId()).checkForPlots();
 	}
 

@@ -282,7 +282,6 @@ public class CommandHandler {
 			plugin.configurator.saveAllPlots();
 			BlockChanger blockChanger_5 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_5.getWorld());
 			blockChanger_5.runPlot(plotCheck_5.getPosX(), plotCheck_5.getPosY(), true, false, false);
-			plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
 			blockChanger_5.getPlayerQueue().run();
 			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotClaimed%", null);
 			break;
@@ -311,7 +310,6 @@ public class CommandHandler {
 			plugin.configurator.saveAllPlots();
 			BlockChanger blockChanger_6 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_6.getWorld());
 			blockChanger_6.runPlot(plotCheck_6.getPosX(), plotCheck_6.getPosY(), true, false, false);
-			plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
 			blockChanger_6.getPlayerQueue().run();
 			String[] args_6 = { String.format("%d", plotCheck_6.getPosX()), String.format("%d", plotCheck_6.getPosY()) };
 			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotAutoClaimed%", args_6);
@@ -363,7 +361,6 @@ public class CommandHandler {
 						plugin.configurator.saveAllPlots();
 						BlockChanger blockChanger_8 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_8.getWorld());
 						blockChanger_8.runPlot(plotCheck_8.getPosX(), plotCheck_8.getPosY(), false, false, false);
-						plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
 						blockChanger_8.getPlayerQueue().run();
 					}
 				}
@@ -510,7 +507,6 @@ public class CommandHandler {
 						BlockChanger blockChanger_11 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_11.getWorld());
 						blockChanger_11.runPlot(plotCheck_11.getPosX(), plotCheck_11.getPosY(), true, plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isExpired(), plugin.flatMePlayers
 								.getPlayer(i).getPlots().get(j).isLocked());
-						plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
 						blockChanger_11.getPlayerQueue().run();
 						String[] args_11 = { plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getReadableExpireDate() };
 						plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotExtended%", args_11);
@@ -542,7 +538,6 @@ public class CommandHandler {
 						BlockChanger blockChanger_12 = new BlockChanger(plugin, plugin.flatMePlayers.getPlayer(uuid), plotCheck_12.getWorld());
 						blockChanger_12.runPlot(plotCheck_12.getPosX(), plotCheck_12.getPosY(), true, plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isExpired(), plugin.flatMePlayers
 								.getPlayer(i).getPlots().get(j).isLocked());
-						plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
 						blockChanger_12.getPlayerQueue().run();
 					}
 				}
@@ -781,8 +776,14 @@ public class CommandHandler {
 			player.teleport(portLocation_19);
 			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%teleportToPlot%", null);
 			break;
+		case "hide":
+			// Execute command
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%queueHidden%", null);
+			plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
+			break;
 		case "show":
 			// Execute command
+			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%queueShown%", null);
 			plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(false);
 			break;
 		case "repair":
@@ -854,7 +855,6 @@ public class CommandHandler {
 						blockChanger_22.runPlot(plotCheck_22.getPosX(), plotCheck_22.getPosY(), false, false, false);
 						blockChanger_22.runPlot(cmdPosX_22, cmdPosY_22, true, plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isExpired(), plugin.flatMePlayers.getPlayer(i).getPlots().get(j)
 								.isLocked());
-						plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
 						blockChanger_22.getPlayerQueue().run();
 					}
 				}
@@ -892,7 +892,6 @@ public class CommandHandler {
 			if (!foundAOwnedPlot) {
 				blockChanger_23.runPlot(plotCheck_23.getPosX(), plotCheck_23.getPosY(), false, false, false);
 			}
-			plugin.flatMePlayers.getPlayer(uuid).setQueueSilence(true);
 			blockChanger_23.getPlayerQueue().run();
 			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%plotUpdated%", null);
 			break;
@@ -977,6 +976,7 @@ public class CommandHandler {
 		commandList.add("delete", new Command("flatme.admin", "/flatme delete", 0));
 		commandList.add("extend", new Command("flatme.player", "/flatme extend", 0));
 		commandList.add("help", new Command("flatme.player", "/flatme help [page]", 0));
+		commandList.add("hide", new Command("flatme.admin", "/flatme hide", 0));
 		commandList.add("home", new Command("flatme.player", "/flatme home", 0));
 		commandList.add("info", new Command("flatme.player", "/flatme info", 0));
 		commandList.add("lock", new Command("flatme.admin", "/flatme lock", 0));

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+// import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.earth2me.essentials.User;
@@ -16,7 +16,7 @@ public class FlatMePlayer {
 	private UUID uuid;
 	private String displayName;
 	private Player player;
-	private OfflinePlayer offlinePlayer;
+	// private OfflinePlayer offlinePlayer;
 	private User essentialsUser;
 	private List<Plot> plots;
 	private PlayerQueue queue;
@@ -28,7 +28,7 @@ public class FlatMePlayer {
 		this.plugin = plugin;
 		this.uuid = uuid;
 		player = plugin.getServer().getPlayer(uuid);
-		offlinePlayer = plugin.getServer().getOfflinePlayer(uuid);
+		// offlinePlayer = plugin.getServer().getOfflinePlayer(uuid);
 		essentialsUser = plugin.essAPI.getUser(uuid);
 		if (essentialsUser != null) {
 			displayName = essentialsUser.getName();
@@ -36,7 +36,11 @@ public class FlatMePlayer {
 			displayName = "?";
 		}
 		plots = new ArrayList<Plot>();
-		queue = new PlayerQueue(plugin, uuid, false);
+		if (player != null) {
+			queue = new PlayerQueue(plugin, uuid, !player.hasPermission("flatme.admin"));
+		} else {
+			queue = new PlayerQueue(plugin, uuid, true);
+		}
 		securityCommand = null;
 		answeredYes = false;
 	}
@@ -85,13 +89,13 @@ public class FlatMePlayer {
 		return player;
 	}
 
-	public OfflinePlayer getOfflinePlayer() {
-		return offlinePlayer;
-	}
-
-	public void setOfflinePlayer(OfflinePlayer offlinePlayer) {
-		this.offlinePlayer = offlinePlayer;
-	}
+	// public OfflinePlayer getOfflinePlayer() {
+	// return offlinePlayer;
+	// }
+	//
+	// public void setOfflinePlayer(OfflinePlayer offlinePlayer) {
+	// this.offlinePlayer = offlinePlayer;
+	// }
 
 	public void setPlayer(Player player) {
 		this.player = player;
@@ -126,6 +130,7 @@ public class FlatMePlayer {
 		Player tempPlayer = Bukkit.getServer().getPlayer(uuid);
 		if (tempPlayer != null) {
 			setPlayer(tempPlayer);
+			queue.setSilence(!player.hasPermission("flatme.admin"));
 		}
 	}
 
