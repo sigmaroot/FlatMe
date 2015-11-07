@@ -332,8 +332,8 @@ public class CommandHandler {
 			int portY_7 = plugin.flatMePlayers.getPlayer(uuid).getPlots().get(0).getPlaceY() * plugin.config_jumpInterval;
 			Location portLocation_7 = new Location(plotCheck_7.getWorld(), portX_7, (plugin.config_lvlHeight + 1), portY_7);
 			portLocation_7.setYaw(-45F);
-			player.teleport(portLocation_7);
-			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%teleportToFirstPlot%", null);
+			RunnableTeleport teleport_7 = new RunnableTeleport(plugin, player, portLocation_7, true);
+			teleport_7.run();
 			break;
 		case "delete":
 			// Security Check
@@ -773,8 +773,8 @@ public class CommandHandler {
 			int portY_19 = cmdPosY_19 * plugin.config_jumpInterval;
 			Location portLocation_19 = new Location(plotCheck_19.getWorld(), portX_19, (plugin.config_lvlHeight + 1), portY_19);
 			portLocation_19.setYaw(-45F);
-			player.teleport(portLocation_19);
-			plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%teleportToPlot%", null);
+			RunnableTeleport teleport_19 = new RunnableTeleport(plugin, player, portLocation_19, false);
+			teleport_19.run();
 			break;
 		case "hide":
 			// Execute command

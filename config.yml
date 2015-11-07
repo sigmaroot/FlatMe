@@ -2,7 +2,7 @@
 ###                                                                                                ###
 ###   FlatMe - Plot Plugin by Steven Meisberger (Sigmaroot Administration)                         ###
 ###                                                                                                ###
-###     Version:     1.0                                                                           ###
+###     Version:     1.7.6                                                                         ###
 ###     File:        Basic Configuration                                                           ###
 ###                                                                                                ###
 ###     Date:        01.11.2015                                                                    ###
@@ -45,3 +45,8 @@ extendCost: 1000
 ###  Auto-update all plots 60 secs after server start    ###
 ###  Default: true                                       ###
 autoUpdate: true
+###  Delay in seconds befor a teleport is triggered      ###
+###  Players with permission flatme.instantport are      ###
+###  allowed to teleport instantly                       ###
+###  Default: 3                                          ###
+portDelay: 3

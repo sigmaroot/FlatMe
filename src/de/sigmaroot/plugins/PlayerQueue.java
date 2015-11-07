@@ -122,7 +122,6 @@ public class PlayerQueue {
 		} catch (Exception e) {
 			// Timer not started yet
 		}
-		isSilence = false;
 	}
 
 	private void runTask() {

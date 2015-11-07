@@ -19,7 +19,7 @@ public class BlockChanger {
 		this.player = player;
 		playerQueue = player.getQueue();
 	}
-	
+
 	public BlockChanger(FlatMe plugin, CommandSender console, World world) {
 		super();
 		this.plugin = plugin;
@@ -63,7 +63,7 @@ public class BlockChanger {
 		createFieldBorder();
 		player.sendLocalizedString("%commandHasBeenQueued%", null);
 	}
-	
+
 	public void runRepair(int posX, int posY) {
 		playerQueue.stop();
 		player.sendLocalizedString("%commandMayTakeAWhile%", null);
@@ -109,13 +109,13 @@ public class BlockChanger {
 		player.getPlayer().performCommand("/pos2 " + (((posX + 1) * plugin.config_jumpInterval) - 4) + "," + (world.getMaxHeight() - 1) + "," + (((posY + 1) * plugin.config_jumpInterval) - 4));
 		player.getPlayer().performCommand("/regen");
 	}
-	
+
 	public void runWEcopy(int posX, int posY) {
 		player.getPlayer().performCommand("/pos1 " + ((posX * plugin.config_jumpInterval) + 4) + ",0," + ((posY * plugin.config_jumpInterval) + 4));
 		player.getPlayer().performCommand("/pos2 " + (((posX + 1) * plugin.config_jumpInterval) - 4) + "," + (world.getMaxHeight() - 1) + "," + (((posY + 1) * plugin.config_jumpInterval) - 4));
 		player.getPlayer().performCommand("/copy");
 	}
-	
+
 	public void runWEpaste(int posX, int posY) {
 		player.getPlayer().performCommand("/pos1 " + ((posX * plugin.config_jumpInterval) + 4) + ",0," + ((posY * plugin.config_jumpInterval) + 4));
 		player.getPlayer().performCommand("/pos2 " + (((posX + 1) * plugin.config_jumpInterval) - 4) + "," + (world.getMaxHeight() - 1) + "," + (((posY + 1) * plugin.config_jumpInterval) - 4));
