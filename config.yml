@@ -2,7 +2,7 @@
 ###                                                                                                ###
 ###   FlatMe - Plot Plugin by Steven Meisberger (Sigmaroot Administration)                         ###
 ###                                                                                                ###
-###     Version:     1.7.6                                                                         ###
+###     Version:     1.8                                                                           ###
 ###     File:        Basic Configuration                                                           ###
 ###                                                                                                ###
 ###     Date:        01.11.2015                                                                    ###
@@ -26,8 +26,8 @@ plotSize: 50
 levelHeight: 3
 ###  Blocks per tick to handle with (1 tick = 1/20 sec)  ###
 ###  Be careful, this may result in lags                 ###
-###  Default: 100                                        ###
-maxBlocksPerTick: 100
+###  Default: 1000                                       ###
+maxBlocksPerTick: 1000
 ###  Results to show on one page in lists                ###
 ###  Default: 5                                          ###
 maxResultsPerPage: 5

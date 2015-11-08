@@ -130,7 +130,6 @@ public class FlatMePlayer {
 		Player tempPlayer = Bukkit.getServer().getPlayer(uuid);
 		if (tempPlayer != null) {
 			setPlayer(tempPlayer);
-			queue.setSilence(!player.hasPermission("flatme.admin"));
 		}
 	}
 

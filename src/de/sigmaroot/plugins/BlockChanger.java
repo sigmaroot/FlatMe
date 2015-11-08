@@ -1,9 +1,13 @@
 package de.sigmaroot.plugins;
 
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 
 public class BlockChanger {
 
@@ -52,55 +56,25 @@ public class BlockChanger {
 		this.playerQueue = playerQueue;
 	}
 
-	public void runCreate() {
-		playerQueue.stop();
-		if (plugin.config_radius > 20) {
-			player.sendLocalizedString("%commandCreateLarge%", null);
-		}
-		player.sendLocalizedString("%commandMayTakeAWhile%", null);
-		createCenterPoints();
-		createWays();
-		createFieldBorder();
-		player.sendLocalizedString("%commandHasBeenQueued%", null);
-	}
-
-	public void runRepair(int posX, int posY) {
-		playerQueue.stop();
-		player.sendLocalizedString("%commandMayTakeAWhile%", null);
-		createCenterPoints(posX, posY);
+	public void runRunway(int posX, int posY) {
+		createCenterPoint(posX, posY);
 		createWays(posX, posY);
-		createFieldBorder();
-		player.sendLocalizedString("%commandHasBeenQueued%", null);
 	}
 
-	public void runPlot(int posX, int posY, boolean used, boolean expired, boolean locked) {
-		playerQueue.stop();
-		if (!used) {
-			createPlotBorder(posX, posY, (byte) 7);
-		} else {
-			if (!expired) {
-				if (!locked) {
-					createPlotBorder(posX, posY, (byte) 6);
-				} else {
-					createPlotBorder(posX, posY, (byte) 0);
-				}
-			} else {
-				if (!locked) {
-					createPlotBorder(posX, posY, (byte) 4);
-				} else {
-					createPlotBorder(posX, posY, (byte) 0);
-				}
-			}
-		}
+	public void runAreaBorder() {
+		createAreaBorder();
+	}
+
+	public void runPlotBorder(int posX, int posY) {
+		createPlotBorder(posX, posY);
 	}
 
 	public void runRegen(int posX, int posY) {
-		playerQueue.stop();
-		fill(((posX * plugin.config_jumpInterval) + 4), 1, ((posY * plugin.config_jumpInterval) + 4), (((posX + 1) * plugin.config_jumpInterval) - 4), (plugin.config_lvlHeight - 1),
+		fill(((posX * plugin.config_jumpInterval) + 4), 1, ((posY * plugin.config_jumpInterval) + 4), (((posX + 1) * plugin.config_jumpInterval) - 4), (plugin.config_levelHeight - 1),
 				(((posY + 1) * plugin.config_jumpInterval) - 4), world, Material.DIRT, (byte) 0);
-		fill(((posX * plugin.config_jumpInterval) + 4), plugin.config_lvlHeight, ((posY * plugin.config_jumpInterval) + 4), (((posX + 1) * plugin.config_jumpInterval) - 4), plugin.config_lvlHeight,
-				(((posY + 1) * plugin.config_jumpInterval) - 4), world, Material.GRASS, (byte) 0);
-		fill(((posX * plugin.config_jumpInterval) + 4), (plugin.config_lvlHeight + 1), ((posY * plugin.config_jumpInterval) + 4), (((posX + 1) * plugin.config_jumpInterval) - 4),
+		fill(((posX * plugin.config_jumpInterval) + 4), plugin.config_levelHeight, ((posY * plugin.config_jumpInterval) + 4), (((posX + 1) * plugin.config_jumpInterval) - 4),
+				plugin.config_levelHeight, (((posY + 1) * plugin.config_jumpInterval) - 4), world, Material.GRASS, (byte) 0);
+		fill(((posX * plugin.config_jumpInterval) + 4), (plugin.config_levelHeight + 1), ((posY * plugin.config_jumpInterval) + 4), (((posX + 1) * plugin.config_jumpInterval) - 4),
 				(world.getMaxHeight() - 1), (((posY + 1) * plugin.config_jumpInterval) - 4), world, Material.AIR, (byte) 0);
 	}
 
@@ -122,139 +96,73 @@ public class BlockChanger {
 		player.getPlayer().performCommand("/paste");
 	}
 
-	private void createCenterPoints() {
-		playerQueue.stop();
-		for (int i = -plugin.config_radius; i <= plugin.config_radius; i++) {
-			for (int j = -plugin.config_radius; j <= plugin.config_radius; j++) {
-				int x = j * plugin.config_jumpInterval;
-				int y = i * plugin.config_jumpInterval;
-				fill((x - 3), (plugin.config_lvlHeight + 1), (y - 3), (x + 3), (plugin.config_lvlHeight + 1), (y + 3), world, Material.AIR, (byte) 0);
-				playerQueue.addEvent((x - 3), plugin.config_lvlHeight, (y - 3), world, Material.DIRT, (byte) 0, null);
-				playerQueue.addEvent((x - 3), plugin.config_lvlHeight, (y + 3), world, Material.DIRT, (byte) 0, null);
-				playerQueue.addEvent((x + 3), plugin.config_lvlHeight, (y - 3), world, Material.DIRT, (byte) 0, null);
-				playerQueue.addEvent((x + 3), plugin.config_lvlHeight, (y + 3), world, Material.DIRT, (byte) 0, null);
-				playerQueue.addEvent((x - 3), (plugin.config_lvlHeight + 1), (y - 3), world, Material.STEP, (byte) 7, null);
-				playerQueue.addEvent((x - 3), (plugin.config_lvlHeight + 1), (y + 3), world, Material.STEP, (byte) 7, null);
-				playerQueue.addEvent((x + 3), (plugin.config_lvlHeight + 1), (y - 3), world, Material.STEP, (byte) 7, null);
-				playerQueue.addEvent((x + 3), (plugin.config_lvlHeight + 1), (y + 3), world, Material.STEP, (byte) 7, null);
-				fill((x - 2), plugin.config_lvlHeight, (y - 3), (x + 2), plugin.config_lvlHeight, (y + 3), world, Material.GLOWSTONE, (byte) 0);
-				fill((x - 3), plugin.config_lvlHeight, (y - 2), (x + 3), plugin.config_lvlHeight, (y + 2), world, Material.GLOWSTONE, (byte) 0);
-				fill((x - 1), plugin.config_lvlHeight, (y - 3), (x + 1), plugin.config_lvlHeight, (y + 3), world, Material.WOOD, (byte) 5);
-				fill((x - 3), plugin.config_lvlHeight, (y - 1), (x + 3), plugin.config_lvlHeight, (y + 1), world, Material.WOOD, (byte) 5);
-				playerQueue.addEvent((x - 1), plugin.config_lvlHeight, y, world, Material.EMERALD_BLOCK, (byte) 0, null);
-				playerQueue.addEvent((x + 1), plugin.config_lvlHeight, y, world, Material.EMERALD_BLOCK, (byte) 0, null);
-				playerQueue.addEvent(x, plugin.config_lvlHeight, (y - 1), world, Material.EMERALD_BLOCK, (byte) 0, null);
-				playerQueue.addEvent(x, plugin.config_lvlHeight, (y + 1), world, Material.EMERALD_BLOCK, (byte) 0, null);
-				playerQueue.addEvent(x, plugin.config_lvlHeight, y, world, Material.DIAMOND_BLOCK, (byte) 0, null);
-			}
-		}
-
+	public void runEntityRemoval(int posX, int posY) {
+		removeEntities(posX, posY);
 	}
 
-	private void createCenterPoints(int posX, int posY) {
-		playerQueue.stop();
+	private void createCenterPoint(int posX, int posY) {
+		playerQueue.stopQueue();
 		int x = posX * plugin.config_jumpInterval;
 		int y = posY * plugin.config_jumpInterval;
-		fill((x - 3), (plugin.config_lvlHeight + 1), (y - 3), (x + 3), (plugin.config_lvlHeight + 1), (y + 3), world, Material.AIR, (byte) 0);
-		playerQueue.addEvent((x - 3), plugin.config_lvlHeight, (y - 3), world, Material.DIRT, (byte) 0, null);
-		playerQueue.addEvent((x - 3), plugin.config_lvlHeight, (y + 3), world, Material.DIRT, (byte) 0, null);
-		playerQueue.addEvent((x + 3), plugin.config_lvlHeight, (y - 3), world, Material.DIRT, (byte) 0, null);
-		playerQueue.addEvent((x + 3), plugin.config_lvlHeight, (y + 3), world, Material.DIRT, (byte) 0, null);
-		playerQueue.addEvent((x - 3), (plugin.config_lvlHeight + 1), (y - 3), world, Material.STEP, (byte) 7, null);
-		playerQueue.addEvent((x - 3), (plugin.config_lvlHeight + 1), (y + 3), world, Material.STEP, (byte) 7, null);
-		playerQueue.addEvent((x + 3), (plugin.config_lvlHeight + 1), (y - 3), world, Material.STEP, (byte) 7, null);
-		playerQueue.addEvent((x + 3), (plugin.config_lvlHeight + 1), (y + 3), world, Material.STEP, (byte) 7, null);
-		fill((x - 2), plugin.config_lvlHeight, (y - 3), (x + 2), plugin.config_lvlHeight, (y + 3), world, Material.GLOWSTONE, (byte) 0);
-		fill((x - 3), plugin.config_lvlHeight, (y - 2), (x + 3), plugin.config_lvlHeight, (y + 2), world, Material.GLOWSTONE, (byte) 0);
-		fill((x - 1), plugin.config_lvlHeight, (y - 3), (x + 1), plugin.config_lvlHeight, (y + 3), world, Material.WOOD, (byte) 5);
-		fill((x - 3), plugin.config_lvlHeight, (y - 1), (x + 3), plugin.config_lvlHeight, (y + 1), world, Material.WOOD, (byte) 5);
-		playerQueue.addEvent((x - 1), plugin.config_lvlHeight, y, world, Material.EMERALD_BLOCK, (byte) 0, null);
-		playerQueue.addEvent((x + 1), plugin.config_lvlHeight, y, world, Material.EMERALD_BLOCK, (byte) 0, null);
-		playerQueue.addEvent(x, plugin.config_lvlHeight, (y - 1), world, Material.EMERALD_BLOCK, (byte) 0, null);
-		playerQueue.addEvent(x, plugin.config_lvlHeight, (y + 1), world, Material.EMERALD_BLOCK, (byte) 0, null);
-		playerQueue.addEvent(x, plugin.config_lvlHeight, y, world, Material.DIAMOND_BLOCK, (byte) 0, null);
+		fill((x - 3), (plugin.config_levelHeight + 1), (y - 3), (x + 3), (plugin.config_levelHeight + 1), (y + 3), world, Material.AIR, (byte) 0);
+		playerQueue.addEvent((x - 3), plugin.config_levelHeight, (y - 3), world, Material.DIRT, (byte) 0, null);
+		playerQueue.addEvent((x - 3), plugin.config_levelHeight, (y + 3), world, Material.DIRT, (byte) 0, null);
+		playerQueue.addEvent((x + 3), plugin.config_levelHeight, (y - 3), world, Material.DIRT, (byte) 0, null);
+		playerQueue.addEvent((x + 3), plugin.config_levelHeight, (y + 3), world, Material.DIRT, (byte) 0, null);
+		playerQueue.addEvent((x - 3), (plugin.config_levelHeight + 1), (y - 3), world, Material.STEP, (byte) 7, null);
+		playerQueue.addEvent((x - 3), (plugin.config_levelHeight + 1), (y + 3), world, Material.STEP, (byte) 7, null);
+		playerQueue.addEvent((x + 3), (plugin.config_levelHeight + 1), (y - 3), world, Material.STEP, (byte) 7, null);
+		playerQueue.addEvent((x + 3), (plugin.config_levelHeight + 1), (y + 3), world, Material.STEP, (byte) 7, null);
+		fill((x - 2), plugin.config_levelHeight, (y - 3), (x + 2), plugin.config_levelHeight, (y + 3), world, Material.GLOWSTONE, (byte) 0);
+		fill((x - 3), plugin.config_levelHeight, (y - 2), (x + 3), plugin.config_levelHeight, (y + 2), world, Material.GLOWSTONE, (byte) 0);
+		fill((x - 1), plugin.config_levelHeight, (y - 3), (x + 1), plugin.config_levelHeight, (y + 3), world, Material.WOOD, (byte) 5);
+		fill((x - 3), plugin.config_levelHeight, (y - 1), (x + 3), plugin.config_levelHeight, (y + 1), world, Material.WOOD, (byte) 5);
+		playerQueue.addEvent((x - 1), plugin.config_levelHeight, y, world, Material.EMERALD_BLOCK, (byte) 0, null);
+		playerQueue.addEvent((x + 1), plugin.config_levelHeight, y, world, Material.EMERALD_BLOCK, (byte) 0, null);
+		playerQueue.addEvent(x, plugin.config_levelHeight, (y - 1), world, Material.EMERALD_BLOCK, (byte) 0, null);
+		playerQueue.addEvent(x, plugin.config_levelHeight, (y + 1), world, Material.EMERALD_BLOCK, (byte) 0, null);
+		playerQueue.addEvent(x, plugin.config_levelHeight, y, world, Material.DIAMOND_BLOCK, (byte) 0, null);
 
-	}
-
-	private void createWays() {
-		playerQueue.stop();
-		for (int i = -plugin.config_radius; i <= plugin.config_radius; i++) {
-			for (int j = -plugin.config_radius; j <= plugin.config_radius; j++) {
-				if (i < plugin.config_radius) {
-					int x = j * plugin.config_jumpInterval;
-					int y = i * plugin.config_jumpInterval;
-					fill((x - 3), plugin.config_lvlHeight, (y + 4), (x - 3), plugin.config_lvlHeight, (y + plugin.config_plotSize + 3), world, Material.DIRT, (byte) 0);
-					fill((x - 3), (plugin.config_lvlHeight + 1), (y + 4), (x - 3), (plugin.config_lvlHeight + 1), (y + plugin.config_plotSize + 3), world, Material.STEP, (byte) 7);
-					fill((x + 3), plugin.config_lvlHeight, (y + 4), (x + 3), plugin.config_lvlHeight, (y + plugin.config_plotSize + 3), world, Material.DIRT, (byte) 0);
-					fill((x + 3), (plugin.config_lvlHeight + 1), (y + 4), (x + 3), (plugin.config_lvlHeight + 1), (y + plugin.config_plotSize + 3), world, Material.STEP, (byte) 7);
-					fill((x - 2), plugin.config_lvlHeight, (y + 4), (x - 2), plugin.config_lvlHeight, (y + plugin.config_plotSize + 3), world, Material.GLOWSTONE, (byte) 0);
-					fill((x + 2), plugin.config_lvlHeight, (y + 4), (x + 2), plugin.config_lvlHeight, (y + plugin.config_plotSize + 3), world, Material.GLOWSTONE, (byte) 0);
-					fill((x - 1), plugin.config_lvlHeight, (y + 4), (x + 1), plugin.config_lvlHeight, (y + plugin.config_plotSize + 3), world, Material.WOOD, (byte) 5);
-				}
-				if (j < plugin.config_radius) {
-					int x = j * plugin.config_jumpInterval;
-					int y = i * plugin.config_jumpInterval;
-					fill((x + 4), plugin.config_lvlHeight, (y - 3), (x + plugin.config_plotSize + 3), plugin.config_lvlHeight, (y - 3), world, Material.DIRT, (byte) 0);
-					fill((x + 4), (plugin.config_lvlHeight + 1), (y - 3), (x + plugin.config_plotSize + 3), (plugin.config_lvlHeight + 1), (y - 3), world, Material.STEP, (byte) 7);
-					fill((x + 4), plugin.config_lvlHeight, (y + 3), (x + plugin.config_plotSize + 3), plugin.config_lvlHeight, (y + 3), world, Material.DIRT, (byte) 0);
-					fill((x + 4), (plugin.config_lvlHeight + 1), (y + 3), (x + plugin.config_plotSize + 3), (plugin.config_lvlHeight + 1), (y + 3), world, Material.STEP, (byte) 7);
-					fill((x + 4), plugin.config_lvlHeight, (y - 2), (x + plugin.config_plotSize + 3), plugin.config_lvlHeight, (y - 2), world, Material.GLOWSTONE, (byte) 0);
-					fill((x + 4), plugin.config_lvlHeight, (y + 2), (x + plugin.config_plotSize + 3), plugin.config_lvlHeight, (y + 2), world, Material.GLOWSTONE, (byte) 0);
-					fill((x + 4), plugin.config_lvlHeight, (y - 1), (x + plugin.config_plotSize + 3), plugin.config_lvlHeight, (y + 1), world, Material.WOOD, (byte) 5);
-				}
-			}
-		}
 	}
 
 	private void createWays(int posX, int posY) {
-		playerQueue.stop();
 		if (posY < plugin.config_radius) {
 			int x = posX * plugin.config_jumpInterval;
 			int y = posY * plugin.config_jumpInterval;
-			fill((x - 3), plugin.config_lvlHeight, (y + 4), (x - 3), plugin.config_lvlHeight, (y + plugin.config_plotSize + 3), world, Material.DIRT, (byte) 0);
-			fill((x - 3), (plugin.config_lvlHeight + 1), (y + 4), (x - 3), (plugin.config_lvlHeight + 1), (y + plugin.config_plotSize + 3), world, Material.STEP, (byte) 7);
-			fill((x + 3), plugin.config_lvlHeight, (y + 4), (x + 3), plugin.config_lvlHeight, (y + plugin.config_plotSize + 3), world, Material.DIRT, (byte) 0);
-			fill((x + 3), (plugin.config_lvlHeight + 1), (y + 4), (x + 3), (plugin.config_lvlHeight + 1), (y + plugin.config_plotSize + 3), world, Material.STEP, (byte) 7);
-			fill((x - 2), plugin.config_lvlHeight, (y + 4), (x - 2), plugin.config_lvlHeight, (y + plugin.config_plotSize + 3), world, Material.GLOWSTONE, (byte) 0);
-			fill((x + 2), plugin.config_lvlHeight, (y + 4), (x + 2), plugin.config_lvlHeight, (y + plugin.config_plotSize + 3), world, Material.GLOWSTONE, (byte) 0);
-			fill((x - 1), plugin.config_lvlHeight, (y + 4), (x + 1), plugin.config_lvlHeight, (y + plugin.config_plotSize + 3), world, Material.WOOD, (byte) 5);
+			fill((x - 3), plugin.config_levelHeight, (y + 4), (x - 3), plugin.config_levelHeight, (y + plugin.config_plotSize + 3), world, Material.DIRT, (byte) 0);
+			fill((x - 3), (plugin.config_levelHeight + 1), (y + 4), (x - 3), (plugin.config_levelHeight + 1), (y + plugin.config_plotSize + 3), world, Material.STEP, (byte) 7);
+			fill((x + 3), plugin.config_levelHeight, (y + 4), (x + 3), plugin.config_levelHeight, (y + plugin.config_plotSize + 3), world, Material.DIRT, (byte) 0);
+			fill((x + 3), (plugin.config_levelHeight + 1), (y + 4), (x + 3), (plugin.config_levelHeight + 1), (y + plugin.config_plotSize + 3), world, Material.STEP, (byte) 7);
+			fill((x - 2), plugin.config_levelHeight, (y + 4), (x - 2), plugin.config_levelHeight, (y + plugin.config_plotSize + 3), world, Material.GLOWSTONE, (byte) 0);
+			fill((x + 2), plugin.config_levelHeight, (y + 4), (x + 2), plugin.config_levelHeight, (y + plugin.config_plotSize + 3), world, Material.GLOWSTONE, (byte) 0);
+			fill((x - 1), plugin.config_levelHeight, (y + 4), (x + 1), plugin.config_levelHeight, (y + plugin.config_plotSize + 3), world, Material.WOOD, (byte) 5);
 		}
 		if (posX < plugin.config_radius) {
 			int x = posX * plugin.config_jumpInterval;
 			int y = posY * plugin.config_jumpInterval;
-			fill((x + 4), plugin.config_lvlHeight, (y - 3), (x + plugin.config_plotSize + 3), plugin.config_lvlHeight, (y - 3), world, Material.DIRT, (byte) 0);
-			fill((x + 4), (plugin.config_lvlHeight + 1), (y - 3), (x + plugin.config_plotSize + 3), (plugin.config_lvlHeight + 1), (y - 3), world, Material.STEP, (byte) 7);
-			fill((x + 4), plugin.config_lvlHeight, (y + 3), (x + plugin.config_plotSize + 3), plugin.config_lvlHeight, (y + 3), world, Material.DIRT, (byte) 0);
-			fill((x + 4), (plugin.config_lvlHeight + 1), (y + 3), (x + plugin.config_plotSize + 3), (plugin.config_lvlHeight + 1), (y + 3), world, Material.STEP, (byte) 7);
-			fill((x + 4), plugin.config_lvlHeight, (y - 2), (x + plugin.config_plotSize + 3), plugin.config_lvlHeight, (y - 2), world, Material.GLOWSTONE, (byte) 0);
-			fill((x + 4), plugin.config_lvlHeight, (y + 2), (x + plugin.config_plotSize + 3), plugin.config_lvlHeight, (y + 2), world, Material.GLOWSTONE, (byte) 0);
-			fill((x + 4), plugin.config_lvlHeight, (y - 1), (x + plugin.config_plotSize + 3), plugin.config_lvlHeight, (y + 1), world, Material.WOOD, (byte) 5);
+			fill((x + 4), plugin.config_levelHeight, (y - 3), (x + plugin.config_plotSize + 3), plugin.config_levelHeight, (y - 3), world, Material.DIRT, (byte) 0);
+			fill((x + 4), (plugin.config_levelHeight + 1), (y - 3), (x + plugin.config_plotSize + 3), (plugin.config_levelHeight + 1), (y - 3), world, Material.STEP, (byte) 7);
+			fill((x + 4), plugin.config_levelHeight, (y + 3), (x + plugin.config_plotSize + 3), plugin.config_levelHeight, (y + 3), world, Material.DIRT, (byte) 0);
+			fill((x + 4), (plugin.config_levelHeight + 1), (y + 3), (x + plugin.config_plotSize + 3), (plugin.config_levelHeight + 1), (y + 3), world, Material.STEP, (byte) 7);
+			fill((x + 4), plugin.config_levelHeight, (y - 2), (x + plugin.config_plotSize + 3), plugin.config_levelHeight, (y - 2), world, Material.GLOWSTONE, (byte) 0);
+			fill((x + 4), plugin.config_levelHeight, (y + 2), (x + plugin.config_plotSize + 3), plugin.config_levelHeight, (y + 2), world, Material.GLOWSTONE, (byte) 0);
+			fill((x + 4), plugin.config_levelHeight, (y - 1), (x + plugin.config_plotSize + 3), plugin.config_levelHeight, (y + 1), world, Material.WOOD, (byte) 5);
 		}
 	}
 
-	private void createFieldBorder() {
-		playerQueue.stop();
+	private void createAreaBorder() {
 		int edgeNW = (-1 * plugin.config_radius * plugin.config_jumpInterval) - 3;
 		int edgeSE = (plugin.config_radius * plugin.config_jumpInterval) + 3;
-		fill(edgeNW, (plugin.config_lvlHeight + 1), edgeNW, edgeSE, (plugin.config_lvlHeight + 1), edgeNW, world, Material.QUARTZ_BLOCK, (byte) 0);
-		fill(edgeSE, (plugin.config_lvlHeight + 1), edgeNW, edgeSE, (plugin.config_lvlHeight + 1), edgeSE, world, Material.QUARTZ_BLOCK, (byte) 0);
-		fill(edgeSE, (plugin.config_lvlHeight + 1), edgeSE, edgeNW, (plugin.config_lvlHeight + 1), edgeSE, world, Material.QUARTZ_BLOCK, (byte) 0);
-		fill(edgeNW, (plugin.config_lvlHeight + 1), edgeSE, edgeNW, (plugin.config_lvlHeight + 1), edgeNW, world, Material.QUARTZ_BLOCK, (byte) 0);
+		fill(edgeNW, (plugin.config_levelHeight + 1), edgeNW, edgeSE, (plugin.config_levelHeight + 1), edgeNW, world, Material.QUARTZ_BLOCK, (byte) 0);
+		fill(edgeSE, (plugin.config_levelHeight + 1), edgeNW, edgeSE, (plugin.config_levelHeight + 1), edgeSE, world, Material.QUARTZ_BLOCK, (byte) 0);
+		fill(edgeSE, (plugin.config_levelHeight + 1), edgeSE, edgeNW, (plugin.config_levelHeight + 1), edgeSE, world, Material.QUARTZ_BLOCK, (byte) 0);
+		fill(edgeNW, (plugin.config_levelHeight + 1), edgeSE, edgeNW, (plugin.config_levelHeight + 1), edgeNW, world, Material.QUARTZ_BLOCK, (byte) 0);
 	}
 
-	private void createPlotBorder(int posX, int posY, byte id) {
-		playerQueue.stop();
-		int edgeNW_X = (posX * plugin.config_jumpInterval) + 3;
-		int edgeNW_Y = (posY * plugin.config_jumpInterval) + 3;
-		int edgeSE_X = ((posX + 1) * plugin.config_jumpInterval) - 3;
-		int edgeSE_Y = ((posY + 1) * plugin.config_jumpInterval) - 3;
-		fill(edgeNW_X, (plugin.config_lvlHeight + 1), edgeNW_Y, edgeSE_X, (plugin.config_lvlHeight + 1), edgeNW_Y, world, Material.STEP, (byte) id);
-		fill(edgeSE_X, (plugin.config_lvlHeight + 1), edgeNW_Y, edgeSE_X, (plugin.config_lvlHeight + 1), edgeSE_Y, world, Material.STEP, (byte) id);
-		fill(edgeSE_X, (plugin.config_lvlHeight + 1), edgeSE_Y, edgeNW_X, (plugin.config_lvlHeight + 1), edgeSE_Y, world, Material.STEP, (byte) id);
-		fill(edgeNW_X, (plugin.config_lvlHeight + 1), edgeSE_Y, edgeNW_X, (plugin.config_lvlHeight + 1), edgeNW_Y, world, Material.STEP, (byte) id);
-		playerQueue.addEvent(edgeNW_X, (plugin.config_lvlHeight + 1), edgeNW_Y, world, Material.QUARTZ_BLOCK, (byte) 1, null);
+	private void createPlotBorder(int posX, int posY) {
 		String owner = "-";
 		String expire = "-";
+		boolean isFree = true;
 		boolean isExpired = false;
 		boolean isLocked = false;
 		for (int i = 0; i < plugin.flatMePlayers.size(); i++) {
@@ -262,11 +170,33 @@ public class BlockChanger {
 				if ((plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX() == posX) && (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY() == posY)) {
 					owner = plugin.flatMePlayers.getPlayer(i).getDisplayName();
 					expire = plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getReadableExpireDate();
+					isFree = false;
 					isExpired = plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isExpired();
 					isLocked = plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isLocked();
 				}
 			}
 		}
+		byte id = (byte) 0;
+		if (isFree) {
+			id = (byte) 7;
+		} else {
+			if (!isLocked) {
+				if (!isExpired) {
+					id = (byte) 6;
+				} else {
+					id = (byte) 4;
+				}
+			}
+		}
+		int edgeNW_X = (posX * plugin.config_jumpInterval) + 3;
+		int edgeNW_Y = (posY * plugin.config_jumpInterval) + 3;
+		int edgeSE_X = ((posX + 1) * plugin.config_jumpInterval) - 3;
+		int edgeSE_Y = ((posY + 1) * plugin.config_jumpInterval) - 3;
+		fill(edgeNW_X, (plugin.config_levelHeight + 1), edgeNW_Y, edgeSE_X, (plugin.config_levelHeight + 1), edgeNW_Y, world, Material.STEP, (byte) id);
+		fill(edgeSE_X, (plugin.config_levelHeight + 1), edgeNW_Y, edgeSE_X, (plugin.config_levelHeight + 1), edgeSE_Y, world, Material.STEP, (byte) id);
+		fill(edgeSE_X, (plugin.config_levelHeight + 1), edgeSE_Y, edgeNW_X, (plugin.config_levelHeight + 1), edgeSE_Y, world, Material.STEP, (byte) id);
+		fill(edgeNW_X, (plugin.config_levelHeight + 1), edgeSE_Y, edgeNW_X, (plugin.config_levelHeight + 1), edgeNW_Y, world, Material.STEP, (byte) id);
+		playerQueue.addEvent(edgeNW_X, (plugin.config_levelHeight + 1), edgeNW_Y, world, Material.QUARTZ_BLOCK, (byte) 1, null);
 		String plotId = "X: " + String.format("%d", posX) + " Y: " + String.format("%d", posY);
 		String showOwner = ChatColor.DARK_BLUE + owner;
 		String showExpire = "";
@@ -280,11 +210,10 @@ public class BlockChanger {
 			}
 		}
 		String[] args = { plotId, showOwner, showExpire };
-		playerQueue.addEvent(edgeNW_X, (plugin.config_lvlHeight + 1), edgeNW_Y - 1, world, Material.WALL_SIGN, (byte) 0, args);
+		playerQueue.addEvent(edgeNW_X, (plugin.config_levelHeight + 1), edgeNW_Y - 1, world, Material.WALL_SIGN, (byte) 0, args);
 	}
 
 	private void fill(int x1, int y1, int z1, int x2, int y2, int z2, World world, Material material, byte data) {
-		playerQueue.stop();
 		int iteratorX = 1;
 		if (x2 < x1) {
 			iteratorX = -1;
@@ -306,4 +235,41 @@ public class BlockChanger {
 		}
 	}
 
+	private void removeEntities(int posX, int posY) {
+		List<Entity> entList = world.getEntities();
+		for (Entity current : entList) {
+			if (current instanceof Item) {
+				if (testForLocation(posX, posY, current)) {
+					current.remove();
+				}
+			}
+		}
+	}
+
+	private boolean testForLocation(int posX, int posY, Entity entity) {
+		Coordinates thisPlot = calculateCoords(posX, posY);
+		Coordinates entityPos = new Coordinates();
+		entityPos.setStartCoordX(entity.getLocation().getBlockX());
+		entityPos.setStartCoordY(entity.getLocation().getBlockZ());
+		boolean xOkay = false;
+		boolean yOkay = false;
+		if (((entityPos.getStartCoordX() >= thisPlot.getStartCoordX()) && (entityPos.getStartCoordX() <= thisPlot.getEndCoordX()))
+				|| ((entityPos.getStartCoordX() <= thisPlot.getStartCoordX()) && (entityPos.getStartCoordX() >= thisPlot.getEndCoordX()))) {
+			xOkay = true;
+		}
+		if (((entityPos.getStartCoordY() >= thisPlot.getStartCoordY()) && (entityPos.getStartCoordY() <= thisPlot.getEndCoordY()))
+				|| ((entityPos.getStartCoordY() <= thisPlot.getStartCoordY()) && (entityPos.getStartCoordY() >= thisPlot.getEndCoordY()))) {
+			yOkay = true;
+		}
+		return (xOkay && yOkay);
+	}
+
+	private Coordinates calculateCoords(int posX, int posY) {
+		Coordinates coords = new Coordinates();
+		coords.setStartCoordX((posX * plugin.config_jumpInterval) + 2);
+		coords.setStartCoordY((posY * plugin.config_jumpInterval) + 2);
+		coords.setEndCoordX(coords.getStartCoordX() + plugin.config_plotSize + 3);
+		coords.setEndCoordY(coords.getStartCoordY() + plugin.config_plotSize + 3);
+		return coords;
+	}
 }

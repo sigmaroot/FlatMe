@@ -164,13 +164,11 @@ public class Plot {
 	}
 
 	private Coordinates calculateCoords() {
-		int plotSize = plugin.config.getInt("plotSize", 50);
-		int jumpInterval = plotSize + 7;
 		Coordinates coords = new Coordinates();
-		coords.setStartCoordX((placeX * jumpInterval) + 4);
-		coords.setStartCoordY((placeY * jumpInterval) + 4);
-		coords.setEndCoordX(coords.getStartCoordX() + plotSize - 1);
-		coords.setEndCoordY(coords.getStartCoordY() + plotSize - 1);
+		coords.setStartCoordX((placeX * plugin.config_jumpInterval) + 4);
+		coords.setStartCoordY((placeY * plugin.config_jumpInterval) + 4);
+		coords.setEndCoordX(coords.getStartCoordX() + plugin.config_plotSize - 1);
+		coords.setEndCoordY(coords.getStartCoordY() + plugin.config_plotSize - 1);
 		return coords;
 	}
 

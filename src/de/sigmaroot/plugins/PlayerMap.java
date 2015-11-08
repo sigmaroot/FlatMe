@@ -55,7 +55,7 @@ public class PlayerMap {
 			if (uuids.get(i).equals(uuid)) {
 				uuids.remove(i);
 				if (players.get(i).getQueue().isRunning()) {
-					players.get(i).getQueue().stop();
+					players.get(i).getQueue().stopQueue();
 				}
 				players.remove(i);
 			}
@@ -90,7 +90,7 @@ public class PlayerMap {
 	public void stopAllQueues() {
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).getQueue().isRunning()) {
-				players.get(i).getQueue().stop();
+				players.get(i).getQueue().stopTaskQueue();
 			}
 		}
 	}

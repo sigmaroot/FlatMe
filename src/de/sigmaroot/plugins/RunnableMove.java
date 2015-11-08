@@ -57,7 +57,7 @@ public class RunnableMove {
 	public void runStep1() {
 		int portX = pos1x * plugin.config_jumpInterval;
 		int portY = pos1y * plugin.config_jumpInterval;
-		Location portLocation = new Location(moveWorld, portX, (plugin.config_lvlHeight + 1), portY);
+		Location portLocation = new Location(moveWorld, portX, (plugin.config_levelHeight + 1), portY);
 		portLocation.setYaw(-45F);
 		movePlayer.teleport(portLocation);
 	}
@@ -75,7 +75,7 @@ public class RunnableMove {
 	public void runStep4() {
 		int portX = pos2x * plugin.config_jumpInterval;
 		int portY = pos2y * plugin.config_jumpInterval;
-		Location portLocation = new Location(moveWorld, portX, (plugin.config_lvlHeight + 1), portY);
+		Location portLocation = new Location(moveWorld, portX, (plugin.config_levelHeight + 1), portY);
 		portLocation.setYaw(-45F);
 		movePlayer.teleport(portLocation);
 	}

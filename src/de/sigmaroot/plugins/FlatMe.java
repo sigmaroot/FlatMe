@@ -3,7 +3,6 @@ package de.sigmaroot.plugins;
 import java.io.File;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -30,18 +29,20 @@ public class FlatMe extends JavaPlugin implements Listener {
 	public WorldGuardPlugin wgAPI;
 
 	public final String PLUGIN_TITLE = "FlatMe";
-	public final String PLUGIN_VERSION = "1.7.6";
+	public final String PLUGIN_VERSION = "1.8";
 
 	public int config_plotSize;
-	public int config_lvlHeight;
+	public int config_levelHeight;
 	public int config_jumpInterval;
 	public int config_radius;
-	public int config_maxPlots;
+	public int config_plotsPerUser;
 	public int config_daysPerPlot;
 	public int config_extendCost;
 	public String config_world;
 	public boolean config_autoUpdate;
 	public int config_portDelay;
+	public int config_maxBlocksPerTick;
+	public int config_maxResultsPerPage;
 
 	private boolean areRegistered = false;
 
@@ -87,6 +88,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 
 	@Override
 	public void onDisable() {
+		flatMePlayers.stopAllQueues();
 		configurator.saveAllPlots();
 		configurator.backupPlotFile();
 		// Finished
@@ -112,22 +114,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 		flatMePlayers.add(player.getUniqueId());
 		flatMePlayers.getPlayer(player.getUniqueId()).checkForPlayer();
 		flatMePlayers.getPlayer(player.getUniqueId()).checkForPlots();
-	}
-
-	public boolean securityCheck(FlatMePlayer player, String[] args) {
-		if ((player.getSecurityCommand() == null) || (!player.isAnsweredYes())) {
-			String[] warning = { args[0] };
-			for (int i = 1; i < args.length; i++) {
-				warning[0] = warning[0] + " " + args[i];
-			}
-			player.sendLocalizedString("%securityQuestion%", warning);
-			player.setSecurityCommand(args);
-			return false;
-		} else {
-			player.setAnsweredYes(false);
-			player.setSecurityCommand(null);
-			return true;
-		}
+		flatMePlayers.getPlayer(player.getUniqueId()).getQueue().setSilence(!player.hasPermission("flatme.admin"));
 	}
 
 	@Override
@@ -141,21 +128,22 @@ public class FlatMe extends JavaPlugin implements Listener {
 	}
 
 	public void loadConfigValues() {
-		config_plotSize = config.getInt("plotSize", 50);
-		config_lvlHeight = config.getInt("levelHeight", 3);
-		config_jumpInterval = config_plotSize + 7;
-		config_radius = config.getInt("radius", 5);
 		config_world = config.getString("world", "world");
-		config_maxPlots = config.getInt("plotsPerUser", 1);
-		config_extendCost = config.getInt("extendCost", 1000);
+		config_radius = config.getInt("radius", 5);
+		config_plotSize = config.getInt("plotSize", 50);
+		config_jumpInterval = config_plotSize + 7;
+		config_levelHeight = config.getInt("levelHeight", 3);
+		config_maxBlocksPerTick = config.getInt("maxBlocksPerTick", 1000);
+		config_maxResultsPerPage = config.getInt("maxResultsPerPage", 5);
+		config_plotsPerUser = config.getInt("plotsPerUser", 1);
 		config_daysPerPlot = config.getInt("daysPerPlot", 60);
+		config_extendCost = config.getInt("extendCost", 1000);
 		config_autoUpdate = config.getBoolean("autoUpdate", true);
 		config_portDelay = config.getInt("portDelay", 3);
 	}
 
 	public void reloadConfiguration() {
 		onDisable();
-		flatMePlayers.stopAllQueues();
 		flatMePlayers.clear();
 		config = null;
 		configurator = null;
@@ -165,50 +153,6 @@ public class FlatMe extends JavaPlugin implements Listener {
 		wgAPI = null;
 		this.reloadConfig();
 		onEnable();
-	}
-
-	public boolean isFreePlot(int placeX, int placeY) {
-		for (int i = 0; i < flatMePlayers.size(); i++) {
-			for (int j = 0; j < flatMePlayers.getPlayer(i).getPlots().size(); j++) {
-				if ((flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX() == placeX) && (flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY() == placeY)) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	public Coordinates nextEmptyPlot() {
-		Coordinates tempCoords = null;
-		Double bestDiff = 10000D;
-		for (int i = -config_radius; i < config_radius; i++) {
-			for (int j = -config_radius; j < config_radius; j++) {
-				if (isFreePlot(i, j)) {
-					Double centerBlockX = (i * config_jumpInterval) + (config_jumpInterval / 2D);
-					Double centerBlockY = (j * config_jumpInterval) + (config_jumpInterval / 2D);
-					Double thisDiff = Math.sqrt((centerBlockX * centerBlockX) + (centerBlockY * centerBlockY));
-					if (thisDiff <= bestDiff) {
-						if (tempCoords == null) {
-							tempCoords = new Coordinates();
-						}
-						bestDiff = thisDiff;
-						tempCoords.setStartCoordX(i);
-						tempCoords.setStartCoordY(j);
-					}
-				}
-			}
-		}
-		return tempCoords;
-	}
-
-	public Coordinates getStanding(Player player) {
-		Location loc = player.getLocation();
-		Coordinates tempCoords = new Coordinates();
-		double valueX = loc.getX() / config_jumpInterval;
-		double valueY = loc.getZ() / config_jumpInterval;
-		tempCoords.setStartCoordX((int) Math.floor(valueX));
-		tempCoords.setStartCoordY((int) Math.floor(valueY));
-		return tempCoords;
 	}
 
 	private class OurServerListener implements Listener {
@@ -233,7 +177,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 		if (worldGuardHandler == null) {
 			worldGuardHandler = new WorldGuardHandler(this, wgAPI);
 			if (config_autoUpdate) {
-				this.getLogger().info("Auto-update triggered to run in 60 seconds.");
+				this.getLogger().info(configurator.resolveLocalizedString("%autoUpdateTriggered%", null));
 				Bukkit.getServer().getScheduler().runTaskLater(this, new Runnable() {
 					public void run() {
 						Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "flatme update");
