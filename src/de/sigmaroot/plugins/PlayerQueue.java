@@ -235,9 +235,6 @@ public class PlayerQueue {
 		double done = startSize - actual;
 		int actualTask = getTaskQueueSize();
 		int doneTask = startTaskSize - actualTask;
-		if ((actual == 0) && (done == 0) && (startSize == 0)) {
-			return;
-		}
 		int percentage = (int) Math.ceil(100 * done / startSize);
 		int percentageTasks = (int) Math.ceil(100 * doneTask / startTaskSize);
 		String[] args = { String.format("%,.0f", actual), String.format("%,.0f", done), String.format("%,.0f", startSize), String.format("%d", percentage), String.format("%d", actualTask),

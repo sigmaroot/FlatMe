@@ -29,20 +29,20 @@ public class FlatMe extends JavaPlugin implements Listener {
 	public WorldGuardPlugin wgAPI;
 
 	public final String PLUGIN_TITLE = "FlatMe";
-	public final String PLUGIN_VERSION = "1.8";
+	public final String PLUGIN_VERSION = "1.8.1";
 
-	public int config_plotSize;
-	public int config_levelHeight;
-	public int config_jumpInterval;
-	public int config_radius;
-	public int config_plotsPerUser;
+	public boolean config_autoUpdate;
 	public int config_daysPerPlot;
 	public int config_extendCost;
-	public String config_world;
-	public boolean config_autoUpdate;
-	public int config_portDelay;
+	public int config_levelHeight;
 	public int config_maxBlocksPerTick;
 	public int config_maxResultsPerPage;
+	public int config_plotSize;
+	public int config_plotsPerUser;
+	public int config_portDelay;
+	public int config_radius;
+	public String config_world;
+	public int config_jumpInterval;
 
 	private boolean areRegistered = false;
 
@@ -128,18 +128,18 @@ public class FlatMe extends JavaPlugin implements Listener {
 	}
 
 	public void loadConfigValues() {
-		config_world = config.getString("world", "world");
-		config_radius = config.getInt("radius", 5);
-		config_plotSize = config.getInt("plotSize", 50);
-		config_jumpInterval = config_plotSize + 7;
+		config_autoUpdate = config.getBoolean("autoUpdate", true);
+		config_daysPerPlot = config.getInt("daysPerPlot", 60);
+		config_extendCost = config.getInt("extendCost", 1000);
 		config_levelHeight = config.getInt("levelHeight", 3);
 		config_maxBlocksPerTick = config.getInt("maxBlocksPerTick", 1000);
 		config_maxResultsPerPage = config.getInt("maxResultsPerPage", 5);
+		config_plotSize = config.getInt("plotSize", 50);
 		config_plotsPerUser = config.getInt("plotsPerUser", 1);
-		config_daysPerPlot = config.getInt("daysPerPlot", 60);
-		config_extendCost = config.getInt("extendCost", 1000);
-		config_autoUpdate = config.getBoolean("autoUpdate", true);
 		config_portDelay = config.getInt("portDelay", 3);
+		config_radius = config.getInt("radius", 3);
+		config_world = config.getString("world", "world");
+		config_jumpInterval = config_plotSize + 7;
 	}
 
 	public void reloadConfiguration() {
