@@ -10,8 +10,9 @@ public class QueueTask {
 	private int posX;
 	private int posY;
 	private World world;
+	private String messageString;
 
-	public QueueTask(FlatMe plugin, FlatMePlayer player, QueueTaskType type, int posX, int posY, World world) {
+	public QueueTask(FlatMe plugin, FlatMePlayer player, QueueTaskType type, int posX, int posY, World world, String messageString) {
 		super();
 		this.plugin = plugin;
 		this.player = player;
@@ -19,6 +20,7 @@ public class QueueTask {
 		this.type = type;
 		this.posX = posX;
 		this.posY = posY;
+		this.messageString = messageString;
 	}
 
 	public FlatMePlayer getPlayer() {
@@ -61,8 +63,22 @@ public class QueueTask {
 		this.posY = posY;
 	}
 
+	public String getMessageString() {
+		return messageString;
+	}
+
+	public void setMessageString(String messageString) {
+		this.messageString = messageString;
+	}
+
 	public boolean runTask() {
-		BlockChanger blockChanger = new BlockChanger(plugin, player, world);
+		BlockChanger blockChanger = null;
+		if (player == null) {
+			blockChanger = new BlockChanger(plugin, world);
+			blockChanger.setPlayerQueue(plugin.commandHandler.getConsoleQueue());
+		} else {
+			blockChanger = new BlockChanger(plugin, player, world);
+		}
 		switch (type) {
 		case CREATE_RUNWAY:
 			blockChanger.runRunway(posX, posY);
@@ -87,8 +103,13 @@ public class QueueTask {
 		case CLEAN_MESSAGE:
 			String[] args = { String.format("%d", posX), String.format("%d", posY) };
 			player.sendLocalizedString("%cleaningPlot%", args);
+			return true;
+		case CONSOLE_MESSAGE:
+			plugin.getLogger().info("[" + plugin.PLUGIN_TITLE + "] " + messageString);
+			return true;
 		case ENTITY_REMOVE:
 			blockChanger.runEntityRemoval(posX, posY);
+			return true;
 		default:
 			return true;
 		}

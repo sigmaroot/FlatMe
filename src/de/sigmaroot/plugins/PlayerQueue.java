@@ -38,6 +38,20 @@ public class PlayerQueue {
 		blockedForWE = 0;
 	}
 
+	public PlayerQueue(FlatMe plugin) {
+		super();
+		this.plugin = plugin;
+		this.uuid = null;
+		isSilence = true;
+		queue = new ArrayList<ChangeBlockEvent>();
+		taskQueue = new ArrayList<QueueTask>();
+		isRunning = false;
+		startSize = 0;
+		runnedTimes = 0;
+		startTaskSize = 0;
+		blockedForWE = 0;
+	}
+
 	public List<ChangeBlockEvent> getQueue() {
 		return queue;
 	}
@@ -135,7 +149,22 @@ public class PlayerQueue {
 	}
 
 	public void addTask(int posX, int posY, World world, QueueTaskType taskType) {
-		QueueTask addTask = new QueueTask(plugin, plugin.flatMePlayers.getPlayer(uuid), taskType, posX, posY, world);
+		QueueTask addTask = null;
+		if (uuid == null) {
+			addTask = new QueueTask(plugin, null, taskType, posX, posY, world, "I'm alive!");
+		} else {
+			addTask = new QueueTask(plugin, plugin.flatMePlayers.getPlayer(uuid), taskType, posX, posY, world, "I'm alive!");
+		}
+		taskQueue.add(addTask);
+	}
+
+	public void addTask(int posX, int posY, World world, QueueTaskType taskType, String messageString) {
+		QueueTask addTask = null;
+		if (uuid == null) {
+			addTask = new QueueTask(plugin, null, taskType, posX, posY, world, messageString);
+		} else {
+			addTask = new QueueTask(plugin, plugin.flatMePlayers.getPlayer(uuid), taskType, posX, posY, world, messageString);
+		}
 		taskQueue.add(addTask);
 	}
 

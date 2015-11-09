@@ -17,12 +17,14 @@ public class CommandHandler {
 
 	private FlatMe plugin;
 	private CommandMap commandList;
+	private PlayerQueue consoleQueue;
 
 	public CommandHandler(FlatMe plugin) {
 		super();
 		this.plugin = plugin;
 		commandList = new CommandMap();
 		initializeAllCommands();
+		consoleQueue = new PlayerQueue(plugin);
 	}
 
 	public CommandMap getCommandList() {
@@ -31,6 +33,14 @@ public class CommandHandler {
 
 	public void setCommandList(CommandMap commandList) {
 		this.commandList = commandList;
+	}
+
+	public PlayerQueue getConsoleQueue() {
+		return consoleQueue;
+	}
+
+	public void setConsoleQueue(PlayerQueue consoleQueue) {
+		this.consoleQueue = consoleQueue;
 	}
 
 	public boolean handleConsoleCommand(CommandSender console, String[] args) {
@@ -93,16 +103,16 @@ public class CommandHandler {
 			String[] args_1_1 = { String.format("%d", createdRegions) };
 			sendConsoleLocalizedString(console, "%createdRegions%", args_1_1);
 			// #3: Add tasks
-			BlockChanger blockChanger_1 = new BlockChanger(plugin, console, plotCheck_1.getWorld());
 			for (int i = -plugin.config_radius; i < plugin.config_radius; i++) {
 				for (int j = -plugin.config_radius; j < plugin.config_radius; j++) {
-					blockChanger_1.getPlayerQueue().addTask(i, j, plotCheck_1.getWorld(), QueueTaskType.CREATE_PLOT_BORDER);
+					consoleQueue.addTask(i, j, plotCheck_1.getWorld(), QueueTaskType.CREATE_PLOT_BORDER);
 				}
 			}
+			consoleQueue.addTask(0, 0, null, QueueTaskType.CONSOLE_MESSAGE, plugin.configurator.resolveLocalizedString("%allPlotsUpdated%", null));
 			sendConsoleLocalizedString(console, "%commandHasBeenQueued%", null);
 			sendConsoleLocalizedString(console, "%plotsUpdated%", null);
 			// #4: Kick off
-			blockChanger_1.getPlayerQueue().runTaskQueue();
+			consoleQueue.runTaskQueue();
 			break;
 		default:
 			// SIZE 0

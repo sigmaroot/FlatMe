@@ -5,7 +5,6 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 
@@ -24,12 +23,12 @@ public class BlockChanger {
 		playerQueue = player.getQueue();
 	}
 
-	public BlockChanger(FlatMe plugin, CommandSender console, World world) {
+	public BlockChanger(FlatMe plugin, World world) {
 		super();
 		this.plugin = plugin;
 		this.world = world;
 		this.player = null;
-		playerQueue = new PlayerQueue(plugin, null, true);
+		playerQueue = null;
 	}
 
 	public World getWorld() {
