@@ -1122,8 +1122,8 @@ public class CommandHandler {
 							tempCoords = new Coordinates();
 						}
 						bestDiff = thisDiff;
-						tempCoords.setStartCoordX(i);
-						tempCoords.setStartCoordY(j);
+						tempCoords.setSimpleCoordX(i);
+						tempCoords.setSimpleCoordY(j);
 					}
 				}
 			}
@@ -1136,8 +1136,8 @@ public class CommandHandler {
 		Coordinates tempCoords = new Coordinates();
 		double valueX = loc.getX() / plugin.config_jumpInterval;
 		double valueY = loc.getZ() / plugin.config_jumpInterval;
-		tempCoords.setStartCoordX((int) Math.floor(valueX));
-		tempCoords.setStartCoordY((int) Math.floor(valueY));
+		tempCoords.setSimpleCoordX((int) Math.floor(valueX));
+		tempCoords.setSimpleCoordY((int) Math.floor(valueY));
 		return tempCoords;
 	}
 

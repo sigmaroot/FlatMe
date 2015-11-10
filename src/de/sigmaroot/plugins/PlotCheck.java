@@ -17,8 +17,8 @@ public class PlotCheck {
 		this.plugin = plugin;
 		this.player = player;
 		if (player != null) {
-			posX = plugin.commandHandler.getStanding(player.getPlayer()).getStartCoordX();
-			posY = plugin.commandHandler.getStanding(player.getPlayer()).getStartCoordY();
+			posX = plugin.commandHandler.getStanding(player.getPlayer()).getSimpleCoordX();
+			posY = plugin.commandHandler.getStanding(player.getPlayer()).getSimpleCoordY();
 		} else {
 			posX = 0;
 			posY = 0;
@@ -81,8 +81,8 @@ public class PlotCheck {
 	}
 
 	public boolean checkForPlotInArea() {
-		posX = plugin.commandHandler.getStanding(player.getPlayer()).getStartCoordX();
-		posY = plugin.commandHandler.getStanding(player.getPlayer()).getStartCoordY();
+		posX = plugin.commandHandler.getStanding(player.getPlayer()).getSimpleCoordX();
+		posY = plugin.commandHandler.getStanding(player.getPlayer()).getSimpleCoordY();
 		if (posX < 0) {
 			if (Math.abs(posX) > plugin.config_radius) {
 				player.sendLocalizedString("%outOfArea%", null);
@@ -136,8 +136,8 @@ public class PlotCheck {
 			player.sendLocalizedString("%noFreePlot%", null);
 			return false;
 		}
-		posX = plugin.commandHandler.nextEmptyPlot().getStartCoordX();
-		posY = plugin.commandHandler.nextEmptyPlot().getStartCoordY();
+		posX = plugin.commandHandler.nextEmptyPlot().getSimpleCoordX();
+		posY = plugin.commandHandler.nextEmptyPlot().getSimpleCoordY();
 		return true;
 	}
 

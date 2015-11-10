@@ -235,29 +235,31 @@ public class BlockChanger {
 	}
 
 	private void removeEntities(int posX, int posY) {
+		Coordinates thisPlot = calculateCoords(posX, posY);
+		thisPlot.calculateAllChunks();
+		thisPlot.loadChunks(world);
 		List<Entity> entList = world.getEntities();
 		for (Entity current : entList) {
 			if (current instanceof Item) {
-				if (testForLocation(posX, posY, current)) {
+				if (testForLocation(thisPlot, current)) {
 					current.remove();
 				}
 			}
 		}
 	}
 
-	private boolean testForLocation(int posX, int posY, Entity entity) {
-		Coordinates thisPlot = calculateCoords(posX, posY);
+	private boolean testForLocation(Coordinates thisPlot, Entity entity) {
 		Coordinates entityPos = new Coordinates();
-		entityPos.setStartCoordX(entity.getLocation().getBlockX());
-		entityPos.setStartCoordY(entity.getLocation().getBlockZ());
+		entityPos.setSimpleCoordX(entity.getLocation().getBlockX());
+		entityPos.setSimpleCoordY(entity.getLocation().getBlockZ());
 		boolean xOkay = false;
 		boolean yOkay = false;
-		if (((entityPos.getStartCoordX() >= thisPlot.getStartCoordX()) && (entityPos.getStartCoordX() <= thisPlot.getEndCoordX()))
-				|| ((entityPos.getStartCoordX() <= thisPlot.getStartCoordX()) && (entityPos.getStartCoordX() >= thisPlot.getEndCoordX()))) {
+		if (((entityPos.getSimpleCoordX() >= thisPlot.getStartCoordX()) && (entityPos.getSimpleCoordX() <= thisPlot.getEndCoordX()))
+				|| ((entityPos.getSimpleCoordX() <= thisPlot.getStartCoordX()) && (entityPos.getSimpleCoordX() >= thisPlot.getEndCoordX()))) {
 			xOkay = true;
 		}
-		if (((entityPos.getStartCoordY() >= thisPlot.getStartCoordY()) && (entityPos.getStartCoordY() <= thisPlot.getEndCoordY()))
-				|| ((entityPos.getStartCoordY() <= thisPlot.getStartCoordY()) && (entityPos.getStartCoordY() >= thisPlot.getEndCoordY()))) {
+		if (((entityPos.getSimpleCoordY() >= thisPlot.getStartCoordY()) && (entityPos.getSimpleCoordY() <= thisPlot.getEndCoordY()))
+				|| ((entityPos.getSimpleCoordY() <= thisPlot.getStartCoordY()) && (entityPos.getSimpleCoordY() >= thisPlot.getEndCoordY()))) {
 			yOkay = true;
 		}
 		return (xOkay && yOkay);

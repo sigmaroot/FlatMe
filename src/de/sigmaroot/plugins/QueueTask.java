@@ -80,14 +80,24 @@ public class QueueTask {
 			blockChanger = new BlockChanger(plugin, player, world);
 		}
 		switch (type) {
-		case CREATE_RUNWAY:
-			blockChanger.runRunway(posX, posY);
+		case CLEAN_MESSAGE:
+			String[] args = { String.format("%d", posX), String.format("%d", posY) };
+			player.sendLocalizedString("%cleaningPlot%", args);
+			return true;
+		case CONSOLE_MESSAGE:
+			plugin.getLogger().info("[" + plugin.PLUGIN_TITLE + "] " + messageString);
 			return true;
 		case CREATE_AREA_BORDER:
 			blockChanger.runAreaBorder();
 			return true;
 		case CREATE_PLOT_BORDER:
 			blockChanger.runPlotBorder(posX, posY);
+			return true;
+		case CREATE_RUNWAY:
+			blockChanger.runRunway(posX, posY);
+			return true;
+		case ENTITY_REMOVE:
+			blockChanger.runEntityRemoval(posX, posY);
 			return true;
 		case REGEN_PLOT:
 			blockChanger.runRegen(posX, posY);
@@ -100,16 +110,6 @@ public class QueueTask {
 			} else {
 				return false;
 			}
-		case CLEAN_MESSAGE:
-			String[] args = { String.format("%d", posX), String.format("%d", posY) };
-			player.sendLocalizedString("%cleaningPlot%", args);
-			return true;
-		case CONSOLE_MESSAGE:
-			plugin.getLogger().info("[" + plugin.PLUGIN_TITLE + "] " + messageString);
-			return true;
-		case ENTITY_REMOVE:
-			blockChanger.runEntityRemoval(posX, posY);
-			return true;
 		default:
 			return true;
 		}
