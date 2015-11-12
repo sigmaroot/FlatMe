@@ -9,6 +9,7 @@ public class RunnableTeleport {
 	private FlatMe plugin;
 	private Player player;
 	private Location portLocation;
+	private Location playerLocation;
 	private boolean isFirst;
 
 	public RunnableTeleport(FlatMe plugin, Player player, Location portLocation, boolean isFirst) {
@@ -16,6 +17,7 @@ public class RunnableTeleport {
 		this.plugin = plugin;
 		this.player = player;
 		this.portLocation = portLocation;
+		playerLocation = player.getLocation();
 		this.isFirst = isFirst;
 	}
 
@@ -23,21 +25,32 @@ public class RunnableTeleport {
 		if (player.hasPermission("flatme.instantport")) {
 			runTeleport();
 		} else {
-			plugin.flatMePlayers.getPlayer(player.getUniqueId()).sendLocalizedString("%willPort%", null);
+			String[] args = { String.format("%d", plugin.config_portDelay) };
+			plugin.flatMePlayers.getPlayer(player.getUniqueId()).sendLocalizedString("%willPort%", args);
 			Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
 				public void run() {
 					runTeleport();
 				}
-			}, 60L);
+			}, 20L * plugin.config_portDelay);
 		}
 	}
 
 	public void runTeleport() {
-		player.teleport(portLocation);
-		if (isFirst) {
-			plugin.flatMePlayers.getPlayer(player.getUniqueId()).sendLocalizedString("%teleportToFirstPlot%", null);
+		int oldX = playerLocation.getBlockX();
+		int oldY = playerLocation.getBlockY();
+		int oldZ = playerLocation.getBlockZ();
+		int newX = player.getLocation().getBlockX();
+		int newY = player.getLocation().getBlockY();
+		int newZ = player.getLocation().getBlockZ();
+		if ((oldX == newX) && (oldY == newY) && (oldZ == newZ)) {
+			player.teleport(portLocation);
+			if (isFirst) {
+				plugin.flatMePlayers.getPlayer(player.getUniqueId()).sendLocalizedString("%teleportToFirstPlot%", null);
+			} else {
+				plugin.flatMePlayers.getPlayer(player.getUniqueId()).sendLocalizedString("%teleportToPlot%", null);
+			}
 		} else {
-			plugin.flatMePlayers.getPlayer(player.getUniqueId()).sendLocalizedString("%teleportToPlot%", null);
+			plugin.flatMePlayers.getPlayer(player.getUniqueId()).sendLocalizedString("%teleportAborted%", null);
 		}
 	}
 
