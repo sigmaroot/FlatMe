@@ -176,6 +176,9 @@ public class Configurator {
 			plotsFileConfiguration.set(key, null);
 		}
 		for (int i = 0; i < plugin.flatMePlayers.size(); i++) {
+			if (plugin.flatMePlayers.getPlayer(i).getPlots().size() == 0) {
+				continue;
+			}
 			plotsFileConfiguration.set(plugin.flatMePlayers.getPlayer(i).getUuid().toString() + ".plotcount", plugin.flatMePlayers.getPlayer(i).getPlots().size());
 			for (int j = 0; j < plugin.flatMePlayers.getPlayer(i).getPlots().size(); j++) {
 				plotsFileConfiguration.set(plugin.flatMePlayers.getPlayer(i).getUuid().toString() + ".plots.plot" + String.format("%d", (j + 1)) + ".plotX", plugin.flatMePlayers.getPlayer(i)

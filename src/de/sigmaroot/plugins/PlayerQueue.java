@@ -205,13 +205,13 @@ public class PlayerQueue {
 			runnedTimes = 0;
 		}
 		if (getQueueSize() == 0) {
+			plugin.getServer().getWorld(plugin.config_world).save();
 			if (getTaskQueueSize() > 0) {
 				if (taskQueue.get(0).runTask()) {
 					taskQueue.remove(0);
 					runQueue();
 				}
 			} else {
-				plugin.getServer().getWorld(plugin.config_world).save();
 				if (!isSilence) {
 					plugin.flatMePlayers.getPlayer(uuid).sendLocalizedString("%queueStopped%", null);
 				}
