@@ -3,6 +3,7 @@ package de.sigmaroot.plugins;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 
 public class ChangeBlockEvent {
@@ -78,6 +79,25 @@ public class ChangeBlockEvent {
 			thisSign.setLine(0, args[0]);
 			thisSign.setLine(1, args[1]);
 			thisSign.setLine(2, args[2]);
+			org.bukkit.material.Sign matSign = new org.bukkit.material.Sign(Material.WALL_SIGN);
+			switch (args[3]) {
+			case "north":
+				matSign.setFacingDirection(BlockFace.NORTH);
+				break;
+			case "east":
+				matSign.setFacingDirection(BlockFace.EAST);
+				break;
+			case "south":
+				matSign.setFacingDirection(BlockFace.SOUTH);
+				break;
+			case "west":
+				matSign.setFacingDirection(BlockFace.WEST);
+				break;
+			default:
+				matSign.setFacingDirection(BlockFace.NORTH);
+				break;
+			}
+			thisSign.setData(matSign);
 			thisSign.update();
 		}
 	}

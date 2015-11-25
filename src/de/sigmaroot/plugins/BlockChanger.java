@@ -196,6 +196,9 @@ public class BlockChanger {
 		fill(edgeSE_X, (plugin.config_levelHeight + 1), edgeSE_Y, edgeNW_X, (plugin.config_levelHeight + 1), edgeSE_Y, world, Material.STEP, (byte) id);
 		fill(edgeNW_X, (plugin.config_levelHeight + 1), edgeSE_Y, edgeNW_X, (plugin.config_levelHeight + 1), edgeNW_Y, world, Material.STEP, (byte) id);
 		playerQueue.addEvent(edgeNW_X, (plugin.config_levelHeight + 1), edgeNW_Y, world, Material.QUARTZ_BLOCK, (byte) 1, null);
+		playerQueue.addEvent(edgeSE_X, (plugin.config_levelHeight + 1), edgeNW_Y, world, Material.QUARTZ_BLOCK, (byte) 1, null);
+		playerQueue.addEvent(edgeNW_X, (plugin.config_levelHeight + 1), edgeSE_Y, world, Material.QUARTZ_BLOCK, (byte) 1, null);
+		playerQueue.addEvent(edgeSE_X, (plugin.config_levelHeight + 1), edgeSE_Y, world, Material.QUARTZ_BLOCK, (byte) 1, null);
 		String plotId = "X: " + String.format("%d", posX) + " Y: " + String.format("%d", posY);
 		String showOwner = ChatColor.DARK_BLUE + owner;
 		String showExpire = "";
@@ -208,8 +211,22 @@ public class BlockChanger {
 				showExpire = ChatColor.DARK_BLUE + expire;
 			}
 		}
-		String[] args = { plotId, showOwner, showExpire };
-		playerQueue.addEvent(edgeNW_X, (plugin.config_levelHeight + 1), edgeNW_Y - 1, world, Material.WALL_SIGN, (byte) 0, args);
+		String[] args_1 = { plotId, showOwner, showExpire, "north" };
+		playerQueue.addEvent(edgeNW_X, (plugin.config_levelHeight + 1), edgeNW_Y - 1, world, Material.WALL_SIGN, (byte) 0, args_1);
+		String[] args_2 = { plotId, showOwner, showExpire, "west" };
+		playerQueue.addEvent(edgeNW_X - 1, (plugin.config_levelHeight + 1), edgeNW_Y, world, Material.WALL_SIGN, (byte) 0, args_2);
+		String[] args_3 = { plotId, showOwner, showExpire, "north" };
+		playerQueue.addEvent(edgeSE_X, (plugin.config_levelHeight + 1), edgeNW_Y - 1, world, Material.WALL_SIGN, (byte) 0, args_3);
+		String[] args_4 = { plotId, showOwner, showExpire, "east" };
+		playerQueue.addEvent(edgeSE_X + 1, (plugin.config_levelHeight + 1), edgeNW_Y, world, Material.WALL_SIGN, (byte) 0, args_4);
+		String[] args_5 = { plotId, showOwner, showExpire, "south" };
+		playerQueue.addEvent(edgeNW_X, (plugin.config_levelHeight + 1), edgeSE_Y + 1, world, Material.WALL_SIGN, (byte) 0, args_5);
+		String[] args_6 = { plotId, showOwner, showExpire, "west" };
+		playerQueue.addEvent(edgeNW_X - 1, (plugin.config_levelHeight + 1), edgeSE_Y, world, Material.WALL_SIGN, (byte) 0, args_6);
+		String[] args_7 = { plotId, showOwner, showExpire, "south" };
+		playerQueue.addEvent(edgeSE_X, (plugin.config_levelHeight + 1), edgeSE_Y + 1, world, Material.WALL_SIGN, (byte) 0, args_7);
+		String[] args_8 = { plotId, showOwner, showExpire, "east" };
+		playerQueue.addEvent(edgeSE_X + 1, (plugin.config_levelHeight + 1), edgeSE_Y, world, Material.WALL_SIGN, (byte) 0, args_8);
 	}
 
 	private void fill(int x1, int y1, int z1, int x2, int y2, int z2, World world, Material material, byte data) {

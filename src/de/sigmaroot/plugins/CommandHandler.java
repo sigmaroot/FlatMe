@@ -67,7 +67,7 @@ public class CommandHandler {
 			sendConsoleLocalizedString(console, returnCorrectUsage(firstArg), null);
 			return false;
 		}
-		if (!console.hasPermission(executedCommand.getPermission())) {
+		if (!((console.hasPermission(executedCommand.getPermission())) || (console.hasPermission("flatme.command." + firstArg)))) {
 			sendConsoleLocalizedString(console, "%noPermission%", null);
 			return false;
 		}
@@ -161,7 +161,7 @@ public class CommandHandler {
 			executingPlayer.sendLocalizedString(returnCorrectUsage(firstArg), null);
 			return;
 		}
-		if (!sender.hasPermission(executedCommand.getPermission())) {
+		if (!((sender.hasPermission(executedCommand.getPermission())) || (sender.hasPermission("flatme.command." + firstArg)))) {
 			executingPlayer.sendLocalizedString("%noPermission%", null);
 			return;
 		}
@@ -1058,7 +1058,7 @@ public class CommandHandler {
 	public void showAllCommands(CommandSender sender, int page) {
 		List<String> temp = new ArrayList<String>();
 		for (int i = 0; i < commandList.size(); i++) {
-			if (!sender.hasPermission(commandList.getCommand(i).getPermission())) {
+			if (!((sender.hasPermission(commandList.getCommand(i).getPermission())) || (sender.hasPermission("flatme.command." + commandList.getCommandText(i))))) {
 				continue;
 			}
 			String[] args_0 = { commandList.getCommand(i).getUsage() };
@@ -1176,7 +1176,7 @@ public class CommandHandler {
 	}
 
 	private void sendConsoleLocalizedString(CommandSender sender, String input, String[] args) {
-		sender.sendMessage("[" + plugin.PLUGIN_TITLE + "] " + plugin.configurator.resolveLocalizedString(input, args));
+		plugin.getLogger().info(plugin.configurator.resolveLocalizedString(input, args));
 	}
 
 	private int parsePageNumber(String test) {

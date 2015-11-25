@@ -165,7 +165,7 @@ public class PlotCheck {
 	}
 
 	public boolean checkForRightOwner() {
-		if (player.getPlayer().hasPermission("flatme.admin")) {
+		if (player.getPlayer().hasPermission("flatme.bypass")) {
 			return true;
 		}
 		for (int i = 0; i < player.getPlots().size(); i++) {

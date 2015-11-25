@@ -85,7 +85,7 @@ public class QueueTask {
 			player.sendLocalizedString("%cleaningPlot%", args);
 			return true;
 		case CONSOLE_MESSAGE:
-			plugin.getLogger().info("[" + plugin.PLUGIN_TITLE + "] " + messageString);
+			plugin.getLogger().info(messageString);
 			return true;
 		case CREATE_AREA_BORDER:
 			blockChanger.runAreaBorder();
