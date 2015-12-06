@@ -102,6 +102,24 @@ public class QueueTask {
 		case REGEN_PLOT:
 			blockChanger.runRegen(posX, posY);
 			return true;
+		case REMOVE_PLOT:
+			for (int i = 0; i < plugin.flatMePlayers.size(); i++) {
+				for (int j = 0; j < plugin.flatMePlayers.getPlayer(i).getPlots().size(); j++) {
+					if ((plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX() == posX) && (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY() == posY)) {
+						plugin.flatMePlayers.getPlayer(i).getPlots().remove(j);
+					}
+				}
+			}
+			return true;
+		case REMOVE_REGION:
+			for (int i = 0; i < plugin.flatMePlayers.size(); i++) {
+				for (int j = 0; j < plugin.flatMePlayers.getPlayer(i).getPlots().size(); j++) {
+					if ((plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX() == posX) && (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY() == posY)) {
+						plugin.flatMePlayers.getPlayer(i).getPlots().get(j).deleteWGRegion(world);
+					}
+				}
+			}
+			return true;
 		case WE_REGEN_PLOT:
 			if (player.getQueue().getBlockedForWE() == 0) {
 				player.getQueue().setBlockedForWE(200);

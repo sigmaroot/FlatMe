@@ -717,29 +717,25 @@ public class CommandHandler {
 						break;
 					}
 					if ((plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isExpired()) && (!plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isLocked())) {
-						// #2: Remove WG region
-						plugin.flatMePlayers.getPlayer(i).getPlots().get(j).deleteWGRegion(plotCheck_15.getWorld());
-						// #3: Add tasks
-						executingPlayer.getQueue().addTask(plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX(), plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY(),
-								plotCheck_15.getWorld(), QueueTaskType.CLEAN_MESSAGE);
-						executingPlayer.getQueue().addTask(plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX(), plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY(),
-								plotCheck_15.getWorld(), QueueTaskType.CREATE_PLOT_BORDER);
-						executingPlayer.getQueue().addTask(plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX(), plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY(),
-								plotCheck_15.getWorld(), QueueTaskType.REGEN_PLOT);
-						executingPlayer.getQueue().addTask(plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX(), plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY(),
-								plotCheck_15.getWorld(), QueueTaskType.ENTITY_REMOVE);
-						// #4: Remove plot
-						plugin.flatMePlayers.getPlayer(i).getPlots().remove(j);
+						// #2: Add tasks
+						int oldPosX_15 = plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX();
+						int oldPosY_15 = plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY();
+						executingPlayer.getQueue().addTask(oldPosX_15, oldPosY_15, plotCheck_15.getWorld(), QueueTaskType.CLEAN_MESSAGE);
+						executingPlayer.getQueue().addTask(oldPosX_15, oldPosY_15, plotCheck_15.getWorld(), QueueTaskType.REMOVE_REGION);
+						executingPlayer.getQueue().addTask(oldPosX_15, oldPosY_15, plotCheck_15.getWorld(), QueueTaskType.REGEN_PLOT);
+						executingPlayer.getQueue().addTask(oldPosX_15, oldPosY_15, plotCheck_15.getWorld(), QueueTaskType.ENTITY_REMOVE);
+						executingPlayer.getQueue().addTask(oldPosX_15, oldPosY_15, plotCheck_15.getWorld(), QueueTaskType.REMOVE_PLOT);
+						executingPlayer.getQueue().addTask(oldPosX_15, oldPosY_15, plotCheck_15.getWorld(), QueueTaskType.CREATE_PLOT_BORDER);
 						toDo_15++;
 					}
 				}
 			}
-			// #5: Save all plots
+			// #3: Save all plots
 			plugin.configurator.saveAllPlots();
 			executingPlayer.sendLocalizedString("%commandHasBeenQueued%", null);
 			String[] args_15 = { String.format("%d", toDo_15) };
 			executingPlayer.sendLocalizedString("%plotsCleaned%", args_15);
-			// #6: Kick off
+			// #4: Kick off
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "regen":
@@ -799,27 +795,24 @@ public class CommandHandler {
 						break;
 					}
 					if ((plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isExpired()) && (!plugin.flatMePlayers.getPlayer(i).getPlots().get(j).isLocked())) {
-						// #2: Remove WG region
-						plugin.flatMePlayers.getPlayer(i).getPlots().get(j).deleteWGRegion(plotCheck_17.getWorld());
-						// #3: Add tasks
-						executingPlayer.getQueue().addTask(plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX(), plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY(),
-								plotCheck_17.getWorld(), QueueTaskType.CLEAN_MESSAGE);
-						executingPlayer.getQueue().addTask(plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX(), plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY(),
-								plotCheck_17.getWorld(), QueueTaskType.CREATE_PLOT_BORDER);
-						executingPlayer.getQueue().addTask(plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX(), plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY(),
-								plotCheck_17.getWorld(), QueueTaskType.WE_REGEN_PLOT);
-						// #4: Remove plot
-						plugin.flatMePlayers.getPlayer(i).getPlots().remove(j);
+						// #2: Add tasks
+						int oldPosX_17 = plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX();
+						int oldPosY_17 = plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY();
+						executingPlayer.getQueue().addTask(oldPosX_17, oldPosY_17, plotCheck_17.getWorld(), QueueTaskType.CLEAN_MESSAGE);
+						executingPlayer.getQueue().addTask(oldPosX_17, oldPosY_17, plotCheck_17.getWorld(), QueueTaskType.REMOVE_REGION);
+						executingPlayer.getQueue().addTask(oldPosX_17, oldPosY_17, plotCheck_17.getWorld(), QueueTaskType.WE_REGEN_PLOT);
+						executingPlayer.getQueue().addTask(oldPosX_17, oldPosY_17, plotCheck_17.getWorld(), QueueTaskType.REMOVE_PLOT);
+						executingPlayer.getQueue().addTask(oldPosX_17, oldPosY_17, plotCheck_17.getWorld(), QueueTaskType.CREATE_PLOT_BORDER);
 						toDo_17++;
 					}
 				}
 			}
-			// #5: Save all plots
+			// #3: Save all plots
 			plugin.configurator.saveAllPlots();
 			executingPlayer.sendLocalizedString("%commandHasBeenQueued%", null);
 			String[] args_17 = { String.format("%d", toDo_17) };
 			executingPlayer.sendLocalizedString("%plotsCleaned%", args_17);
-			// #6: Kick off
+			// #4: Kick off
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "weregen":
