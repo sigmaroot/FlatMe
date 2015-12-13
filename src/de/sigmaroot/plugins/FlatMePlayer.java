@@ -137,13 +137,13 @@ public class FlatMePlayer {
 		for (int i = 0; i < plots.size(); i++) {
 			if (!plots.get(i).isLocked()) {
 				if (plots.get(i).isExpired()) {
-					String args[] = { plots.get(i).getPlaceX() + "," + plots.get(i).getPlaceY() };
+					String args[] = { plots.get(i).getPlaceX() + "," + plots.get(i).getPlaceY(), plots.get(i).getReadableExpireDate() };
 					RunnableWarning warning = new RunnableWarning(plugin, this, false, args);
 					warning.run();
 				} else {
 					if (plots.get(i).willExpire()) {
-						String args[] = { plots.get(i).getPlaceX() + "," + plots.get(i).getPlaceY() };
-						RunnableWarning warning = new RunnableWarning(plugin, this, false, args);
+						String args[] = { plots.get(i).getPlaceX() + "," + plots.get(i).getPlaceY(), plots.get(i).getReadableExpireDate() };
+						RunnableWarning warning = new RunnableWarning(plugin, this, true, args);
 						warning.run();
 					}
 				}
