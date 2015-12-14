@@ -103,7 +103,7 @@ public class BlockChanger {
 		playerQueue.stopQueue();
 		int x = posX * plugin.config_jumpInterval;
 		int y = posY * plugin.config_jumpInterval;
-		fill((x - 3), (plugin.config_levelHeight + 1), (y - 3), (x + 3), (plugin.config_levelHeight + 1), (y + 3), world, Material.AIR, (byte) 0);
+		fill((x - 3), (plugin.config_levelHeight + 1), (y - 3), (x + 3), (plugin.config_levelHeight + 6), (y + 3), world, Material.AIR, (byte) 0);
 		playerQueue.addEvent((x - 3), plugin.config_levelHeight, (y - 3), world, Material.DIRT, (byte) 0, null);
 		playerQueue.addEvent((x - 3), plugin.config_levelHeight, (y + 3), world, Material.DIRT, (byte) 0, null);
 		playerQueue.addEvent((x + 3), plugin.config_levelHeight, (y - 3), world, Material.DIRT, (byte) 0, null);
@@ -121,13 +121,13 @@ public class BlockChanger {
 		playerQueue.addEvent(x, plugin.config_levelHeight, (y - 1), world, Material.EMERALD_BLOCK, (byte) 0, null);
 		playerQueue.addEvent(x, plugin.config_levelHeight, (y + 1), world, Material.EMERALD_BLOCK, (byte) 0, null);
 		playerQueue.addEvent(x, plugin.config_levelHeight, y, world, Material.DIAMOND_BLOCK, (byte) 0, null);
-
 	}
 
 	private void createWays(int posX, int posY) {
 		if (posY < plugin.config_radius) {
 			int x = posX * plugin.config_jumpInterval;
 			int y = posY * plugin.config_jumpInterval;
+			fill((x - 3), (plugin.config_levelHeight + 1), (y + 4), (x + 3), (plugin.config_levelHeight + 6), (y + plugin.config_plotSize + 3), world, Material.AIR, (byte) 0);
 			fill((x - 3), plugin.config_levelHeight, (y + 4), (x - 3), plugin.config_levelHeight, (y + plugin.config_plotSize + 3), world, Material.DIRT, (byte) 0);
 			fill((x - 3), (plugin.config_levelHeight + 1), (y + 4), (x - 3), (plugin.config_levelHeight + 1), (y + plugin.config_plotSize + 3), world, Material.STEP, (byte) 7);
 			fill((x + 3), plugin.config_levelHeight, (y + 4), (x + 3), plugin.config_levelHeight, (y + plugin.config_plotSize + 3), world, Material.DIRT, (byte) 0);
@@ -139,6 +139,7 @@ public class BlockChanger {
 		if (posX < plugin.config_radius) {
 			int x = posX * plugin.config_jumpInterval;
 			int y = posY * plugin.config_jumpInterval;
+			fill((x + 4), (plugin.config_levelHeight + 1), (y - 3), (x + plugin.config_plotSize + 3), (plugin.config_levelHeight + 6), (y + 3), world, Material.AIR, (byte) 0);
 			fill((x + 4), plugin.config_levelHeight, (y - 3), (x + plugin.config_plotSize + 3), plugin.config_levelHeight, (y - 3), world, Material.DIRT, (byte) 0);
 			fill((x + 4), (plugin.config_levelHeight + 1), (y - 3), (x + plugin.config_plotSize + 3), (plugin.config_levelHeight + 1), (y - 3), world, Material.STEP, (byte) 7);
 			fill((x + 4), plugin.config_levelHeight, (y + 3), (x + plugin.config_plotSize + 3), plugin.config_levelHeight, (y + 3), world, Material.DIRT, (byte) 0);

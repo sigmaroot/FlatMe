@@ -899,6 +899,17 @@ public class CommandHandler {
 			// EXECUTE COMMAND
 			// #1: Add tasks
 			executingPlayer.getQueue().addTask(cmdPosX_21, cmdPosY_21, plotCheck_21.getWorld(), QueueTaskType.CREATE_RUNWAY);
+			executingPlayer.getQueue().addTask(cmdPosX_21, cmdPosY_21, plotCheck_21.getWorld(), QueueTaskType.CREATE_PLOT_BORDER);
+			if (plotCheck_21.checkForPlotInArea((cmdPosX_21 - 1), (cmdPosY_21 - 1))) {
+				executingPlayer.getQueue().addTask((cmdPosX_21 - 1), (cmdPosY_21 - 1), plotCheck_21.getWorld(), QueueTaskType.CREATE_PLOT_BORDER);
+			}
+			if (plotCheck_21.checkForPlotInArea((cmdPosX_21 - 1), cmdPosY_21)) {
+				executingPlayer.getQueue().addTask((cmdPosX_21 - 1), cmdPosY_21, plotCheck_21.getWorld(), QueueTaskType.CREATE_PLOT_BORDER);
+			}
+			if (plotCheck_21.checkForPlotInArea(cmdPosX_21, (cmdPosY_21 - 1))) {
+				executingPlayer.getQueue().addTask(cmdPosX_21, (cmdPosY_21 - 1), plotCheck_21.getWorld(), QueueTaskType.CREATE_PLOT_BORDER);
+			}
+			executingPlayer.getQueue().addTask(0, 0, plotCheck_21.getWorld(), QueueTaskType.CREATE_AREA_BORDER);
 			executingPlayer.sendLocalizedString("%pathRepaired%", null);
 			// #2: Kick off
 			executingPlayer.getQueue().runTaskQueue();
