@@ -110,8 +110,10 @@ public class Coordinates {
 
 	public void loadChunks(World world) {
 		for (int i = 0; i < chunksX.size(); i++) {
-			world.unloadChunk(chunksX.get(i), chunksZ.get(i), true, true);
-			world.loadChunk(chunksX.get(i), chunksZ.get(i));
+			// world.unloadChunk(chunksX.get(i), chunksZ.get(i), true);
+			if (!world.isChunkLoaded(chunksX.get(i), chunksZ.get(i))) {
+				world.loadChunk(chunksX.get(i), chunksZ.get(i));
+			}
 		}
 	}
 

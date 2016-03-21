@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="var" path="FLATME_JARS/craftbukkit-1.8.8.jar"/>
-	<classpathentry kind="var" path="FLATME_JARS/Essentials-2.x-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="FLATME_JARS/worldedit-bukkit-6.0.jar"/>
+	<classpathentry kind="var" path="FLATME_JARS/EssentialsX-2.0.1.jar"/>
+	<classpathentry kind="var" path="FLATME_JARS/spigot-1.9.jar"/>
+	<classpathentry kind="var" path="FLATME_JARS/worldedit-bukkit-6.1.jar"/>
 	<classpathentry kind="var" path="FLATME_JARS/worldguard-6.0.0-beta-03.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
