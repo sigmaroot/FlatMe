@@ -5,8 +5,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
+import org.bukkit.entity.*;
 
 public class BlockChanger {
 
@@ -258,7 +257,7 @@ public class BlockChanger {
 		thisPlot.loadChunks(world);
 		List<Entity> entList = world.getEntities();
 		for (Entity current : entList) {
-			if (current instanceof Item) {
+			if ((current instanceof Item) || (current instanceof ArmorStand) || (current instanceof ItemFrame)) {
 				if (testForLocation(thisPlot, current)) {
 					current.remove();
 				}
@@ -272,12 +271,10 @@ public class BlockChanger {
 		entityPos.setSimpleCoordY(entity.getLocation().getBlockZ());
 		boolean xOkay = false;
 		boolean yOkay = false;
-		if (((entityPos.getSimpleCoordX() >= thisPlot.getStartCoordX()) && (entityPos.getSimpleCoordX() <= thisPlot.getEndCoordX()))
-				|| ((entityPos.getSimpleCoordX() <= thisPlot.getStartCoordX()) && (entityPos.getSimpleCoordX() >= thisPlot.getEndCoordX()))) {
+		if ((entityPos.getSimpleCoordX() >= (thisPlot.getStartCoordX() - 2)) && (entityPos.getSimpleCoordX() <= (thisPlot.getEndCoordX() + 2))) {
 			xOkay = true;
 		}
-		if (((entityPos.getSimpleCoordY() >= thisPlot.getStartCoordY()) && (entityPos.getSimpleCoordY() <= thisPlot.getEndCoordY()))
-				|| ((entityPos.getSimpleCoordY() <= thisPlot.getStartCoordY()) && (entityPos.getSimpleCoordY() >= thisPlot.getEndCoordY()))) {
+		if ((entityPos.getSimpleCoordY() >= (thisPlot.getStartCoordY() - 2)) && (entityPos.getSimpleCoordY() <= (thisPlot.getEndCoordY() + 2))) {
 			yOkay = true;
 		}
 		return (xOkay && yOkay);

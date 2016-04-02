@@ -1,6 +1,6 @@
 name: FlatMe
 main: de.sigmaroot.plugins.FlatMe
-version: 1.9.1
+version: 1.9.2
 author: Steven Meisberger
 homepage: http://www.sigmaroot.de/
 depend: [Essentials, WorldGuard, WorldEdit]
