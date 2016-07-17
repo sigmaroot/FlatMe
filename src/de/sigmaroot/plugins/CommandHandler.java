@@ -74,7 +74,6 @@ public class CommandHandler {
 		boolean wasExecuted = false;
 		switch (firstArg) {
 		case "version":
-			// SIZE 0
 			wasExecuted = true;
 			// EXECUTE COMMAND
 			// #1: Display version info
@@ -82,7 +81,6 @@ public class CommandHandler {
 			sendConsoleLocalizedString(console, "%pluginVersion%", args_0);
 			break;
 		case "updateall":
-			// SIZE 2
 			wasExecuted = true;
 			// PLOT CHECK
 			PlotCheck plotCheck_1 = new PlotCheck(plugin, null);
@@ -115,7 +113,6 @@ public class CommandHandler {
 			consoleQueue.runTaskQueue();
 			break;
 		default:
-			// SIZE 0
 			// EXECUTE COMMAND
 			// #1: Return false
 			wasExecuted = false;
@@ -165,17 +162,23 @@ public class CommandHandler {
 			executingPlayer.sendLocalizedString("%noPermission%", null);
 			return;
 		}
+		if (!(firstArg.equals("yes"))) {
+			if ((executingPlayer.getSecurityCommand() != null) && (!executingPlayer.isAnsweredYes())) {
+				executingPlayer.setAnsweredYes(false);
+				executingPlayer.setSecurityCommand(null);
+			}
+		}
 		switch (firstArg) {
 		case "yes":
-			// SIZE 0
 			// RUN SAVED COMMAND
 			if (executingPlayer.getSecurityCommand() != null) {
 				executingPlayer.setAnsweredYes(true);
 				handleCommand(sender, executingPlayer.getSecurityCommand());
+			} else {
+				executingPlayer.sendLocalizedString("%noCommand%", null);
 			}
 			break;
 		case "help":
-			// SIZE 0
 			// TESTS
 			int cmdPage_0 = 1;
 			if (args.length > 1) {
@@ -186,19 +189,17 @@ public class CommandHandler {
 			showAllCommands(sender, cmdPage_0);
 			break;
 		case "version":
-			// SIZE 0
 			// EXECUTE COMMAND
 			// #1: Display version info
 			String[] args_1 = { plugin.PLUGIN_VERSION };
 			executingPlayer.sendLocalizedString("%pluginVersion%", args_1);
 			break;
 		case "create":
-			// SIZE 2
-			// Security Check
+			// SECURITY CHECK
 			if (!securityCheck(executingPlayer, args)) {
 				break;
 			}
-			// PLOT-CHECK
+			// PLOT CHECK
 			PlotCheck plotCheck_2 = new PlotCheck(plugin, null);
 			if (!plotCheck_2.simpleCheckForCorrectWorld()) {
 				String[] args_2 = { plugin.config_world };
@@ -229,7 +230,6 @@ public class CommandHandler {
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "reload":
-			// SIZE 0
 			// EXECUTE COMMAND
 			// #1: Kick off reloading
 			executingPlayer.sendLocalizedString("%reloadingConfiguration%", null);
@@ -237,8 +237,7 @@ public class CommandHandler {
 			executingPlayer.sendLocalizedString("%reloadedSuccessfully%", null);
 			break;
 		case "updateall":
-			// SIZE 2
-			// Security Check
+			// SECURITY CHECK
 			if (!securityCheck(executingPlayer, args)) {
 				break;
 			}
@@ -273,7 +272,6 @@ public class CommandHandler {
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "claim":
-			// SIZE 1
 			// PLOT CHECK
 			PlotCheck plotCheck_5 = new PlotCheck(plugin, executingPlayer);
 			if (!plotCheck_5.checkForCorrectWorld()) {
@@ -309,7 +307,6 @@ public class CommandHandler {
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "autoclaim":
-			// SIZE 1
 			// PLOT CHECK
 			PlotCheck plotCheck_6 = new PlotCheck(plugin, executingPlayer);
 			if (!plotCheck_6.checkForCorrectWorld()) {
@@ -343,7 +340,6 @@ public class CommandHandler {
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "home":
-			// SIZE 0
 			// PLOT CHECK
 			PlotCheck plotCheck_7 = new PlotCheck(plugin, null);
 			if (!plotCheck_7.simpleCheckForCorrectWorld()) {
@@ -367,8 +363,7 @@ public class CommandHandler {
 			teleport_7.run();
 			break;
 		case "delete":
-			// SIZE 1
-			// Security Check
+			// SECURITY CHECK
 			if (!securityCheck(executingPlayer, args)) {
 				break;
 			}
@@ -404,7 +399,6 @@ public class CommandHandler {
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "add":
-			// SIZE 1
 			// PLOT CHECK
 			PlotCheck plotCheck_9 = new PlotCheck(plugin, executingPlayer);
 			if (!plotCheck_9.checkForCorrectWorld()) {
@@ -462,7 +456,6 @@ public class CommandHandler {
 			}
 			break;
 		case "remove":
-			// SIZE 1
 			// PLOT CHECK
 			PlotCheck plotCheck_10 = new PlotCheck(plugin, executingPlayer);
 			if (!plotCheck_10.checkForCorrectWorld()) {
@@ -517,8 +510,7 @@ public class CommandHandler {
 			}
 			break;
 		case "extend":
-			// SIZE 1
-			// Security Check
+			// SECURITY CHECK
 			if (!securityCheck(executingPlayer, args)) {
 				break;
 			}
@@ -576,7 +568,6 @@ public class CommandHandler {
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "lock":
-			// SIZE 1
 			// PLOT CHECK
 			PlotCheck plotCheck_12 = new PlotCheck(plugin, executingPlayer);
 			if (!plotCheck_12.checkForCorrectWorld()) {
@@ -613,7 +604,6 @@ public class CommandHandler {
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "info":
-			// SIZE 0
 			// PLOT CHECK
 			PlotCheck plotCheck_13 = new PlotCheck(plugin, executingPlayer);
 			if (!plotCheck_13.checkForCorrectWorld()) {
@@ -660,7 +650,6 @@ public class CommandHandler {
 			}
 			break;
 		case "check":
-			// SIZE 0
 			// EXECUTE COMMAND
 			// #1: Parse page number
 			int cmdPage_14 = 1;
@@ -683,8 +672,7 @@ public class CommandHandler {
 			showTable(sender, plugin.configurator.resolveLocalizedString("%expiredPlots%", null), cmdPage_14, expiredPlots);
 			break;
 		case "clean":
-			// SIZE 2
-			// Security Check
+			// SECURITY CHECK
 			if (!securityCheck(executingPlayer, args)) {
 				break;
 			}
@@ -739,8 +727,7 @@ public class CommandHandler {
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "regen":
-			// SIZE 1
-			// Security Check
+			// SECURITY CHECK
 			if (!securityCheck(executingPlayer, args)) {
 				break;
 			}
@@ -761,8 +748,7 @@ public class CommandHandler {
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "weclean":
-			// SIZE 2
-			// Security Check
+			// SECURITY CHECK
 			if (!securityCheck(executingPlayer, args)) {
 				break;
 			}
@@ -816,8 +802,7 @@ public class CommandHandler {
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "weregen":
-			// SIZE 1
-			// Security Check
+			// SECURITY CHECK
 			if (!securityCheck(executingPlayer, args)) {
 				break;
 			}
@@ -837,7 +822,6 @@ public class CommandHandler {
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "teleport":
-			// SIZE 0
 			// TESTS
 			int cmdPosX_19 = 0;
 			cmdPosX_19 = parsePosition(args[1]);
@@ -865,21 +849,18 @@ public class CommandHandler {
 			teleport_19.run();
 			break;
 		case "hide":
-			// SIZE 0
 			// EXECUTE COMMAND
 			// #1: Hide queue
 			executingPlayer.sendLocalizedString("%queueHidden%", null);
 			executingPlayer.setQueueSilence(true);
 			break;
 		case "show":
-			// SIZE 0
 			// EXECUTE COMMAND
 			// #1: Show queue
 			executingPlayer.sendLocalizedString("%queueShown%", null);
 			executingPlayer.setQueueSilence(false);
 			break;
 		case "repair":
-			// SIZE 1
 			// TESTS
 			int cmdPosX_21 = 0;
 			cmdPosX_21 = parsePosition(args[1]);
@@ -915,8 +896,7 @@ public class CommandHandler {
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "move":
-			// SIZE 0
-			// Security Check
+			// SECURITY CHECK
 			if (!securityCheck(executingPlayer, args)) {
 				break;
 			}
@@ -974,7 +954,6 @@ public class CommandHandler {
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "update":
-			// SIZE 1
 			// PLOT CHECK
 			PlotCheck plotCheck_23 = new PlotCheck(plugin, executingPlayer);
 			if (!plotCheck_23.checkForCorrectWorld()) {
@@ -1011,7 +990,6 @@ public class CommandHandler {
 			executingPlayer.getQueue().runTaskQueue();
 			break;
 		case "tool":
-			// SIZE 0
 			// EXECUTE COMMAND
 			// #1: Give a tool book
 			Bukkit.getServer()
@@ -1024,12 +1002,11 @@ public class CommandHandler {
 									+ ChatColor.GOLD
 									+ "FlatMe Tool Book"
 									+ ChatColor.RESET
-									+ "\",author:\"FlatMe\",pages:[\"[{\\\"text\\\":\\\"== FlatMe Tool Book ==\\\",\\\"color\\\":\\\"gold\\\"},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Informations\\\",\\\"color\\\":\\\"dark_blue\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme info\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Delete this plot\\\",\\\"color\\\":\\\"dark_red\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme delete\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Regen with Flatme\\\",\\\"color\\\":\\\"dark_aqua\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme regen\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Regen with WorldEdit\\\",\\\"color\\\":\\\"dark_aqua\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme weregen\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Apply task (YES!)\\\",\\\"color\\\":\\\"dark_green\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme yes\\\"}}]\",\"[{\\\"text\\\":\\\"== FlatMe Tool Book ==\\\",\\\"color\\\":\\\"gold\\\"},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Extend this plot\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme extend\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Lock / Unlock\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme lock\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Update this plot\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme update\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Apply task (YES!)\\\",\\\"color\\\":\\\"dark_green\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme yes\\\"}}]\",\"[{\\\"text\\\":\\\"== FlatMe Tool Book ==\\\",\\\"color\\\":\\\"gold\\\"},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Claim this plot\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme claim\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Autoclaim a plot\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme autoclaim\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Teleport to first plot\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme home\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Apply task (YES!)\\\",\\\"color\\\":\\\"dark_green\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme yes\\\"}}]\",\"[{\\\"text\\\":\\\"== FlatMe Tool Book ==\\\",\\\"color\\\":\\\"gold\\\"},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Create plotarea\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme create\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Update all plots\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme updateall\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Reload configuration\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme reload\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Apply task (YES!)\\\",\\\"color\\\":\\\"dark_green\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme yes\\\"}}]\"]}"
+									+ "\",author:\"FlatMe\",pages:[\"[{\\\"text\\\":\\\"== FlatMe Tool Book ==\\\",\\\"color\\\":\\\"gold\\\"},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Informations\\\",\\\"color\\\":\\\"dark_blue\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme info\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Delete this plot\\\",\\\"color\\\":\\\"dark_red\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme delete\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Regen with Flatme\\\",\\\"color\\\":\\\"dark_aqua\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme regen\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Regen with WorldEdit\\\",\\\"color\\\":\\\"dark_aqua\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme weregen\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Apply task (YES!)\\\",\\\"color\\\":\\\"dark_green\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme yes\\\"}}]\",\"[{\\\"text\\\":\\\"== FlatMe Tool Book ==\\\",\\\"color\\\":\\\"gold\\\"},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Extend this plot\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme extend\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Lock / Unlock\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme lock\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Update this plot\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme update\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Apply task (YES!)\\\",\\\"color\\\":\\\"dark_green\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme yes\\\"}}]\",\"[{\\\"text\\\":\\\"== FlatMe Tool Book ==\\\",\\\"color\\\":\\\"gold\\\"},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Claim this plot\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme claim\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Autoclaim a plot\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme autoclaim\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Teleport to first plot\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme home\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Apply task (YES!)\\\",\\\"color\\\":\\\"dark_green\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme yes\\\"}}]\",\"[{\\\"text\\\":\\\"== FlatMe Tool Book ==\\\",\\\"color\\\":\\\"gold\\\"},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Create plotarea\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme create\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Update all plots\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme updateall\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Check all plots\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme check\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Reload configuration\\\",\\\"color\\\":\\\"dark_purple\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme reload\\\"}},{\\\"text\\\":\\\"\n\n\\\",\\\"color\\\":\\\"reset\\\"},{\\\"text\\\":\\\"Apply task (YES!)\\\",\\\"color\\\":\\\"dark_green\\\",\\\"clickEvent\\\":{\\\"action\\\":\\\"run_command\\\",\\\"value\\\":\\\"/flatme yes\\\"}}]\"]}"
 									+ "");
 			executingPlayer.sendLocalizedString("%receivedTool%", null);
 			break;
 		default:
-			// SIZE 0
 			// EXECUTE COMMAND
 			// #1: Return error
 			String[] args_x = { firstArg };

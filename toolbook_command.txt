@@ -25,7 +25,7 @@
 {\"text\":\"Apply task (YES!)\",\"color\":\"dark_green\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/flatme yes\"}}
 ]"
 ,
-\"[
+"[
 {\"text\":\"== FlatMe Tool Book ==\",\"color\":\"gold\"},
 {\"text\":\"\n\n\",\"color\":\"reset\"},
 {\"text\":\"Claim this plot\",\"color\":\"dark_purple\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/flatme claim\"}},
@@ -43,6 +43,8 @@
 {\"text\":\"Create plotarea\",\"color\":\"dark_purple\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/flatme create\"}},
 {\"text\":\"\n\n\",\"color\":\"reset\"},
 {\"text\":\"Update all plots\",\"color\":\"dark_purple\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/flatme updateall\"}},
+{\"text\":\"\n\n\",\"color\":\"reset\"},
+{\"text\":\"Check all plots\",\"color\":\"dark_purple\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/flatme check\"}},
 {\"text\":\"\n\n\",\"color\":\"reset\"},
 {\"text\":\"Reload configuration\",\"color\":\"dark_purple\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/flatme reload\"}},
 {\"text\":\"\n\n\",\"color\":\"reset\"},
