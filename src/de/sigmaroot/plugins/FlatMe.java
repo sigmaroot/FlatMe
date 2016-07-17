@@ -29,7 +29,7 @@ public class FlatMe extends JavaPlugin implements Listener {
 	public WorldGuardPlugin wgAPI;
 
 	public final String PLUGIN_TITLE = "FlatMe";
-	public final String PLUGIN_VERSION = "1.9.3";
+	public final String PLUGIN_VERSION = "1.9.4";
 
 	public boolean config_autoUpdate;
 	public int config_daysPerPlot;
@@ -185,6 +185,10 @@ public class FlatMe extends JavaPlugin implements Listener {
 				}, 1200L);
 			}
 		}
+	}
+
+	public int getConfig_levelHeight() {
+		return config_levelHeight;
 	}
 
 }
