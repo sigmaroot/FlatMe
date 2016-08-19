@@ -6,7 +6,7 @@
 {\"text\":\"\n\n\",\"color\":\"reset\"},
 {\"text\":\"Delete this plot\",\"color\":\"dark_red\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/flatme delete\"}},
 {\"text\":\"\n\n\",\"color\":\"reset\"},
-{\"text\":\"Regen with Flatme\",\"color\":\"dark_aqua\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/flatme regen\"}},
+{\"text\":\"Regen with FlatMe\",\"color\":\"dark_aqua\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/flatme regen\"}},
 {\"text\":\"\n\n\",\"color\":\"reset\"},
 {\"text\":\"Regen with WorldEdit\",\"color\":\"dark_aqua\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/flatme weregen\"}},
 {\"text\":\"\n\n\",\"color\":\"reset\"},
