@@ -257,7 +257,8 @@ public class BlockChanger {
 		thisPlot.loadChunks(world);
 		List<Entity> entList = world.getEntities();
 		for (Entity current : entList) {
-			if ((current instanceof Item) || (current instanceof ArmorStand) || (current instanceof ItemFrame)) {
+			// ToDo: Minecart
+			if ((current instanceof Item) || (current instanceof ArmorStand) || (current instanceof ItemFrame) || (current instanceof Minecart)) {
 				if (testForLocation(thisPlot, current)) {
 					current.remove();
 				}
