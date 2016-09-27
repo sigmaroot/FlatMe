@@ -102,6 +102,14 @@ public class BlockChanger {
 		playerQueue.stopQueue();
 		int x = posX * plugin.config_jumpInterval;
 		int y = posY * plugin.config_jumpInterval;
+		playerQueue.addEvent((x - 3), (plugin.config_levelHeight + 1), (y - 2), world, Material.AIR, (byte) 0, null);
+		playerQueue.addEvent((x - 2), (plugin.config_levelHeight + 1), (y - 3), world, Material.AIR, (byte) 0, null);
+		playerQueue.addEvent((x - 3), (plugin.config_levelHeight + 1), (y + 2), world, Material.AIR, (byte) 0, null);
+		playerQueue.addEvent((x - 2), (plugin.config_levelHeight + 1), (y + 3), world, Material.AIR, (byte) 0, null);
+		playerQueue.addEvent((x + 3), (plugin.config_levelHeight + 1), (y - 2), world, Material.AIR, (byte) 0, null);
+		playerQueue.addEvent((x + 2), (plugin.config_levelHeight + 1), (y - 3), world, Material.AIR, (byte) 0, null);
+		playerQueue.addEvent((x + 3), (plugin.config_levelHeight + 1), (y + 2), world, Material.AIR, (byte) 0, null);
+		playerQueue.addEvent((x + 2), (plugin.config_levelHeight + 1), (y + 3), world, Material.AIR, (byte) 0, null);
 		fill((x - 3), (plugin.config_levelHeight + 1), (y - 3), (x + 3), (plugin.config_levelHeight + 6), (y + 3), world, Material.AIR, (byte) 0);
 		playerQueue.addEvent((x - 3), plugin.config_levelHeight, (y - 3), world, Material.DIRT, (byte) 0, null);
 		playerQueue.addEvent((x - 3), plugin.config_levelHeight, (y + 3), world, Material.DIRT, (byte) 0, null);
