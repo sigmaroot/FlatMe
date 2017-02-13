@@ -93,6 +93,15 @@ public class QueueTask {
 		case CREATE_PLOT_BORDER:
 			blockChanger.runPlotBorder(posX, posY);
 			return true;
+		case CREATE_REGION:
+			for (int i = 0; i < plugin.flatMePlayers.size(); i++) {
+				for (int j = 0; j < plugin.flatMePlayers.getPlayer(i).getPlots().size(); j++) {
+					if ((plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX() == posX) && (plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY() == posY)) {
+						plugin.flatMePlayers.getPlayer(i).getPlots().get(j).createWGRegion(world);
+					}
+				}
+			}
+			return true;
 		case CREATE_RUNWAY:
 			blockChanger.runRunway(posX, posY);
 			return true;

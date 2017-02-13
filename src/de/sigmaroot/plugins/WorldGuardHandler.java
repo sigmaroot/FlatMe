@@ -45,11 +45,11 @@ public class WorldGuardHandler {
 		return removedRegions;
 	}
 
-	public int createAllRegions(World world) {
+	public int createAllRegions(World world, PlayerQueue queue) {
 		int createdRegions = 0;
 		for (int i = 0; i < plugin.flatMePlayers.size(); i++) {
 			for (int j = 0; j < plugin.flatMePlayers.getPlayer(i).getPlots().size(); j++) {
-				plugin.flatMePlayers.getPlayer(i).getPlots().get(j).createWGRegion(world);
+				queue.addTask(plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceX(), plugin.flatMePlayers.getPlayer(i).getPlots().get(j).getPlaceY(), world, QueueTaskType.CREATE_REGION);
 				createdRegions++;
 			}
 		}

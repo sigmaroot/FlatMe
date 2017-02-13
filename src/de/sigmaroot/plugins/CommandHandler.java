@@ -97,7 +97,7 @@ public class CommandHandler {
 			String[] args_1 = { String.format("%d", removedRegions) };
 			sendConsoleLocalizedString(console, "%removedRegions%", args_1);
 			// #2: Create WG regions
-			int createdRegions = plugin.worldGuardHandler.createAllRegions(plotCheck_1.getWorld());
+			int createdRegions = plugin.worldGuardHandler.createAllRegions(plotCheck_1.getWorld(), consoleQueue);
 			String[] args_1_1 = { String.format("%d", createdRegions) };
 			sendConsoleLocalizedString(console, "%createdRegions%", args_1_1);
 			// #3: Add tasks
@@ -256,7 +256,7 @@ public class CommandHandler {
 			String[] args_4 = { String.format("%d", removedRegions) };
 			executingPlayer.sendLocalizedString("%removedRegions%", args_4);
 			// #2: Create WG regions
-			int createdRegions = plugin.worldGuardHandler.createAllRegions(plotCheck_4.getWorld());
+			int createdRegions = plugin.worldGuardHandler.createAllRegions(plotCheck_4.getWorld(), executingPlayer.getQueue());
 			String[] args_4_1 = { String.format("%d", createdRegions) };
 			executingPlayer.sendLocalizedString("%createdRegions%", args_4_1);
 			// #3: Find plots
