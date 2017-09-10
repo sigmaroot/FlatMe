@@ -3,7 +3,9 @@ package de.sigmaroot.plugins;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Container;
 import org.bukkit.block.Sign;
 
 public class ChangeBlockEvent {
@@ -72,6 +74,11 @@ public class ChangeBlockEvent {
 	@SuppressWarnings("deprecation")
 	public void doEvent() {
 		Location loc = new Location(world, x, y, z);
+		Block oldBlock = world.getBlockAt(loc);
+		if (oldBlock.getState() instanceof Container) {
+			Container blockInventory = (Container) oldBlock.getState();
+			blockInventory.getInventory().clear();
+		}
 		world.getBlockAt(loc).setType(material);
 		world.getBlockAt(loc).setData(data);
 		if (material == Material.WALL_SIGN) {

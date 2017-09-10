@@ -1,5 +1,5 @@
 # FlatMe
-Plot plugin for Minecraft servers (Spigot 1.10.2)
+Plot plugin for Minecraft servers (Spigot 1.12.1)
 
 All informations about this project can be found at GitHub-Wiki:
 

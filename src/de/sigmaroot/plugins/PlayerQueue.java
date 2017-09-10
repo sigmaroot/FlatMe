@@ -151,9 +151,9 @@ public class PlayerQueue {
 	public void addTask(int posX, int posY, World world, QueueTaskType taskType) {
 		QueueTask addTask = null;
 		if (uuid == null) {
-			addTask = new QueueTask(plugin, null, taskType, posX, posY, world, "I'm alive!");
+			addTask = new QueueTask(plugin, null, taskType, posX, posY, world, null);
 		} else {
-			addTask = new QueueTask(plugin, plugin.flatMePlayers.getPlayer(uuid), taskType, posX, posY, world, "I'm alive!");
+			addTask = new QueueTask(plugin, plugin.flatMePlayers.getPlayer(uuid), taskType, posX, posY, world, null);
 		}
 		taskQueue.add(addTask);
 	}
